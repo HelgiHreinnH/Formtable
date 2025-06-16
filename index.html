@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Desk - Finally, office furniture with personality</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --charcoal: #1a1a1a;
+            --white: #ffffff;
+            --cream: #f8f6f0;
+            --electric: #0066ff;
+            --shadow-offset: 6px;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .highlight {
+            background: var(--electric);
+            color: var(--white);
+            padding: 0 15px;
+            transform: rotate(-1deg);
+            display: inline-block;
+        }
+        
+        .subline {
+            font-family: 'Menlo', monospace;
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .link-card {
+            background: var(--white);
+            border: 3px solid var(--charcoal);
+            border-radius: 18px 6px 6px 6px;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--charcoal);
+            padding: 2rem;
+            text-decoration: none;
+            color: var(--charcoal);
+            transition: transform 0.2s ease;
+        }
+        
+        .link-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--charcoal);
+        }
+        
+        .link-card:nth-child(2) {
+            border-radius: 6px 6px 6px 18px;
+        }
+        
+        .link-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .link-desc {
+            font-family: 'Menlo', monospace;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            font-family: 'Menlo', monospace;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .links {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                min-height: 80vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Finally, office furniture with <span class="highlight">personality</span></h1>
+                <p class="subline">
+                    Skip the supplier maze. Three sizes, quality materials, single source.<br>
+                    Your brand deserves better than generic.
+                </p>
+                
+                <div class="links">
+                    <a href="design/wireframes/Formtable-optimized.html" class="link-card">
+                        <div class="link-title">Complete Website</div>
+                        <div class="link-desc">Full Form Desk experience with all sections</div>
+                    </a>
+                    
+                    <a href="design/wireframes/wireframe-visual.html" class="link-card">
+                        <div class="link-title">Design System</div>
+                        <div class="link-desc">Typography, colors & component showcase</div>
+                    </a>
+                    
+                    <a href="design/wireframes/hero-concepts.html" class="link-card">
+                        <div class="link-title">Hero Concepts</div>
+                        <div class="link-desc">Alternative layouts & messaging approaches</div>
+                    </a>
+                </div>
+                
+                <div class="footer">
+                    Copenhagen 3 Days of Design 2025 • Form Desk Presentation
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

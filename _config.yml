@@ -1,0 +1,46 @@
+title: Form Desk
+description: Finally, office furniture with personality - Copenhagen 3 Days of Design 2025
+baseurl: ""
+url: ""
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Include HTML files in subdirectories
+include:
+  - design/wireframes/*.html
+  - src/styles/*.css
+
+# Exclude development files from the site
+exclude:
+  - scripts/
+  - docs/development-log.md
+  - README-SPRINT.md
+  - create-missing-files.sh
+  - "*.sh"
+
+# GitHub Pages specific settings
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Site settings
+lang: en
+timezone: Europe/Copenhagen
+
+# Navigation (for future use)
+nav_links:
+  - title: "Complete Website"
+    url: "/design/wireframes/Formtable-optimized.html"
+  - title: "Design System" 
+    url: "/design/wireframes/wireframe-visual.html"
+  - title: "Hero Concepts"
+    url: "/design/wireframes/hero-concepts.html"
+
+# Copenhagen 2025 settings
+event:
+  name: "3 Days of Design"
+  year: 2025
+  location: "Copenhagen, Denmark"
+  dates: "June 2025"

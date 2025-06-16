@@ -1,0 +1,59 @@
+{
+    "name": "Formtable",
+    "version": "1.0.0",
+    "description": "Finally, office furniture with personality - Copenhagen 3 Days of Design 2025",
+    "main": "index.html",
+    "scripts": {
+      "dev": "npx http-server . -p 3000 -o",
+      "start": "npm run dev",
+      "build": "echo 'Building for production...'",
+      "preview": "npx http-server . -p 8080 -o",
+      "test": "echo 'Testing wireframes...' && npm run dev",
+      "deploy": "echo 'Ready for GitHub Pages deployment'"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/HelgiHreinnH/Formtable.git"
+    },
+    "keywords": [
+      "design",
+      "furniture",
+      "copenhagen",
+      "3daysofdesign",
+      "desk",
+      "office",
+      "wireframes",
+      "design-system",
+      "neo-brutalist",
+      "b2b",
+      "scandinavian-design"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/HelgiHreinnH/Formtable/issues"
+    },
+    "homepage": "https://HelgiHreinnH.github.io/Formtable",
+    "devDependencies": {
+      "http-server": "^14.1.1"
+    },
+    "engines": {
+      "node": ">=16.0.0",
+      "npm": ">=8.0.0"
+    },
+    "browserslist": [
+      "> 1%",
+      "last 2 versions",
+      "not dead"
+    ],
+    "config": {
+      "event": "Copenhagen 3 Days of Design 2025",
+      "target_date": "June 2025",
+      "demo_urls": {
+        "homepage": "/",
+        "full_site": "/design/wireframes/Formtable-optimized.html",
+        "design_system": "/design/wireframes/wireframe-visual.html",
+        "hero_concepts": "/design/wireframes/hero-concepts.html"
+      }
+    }
+  }
