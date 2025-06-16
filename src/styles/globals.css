@@ -1,0 +1,548 @@
+/* ================================================================
+   FORM DESK GLOBAL STYLES
+   Global resets, imports, and base styles
+   File: src/styles/globals.css
+   ================================================================ */
+
+/* ================================
+   IMPORTS
+   ================================ */
+@import './design-system.css';
+@import './typography.css';
+@import './animations.css';
+
+/* ================================
+   MODERN CSS RESET
+   ================================ */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role */
+ul[role='list'],
+ol[role='list'] {
+    list-style: none;
+}
+
+/* Set core root defaults */
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.6;
+    font-family: var(--font-secondary);
+    font-size: var(--text-base);
+    font-weight: var(--weight-regular);
+    color: var(--color-charcoal);
+    background-color: var(--color-cream);
+    letter-spacing: 0.2px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* ================================
+   TYPOGRAPHY DEFAULTS
+   ================================ */
+
+/* Heading defaults */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin-bottom: var(--space-lg);
+}
+
+h1 {
+    font-size: var(--text-hero);
+    line-height: 0.85;
+    margin-bottom: var(--space-2xl);
+}
+
+h2 {
+    font-size: var(--text-5xl);
+    margin-bottom: var(--space-xl);
+}
+
+h3 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-lg);
+}
+
+h4 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-md);
+}
+
+h5 {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-md);
+}
+
+h6 {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-sm);
+}
+
+/* Paragraph defaults */
+p {
+    font-family: var(--font-secondary);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    margin-bottom: var(--space-lg);
+    letter-spacing: 0.2px;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* Link defaults */
+a {
+    color: var(--color-electric);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--color-charcoal);
+}
+
+a:focus {
+    outline: 2px solid var(--color-electric);
+    outline-offset: 2px;
+}
+
+/* ================================
+   LIST STYLES
+   ================================ */
+
+ul, ol {
+    margin-bottom: var(--space-lg);
+    padding-left: var(--space-xl);
+}
+
+li {
+    font-family: var(--font-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+}
+
+/* Custom list styles for brand consistency */
+.list-custom {
+    list-style: none;
+    padding-left: 0;
+}
+
+.list-custom li {
+    position: relative;
+    padding-left: var(--space-xl);
+    margin-bottom: var(--space-md);
+}
+
+.list-custom li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--font-primary);
+    font-weight: var(--weight-bold);
+    color: var(--color-electric);
+}
+
+/* ================================
+   FORM ELEMENT DEFAULTS
+   ================================ */
+
+/* Remove default form element styling */
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+/* Button defaults */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-primary);
+}
+
+/* Input defaults */
+input,
+textarea,
+select {
+    font-family: var(--font-secondary);
+    border: var(--border-thick) solid var(--color-charcoal);
+    padding: var(--space-md);
+    background: transparent;
+    transition: border-color 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-electric);
+}
+
+/* Remove default input styling */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Placeholder styling */
+::placeholder {
+    color: var(--color-charcoal);
+    opacity: 0.6;
+    font-family: var(--font-secondary);
+}
+
+/* ================================
+   MEDIA ELEMENT DEFAULTS
+   ================================ */
+
+/* Make images easier to work with */
+img,
+picture,
+svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Remove built-in form typography styles */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* ================================
+   SCROLLBAR STYLING
+   ================================ */
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-charcoal);
+    border-radius: var(--corner-small);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-electric);
+}
+
+/* ================================
+   SELECTION STYLING
+   ================================ */
+
+/* Text selection color */
+::selection {
+    background: var(--color-electric);
+    color: var(--color-white);
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: var(--color-electric);
+    color: var(--color-white);
+    text-shadow: none;
+}
+
+/* ================================
+   FOCUS MANAGEMENT
+   ================================ */
+
+/* Remove outline for mouse users but keep for keyboard users */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-electric);
+    outline-offset: 2px;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--color-electric);
+    color: var(--color-white);
+    padding: var(--space-sm) var(--space-md);
+    text-decoration: none;
+    border-radius: var(--corner-small);
+    font-family: var(--font-primary);
+    font-weight: var(--weight-semibold);
+    z-index: var(--z-modal);
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* ================================
+   UTILITY OVERRIDES
+   ================================ */
+
+/* Hide content visually but keep it available for screen readers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Show content for screen readers only when focused */
+.sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* ================================
+   PRINT STYLES
+   ================================ */
+
+@media print {
+    *,
+    *::before,
+    *::after {
+        background: transparent !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+    
+    img {
+        page-break-inside: avoid;
+    }
+    
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+    
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+    
+    /* Hide non-essential content when printing */
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* ================================
+   REDUCED MOTION
+   ================================ */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+}
+
+/* ================================
+   HIGH CONTRAST MODE
+   ================================ */
+
+@media (prefers-contrast: high) {
+    :root {
+        --color-charcoal: #000000;
+        --color-white: #ffffff;
+        --color-electric: #0000ff;
+    }
+    
+    .text-highlight {
+        border: 2px solid var(--color-charcoal);
+    }
+    
+    .shadow-hard {
+        box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #000000;
+    }
+}
+
+/* ================================
+   DARK MODE PREFERENCE
+   ================================ */
+
+@media (prefers-color-scheme: dark) {
+    /* Note: Form Desk brand primarily uses light mode,
+       but we can add dark mode support if needed */
+    
+    :root {
+        /* Uncomment and adjust if dark mode is needed */
+        /* --color-cream: #1a1a1a;
+        --color-charcoal: #ffffff; */
+    }
+}
+
+/* ================================
+   LOADING STATES
+   ================================ */
+
+/* Basic loading spinner */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* ================================
+   BROWSER-SPECIFIC FIXES
+   ================================ */
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .ios-fix {
+        -webkit-appearance: none;
+        -webkit-border-radius: 0;
+    }
+}
+
+/* Fix for Firefox */
+@-moz-document url-prefix() {
+    .firefox-fix {
+        -moz-appearance: none;
+    }
+}
+
+/* ================================
+   PERFORMANCE OPTIMIZATIONS
+   ================================ */
+
+/* Enable hardware acceleration for animations */
+.gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+}
+
+/* Optimize font rendering */
+.optimize-fonts {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ================================
+   DEVELOPMENT HELPERS
+   ================================ */
+
+/* Debug mode - uncomment to see layout boxes */
+/*
+.debug * {
+    outline: 1px solid red;
+}
+
+.debug *:hover {
+    outline: 2px solid blue;
+}
+*/
+
+/* Grid overlay for design alignment */
+/*
+.grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0, 102, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 102, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 9999;
+}
+*/
