@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Desk - FAQ & Answers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Brand Colors */
+            --color-charcoal: #1a1a1a;
+            --color-white: #ffffff;
+            --color-cream: #f8f6f0;
+            --color-oak: #d4a574;
+            --color-forest: #2d5016;
+            --color-electric: #0066ff;
+            --color-yellow: #ffd700;
+            
+            /* Typography */
+            --font-primary: 'Menlo', 'Monaco', 'Consolas', monospace;
+            --font-secondary: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 8px;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            
+            /* Corner System */
+            --corner-small: 6px;
+            --corner-large: 18px;
+            
+            /* Shadows */
+            --shadow-offset: 6px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-secondary);
+            background: var(--color-cream);
+            color: var(--color-charcoal);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* ================================
+           HEADER
+           ================================ */
+
+        .header {
+            background: var(--color-white);
+            border-bottom: 3px solid var(--color-charcoal);
+            padding: var(--space-lg) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-secondary);
+            font-weight: 800;
+            font-size: 1.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            text-decoration: none;
+            color: var(--color-charcoal);
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--color-electric);
+            border-radius: var(--corner-small) 0 2px 2px;
+        }
+
+        .back-btn {
+            background: var(--color-electric);
+            color: var(--color-white);
+            border: 3px solid var(--color-electric);
+            padding: var(--space-sm) var(--space-lg);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--color-charcoal);
+        }
+
+        /* ================================
+           MAIN CONTENT
+           ================================ */
+
+        .main {
+            padding: var(--space-3xl) 0;
+        }
+
+        .page-title {
+            font-family: var(--font-secondary);
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .page-subtitle {
+            font-family: var(--font-primary);
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+            opacity: 0.8;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ================================
+           FAQ SECTIONS
+           ================================ */
+
+        .faq-section {
+            margin-bottom: var(--space-3xl);
+        }
+
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-electric);
+            margin-bottom: var(--space-xl);
+            text-align: center;
+        }
+
+        .faq-grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .faq-item {
+            background: var(--color-white);
+            border: 3px solid var(--color-charcoal);
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:nth-child(2n) {
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+        }
+
+        .faq-item:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
+        }
+
+        .faq-question {
+            background: var(--color-charcoal);
+            color: var(--color-white);
+            padding: var(--space-lg);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--color-electric);
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: var(--space-lg);
+            font-family: var(--font-primary);
+            line-height: 1.7;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            margin-bottom: var(--space-md);
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-answer strong {
+            color: var(--color-electric);
+            font-weight: 600;
+        }
+
+        /* ================================
+           CONTACT CTA
+           ================================ */
+
+        .contact-cta {
+            background: var(--color-forest);
+            color: var(--color-white);
+            padding: var(--space-3xl) var(--space-lg);
+            text-align: center;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            margin: var(--space-3xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-cta::before {
+            content: '💬';
+            position: absolute;
+            top: var(--space-lg);
+            right: var(--space-lg);
+            font-size: 3rem;
+            opacity: 0.2;
+        }
+
+        .contact-title {
+            font-family: var(--font-secondary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .contact-text {
+            font-family: var(--font-primary);
+            margin-bottom: var(--space-xl);
+            opacity: 0.9;
+        }
+
+        .contact-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .contact-btn {
+            background: var(--color-white);
+            color: var(--color-charcoal);
+            border: 3px solid var(--color-white);
+            padding: var(--space-lg) var(--space-xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .contact-btn:nth-child(1) {
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+        }
+
+        .contact-btn:hover {
+            background: var(--color-electric);
+            color: var(--color-white);
+            border-color: var(--color-electric);
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--color-yellow);
+        }
+
+        /* ================================
+           FLOATING ANIMATIONS
+           ================================ */
+
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(2n) {
+            animation-delay: -2s;
+        }
+
+        .floating-element:nth-child(3n) {
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-8px) rotate(0.5deg); }
+            50% { transform: translateY(-4px) rotate(-0.5deg); }
+            75% { transform: translateY(-12px) rotate(0.3deg); }
+        }
+
+        /* ================================
+           RESPONSIVE
+           ================================ */
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 0 var(--space-xl);
+            }
+
+            .contact-buttons {
+                flex-direction: row;
+                max-width: 500px;
+            }
+
+            .faq-grid {
+                gap: var(--space-xl);
+            }
+        }
+
+        /* ================================
+           SCROLL REVEAL
+           ================================ */
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="logo">FORM</a>
+                <a href="/" class="back-btn">← Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <h1 class="page-title fade-in">FAQ & Answers</h1>
+            <p class="page-subtitle fade-in">
+                Everything you need to know about Form Desk. Can't find what you're looking for? Just ask us directly.
+            </p>
+
+            <!-- Product Questions -->
+            <section class="faq-section fade-in">
+                <h2 class="section-title">Product & Sizing</h2>
+                <div class="faq-grid">
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            What makes Form Desk different from other office furniture?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Three key differences:</strong> We eliminate the supplier maze with a single-source solution, every desk features our signature corner fillet design system, and we focus on brand personality over generic corporate furniture.</p>
+                            <p>Instead of navigating complex supplier catalogs, you get three optimized desk sizes with consistent quality materials and Danish craftsmanship.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            How do I choose between 120, 140, and 160cm desks?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>120×70cm (Focused):</strong> Perfect for laptop work, notebook, and coffee. Ideal for concentrated tasks in smaller spaces.</p>
+                            <p><strong>140×80cm (Balanced):</strong> Monitor + keyboard + project materials. The sweet spot for most office work.</p>
+                            <p><strong>160×80cm (Full Spread):</strong> Dual monitors + documents + collaboration space. When you need room to think big.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            What is the corner fillet system?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Our signature design feature: one large 18mm radius corner paired with three 6mm corners. It's subtle but distinctive—like a designer handbag logo.</p>
+                            <p>This detail appears on every element and can be oriented in different ways, showing that your workspace has intentional design personality.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            What materials and finishes are available?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Surface options:</strong> Oak and ash veneers, Forbo linoleum in curated colors, and high-quality plastic finishes.</p>
+                            <p><strong>Frame:</strong> LINAK height-adjustable system in multiple colors to complement your brand identity.</p>
+                            <p>All materials are FSC certified and chosen to age gracefully while maintaining consistent quality across your entire order.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ordering & Business -->
+            <section class="faq-section fade-in">
+                <h2 class="section-title">Ordering & Business</h2>
+                <div class="faq-grid">
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            What's the minimum order quantity?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>No minimum order.</strong> Whether you need 1 desk for a startup or 100 for a growing company, we handle orders of all sizes.</p>
+                            <p>Volume pricing kicks in at 10+ units, with additional discounts at 25+ and 50+ desks.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            How long does delivery take?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Standard delivery:</strong> 4-6 weeks from order confirmation to your office.</p>
+                            <p><strong>Rush orders:</strong> 2-3 weeks available for additional fee (subject to current production schedule).</p>
+                            <p>All deliveries include white-glove service with professional assembly and packaging removal.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            Do you ship internationally?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>EU shipping:</strong> Available to all EU countries with transparent pricing and no surprise customs fees.</p>
+                            <p><strong>Rest of world:</strong> Contact us for custom shipping quotes. We've successfully delivered to North America, Asia, and Australia.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            Can I get samples or see the desk in person?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Material samples:</strong> We send physical samples of all finishes and corner details free of charge.</p>
+                            <p><strong>Copenhagen showroom:</strong> Visit our studio during 3 Days of Design (June 2025) or schedule a private appointment.</p>
+                            <p><strong>AR preview:</strong> Use our mobile AR tool to place a full-size desk in your space instantly.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sustainability & Quality -->
+            <section class="faq-section fade-in">
+                <h2 class="section-title">Sustainability & Quality</h2>
+                <div class="faq-grid">
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            How sustainable are Form Desks?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Materials:</strong> FSC certified timber, renewable linoleum, and recyclable metal components.</p>
+                            <p><strong>Production:</strong> Danish craftsmanship with minimal waste and local supplier networks.</p>
+                            <p><strong>Longevity:</strong> Built to last decades, not years. Our design and quality reduce furniture turnover.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            What's the warranty coverage?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>10-year structural warranty</strong> on all frame components and height adjustment mechanisms.</p>
+                            <p><strong>5-year surface warranty</strong> against defects in materials and craftsmanship.</p>
+                            <p><strong>Lifetime design support:</strong> If you need replacement parts or want to modify your setup, we're here to help.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item floating-element" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            How do you ensure quality consistency?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Single production facility</strong> ensures every desk meets identical standards.</p>
+                            <p><strong>Pre-delivery inspection</strong> of every unit before shipping.</p>
+                            <p><strong>Batch tracking:</strong> We can trace every component back to its source for quality control.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact CTA -->
+            <section class="contact-cta fade-in floating-element">
+                <h2 class="contact-title">Still have questions?</h2>
+                <p class="contact-text">
+                    Our Copenhagen team typically responds within 1 hour during business hours. 
+                    We love talking about furniture, design, and workspace culture.
+                </p>
+                <div class="contact-buttons">
+                    <a href="mailto:hello@formdesk.dk?subject=FAQ Follow-up&body=Hi! I have a question about Form Desk..." class="contact-btn">
+                        📧 Email Us Directly
+                    </a>
+                    <a href="/" class="contact-btn">
+                        📅 Schedule a Call
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // FAQ Toggle Functionality
+        function toggleFAQ(element) {
+            element.classList.toggle('open');
+            
+            // Close other open FAQs (optional - for accordion behavior)
+            // const allFAQs = document.querySelectorAll('.faq-item');
+            // allFAQs.forEach(faq => {
+            //     if (faq !== element) {
+            //         faq.classList.remove('open');
+            //     }
+            // });
+        }
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initialize animations on load
+        setTimeout(() => {
+            document.querySelectorAll('.fade-in').forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('visible');
+                }, index * 100);
+            });
+        }, 200);
+    </script>
+</body>
+</html>
