@@ -1,1196 +1,265 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Desk - Have you seen me?</title>
+    <title>Form Desk - Finally, office furniture with personality</title>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta name="description" content="Form Desk - Office furniture with personality for Copenhagen Design Festival 2025">
+    <meta property="og:title" content="Form Desk - Office furniture with personality">
+    <meta property="og:description" content="Skip the supplier maze. Three sizes, quality materials, single source.">
+    <meta property="og:url" content="https://form.designforusers.com">
     <style>
         :root {
-            /* Brand Colors */
-            --color-charcoal: #1a1a1a;
-            --color-white: #ffffff;
-            --color-cream: #f8f6f0;
-            --color-oak: #d4a574;
-            --color-forest: #2d5016;
-            --color-electric: #0066ff;
-            --color-yellow: #ffd700;
-            
-            /* Typography */
-            --font-primary: 'Menlo', 'Monaco', 'Consolas', monospace;
-            --font-secondary: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
-            
-            /* Spacing */
-            --space-xs: 8px;
-            --space-sm: 12px;
-            --space-md: 16px;
-            --space-lg: 24px;
-            --space-xl: 32px;
-            --space-2xl: 48px;
-            --space-3xl: 64px;
-            
-            /* Corner System */
-            --corner-small: 6px;
-            --corner-large: 18px;
-            
-            /* Shadows */
-            --shadow-offset: 6px;
+            --charcoal: #1a1a1a;
+            --white: #ffffff;
+            --cream: #f8f6f0;
+            --oak: #d4a574;
+            --forest: #2d5016;
+            --electric: #0066ff;
+            --yellow: #ffd700;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
-            overscroll-behavior: none;
-        }
-
+        
         body {
-            font-family: var(--font-secondary);
-            background: var(--color-cream);
-            color: var(--color-charcoal);
+            font-family: 'Geist', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
             line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -webkit-overflow-scrolling: touch;
+            min-height: 100vh;
         }
-
-        /* ================================
-           FULL SCREEN SECTIONS
-           ================================ */
-
-        .section {
-            height: 100vh;
-            height: 100dvh; /* Dynamic viewport height for mobile */
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-
-        .section-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: var(--space-xl) var(--space-md);
-            position: relative;
-            z-index: 2;
-        }
-
-        /* ================================
-           FLOATING ANIMATIONS
-           ================================ */
-
-        .floating-element {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-element:nth-child(2n) {
-            animation-delay: -2s;
-        }
-
-        .floating-element:nth-child(3n) {
-            animation-delay: -4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(1deg); }
-            50% { transform: translateY(-5px) rotate(-1deg); }
-            75% { transform: translateY(-15px) rotate(0.5deg); }
-        }
-
-        .slide-in-up {
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .slide-in-up.active {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* Staggered animation delays */
-        .slide-in-up:nth-child(1) { transition-delay: 0.1s; }
-        .slide-in-up:nth-child(2) { transition-delay: 0.2s; }
-        .slide-in-up:nth-child(3) { transition-delay: 0.3s; }
-        .slide-in-up:nth-child(4) { transition-delay: 0.4s; }
-
-        /* ================================
-           NAVIGATION DOTS
-           ================================ */
-
-        .nav-dots {
-            position: fixed;
-            right: var(--space-md);
-            top: 50%;
-            transform: translateY(-50%);
+        
+        .header {
+            background: var(--white);
+            border-bottom: 3px solid var(--charcoal);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
             z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-sm);
         }
-
-        .nav-dot {
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 8px;
             width: 12px;
             height: 12px;
-            border-radius: 50%;
-            background: rgba(26, 26, 26, 0.3);
-            border: 2px solid var(--color-charcoal);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: var(--electric);
+            border-radius: 6px 0 2px 2px;
         }
-
-        .nav-dot.active {
-            background: var(--color-electric);
-            transform: scale(1.2);
-            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.2);
-        }
-
-        /* ================================
-           MYSTERY OVERLAY
-           ================================ */
-
-        .mystery-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--color-charcoal) 0%, var(--color-forest) 100%);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        
+        .hero {
+            padding: 80px 0;
             text-align: center;
-            color: var(--color-white);
-            padding: var(--space-xl) var(--space-md);
-            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
-
-        .mystery-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .mystery-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(2.5rem, 8vw, 4rem);
+        
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: var(--space-lg);
             line-height: 0.9;
+            margin-bottom: 30px;
         }
-
-        .mystery-subtitle {
-            font-family: var(--font-primary);
-            font-size: 1.1rem;
-            margin-bottom: var(--space-2xl);
-            opacity: 0.9;
-            max-width: 300px;
-        }
-
-        .choice-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-            width: 100%;
-            max-width: 320px;
-        }
-
-        .choice-btn {
-            background: var(--color-electric);
-            color: var(--color-white);
-            border: 3px solid var(--color-electric);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .choice-btn.secondary {
-            background: transparent;
-            color: var(--color-white);
-            border-color: var(--color-white);
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .choice-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 4px 4px 0 var(--color-yellow);
-        }
-
-        .choice-btn.secondary:hover {
-            background: var(--color-white);
-            color: var(--color-charcoal);
-        }
-
-        .choice-description {
-            font-family: var(--font-primary);
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-top: var(--space-xs);
-        }
-
-        /* ================================
-           HERO SECTION
-           ================================ */
-
-        .hero {
-            background: var(--color-cream);
-            text-align: center;
-        }
-
-        .hero-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 0.9;
-            margin-bottom: var(--space-lg);
-        }
-
+        
         .highlight {
-            background: var(--color-electric);
-            color: var(--color-white);
-            padding: 0 var(--space-sm);
+            background: var(--electric);
+            color: var(--white);
+            padding: 0 15px;
             transform: rotate(-1deg);
             display: inline-block;
-            border-radius: var(--corner-small);
         }
-
-        .hero-subtitle {
-            font-family: var(--font-primary);
-            font-size: 1rem;
-            margin-bottom: var(--space-2xl);
+        
+        .subline {
+            font-family: 'Menlo', monospace;
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 50px;
+            letter-spacing: 0.5px;
+        }
+        
+        .demos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        
+        .demo-card {
+            background: var(--white);
+            border: 3px solid var(--charcoal);
+            border-radius: 18px 0 6px 6px;
+            box-shadow: 6px 6px 0 var(--charcoal);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        
+        .demo-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0 var(--charcoal);
+        }
+        
+        .demo-card:nth-child(2) {
+            border-radius: 6px 6px 0 18px;
+            box-shadow: 6px 6px 0 var(--electric);
+        }
+        
+        .demo-card:nth-child(2):hover {
+            box-shadow: 8px 8px 0 var(--electric);
+        }
+        
+        .demo-card:nth-child(3) {
+            box-shadow: 6px 6px 0 var(--yellow);
+        }
+        
+        .demo-card:nth-child(3):hover {
+            box-shadow: 8px 8px 0 var(--yellow);
+        }
+        
+        .demo-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .demo-card p {
+            font-family: 'Menlo', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
             opacity: 0.8;
-            max-width: 350px;
-            margin-left: auto;
-            margin-right: auto;
         }
-
-        .hero-cta {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
+        
+        .btn {
+            background: var(--charcoal);
+            color: var(--white);
+            padding: 15px 30px;
+            text-decoration: none;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            text-decoration: none;
+            border-radius: 6px 6px 0 18px;
             display: inline-block;
             transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
         }
-
-        .hero-cta:hover {
+        
+        .btn:hover {
             transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
+            box-shadow: 4px 4px 0 var(--electric);
         }
-
-        /* Floating background elements */
-        .hero::before,
-        .hero::after {
-            content: '';
-            position: absolute;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            opacity: 0.1;
-        }
-
-        .hero::before {
-            top: 10%;
-            left: -5%;
-            width: 80px;
-            height: 80px;
-            background: var(--color-electric);
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .hero::after {
-            bottom: 15%;
-            right: -3%;
-            width: 60px;
-            height: 60px;
-            background: var(--color-oak);
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            animation: float 6s ease-in-out infinite reverse;
-        }
-
-        /* ================================
-           SIZE SELECTOR
-           ================================ */
-
-        .size-selector {
-            background: var(--color-white);
-            position: relative;
-        }
-
-        .section-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(1.5rem, 6vw, 2.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        
+        .footer {
+            background: var(--charcoal);
+            color: var(--white);
             text-align: center;
-            margin-bottom: var(--space-2xl);
+            padding: 40px 0;
+            margin-top: 80px;
         }
-
-        .size-grid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-xl);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .size-card {
-            background: var(--color-cream);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg);
-            text-align: center;
-            position: relative;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        /* Size Card Dimensions - Proportional to actual desk sizes */
-        .size-card:nth-child(1) {
-            width: 240px;
-            height: 140px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-        }
-
-        .size-card:nth-child(2) {
-            width: 280px;
-            height: 160px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .size-card:nth-child(3) {
-            width: 320px;
-            height: 160px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-        }
-
-        .size-card:hover,
-        .size-card.active {
-            transform: translate(-3px, -3px);
-            box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--color-charcoal);
-        }
-
-        .size-card.active {
-            background: var(--color-electric);
-            color: var(--color-white);
-        }
-
-        .size-number {
-            position: absolute;
-            top: -12px;
-            right: -12px;
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            border: 2px solid var(--color-electric);
-            border-radius: var(--corner-small);
-        }
-
-        .size-name {
-            font-family: var(--font-secondary);
-            font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: var(--space-xs);
-        }
-
-        .size-dimension {
-            font-family: var(--font-primary);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--color-electric);
-            margin: var(--space-xs) 0;
-        }
-
-        .size-card.active .size-dimension {
-            color: var(--color-white);
-        }
-
-        .size-description {
-            font-family: var(--font-primary);
-            font-size: 0.75rem;
-            opacity: 0.8;
-            line-height: 1.3;
-            margin-top: var(--space-xs);
-        }
-
-        /* ================================
-           MATERIALS SECTION
-           ================================ */
-
-        .materials-section {
-            background: var(--color-forest);
-            color: var(--color-white);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .materials-section::before {
-            content: '◆ ● ■';
-            position: absolute;
-            top: 20%;
-            right: -10%;
-            font-size: 8rem;
-            color: var(--color-yellow);
-            opacity: 0.1;
-            letter-spacing: 40px;
-            animation: float 10s ease-in-out infinite;
-            transform: rotate(15deg);
-        }
-
-        .materials-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--space-lg);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .material-tile {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: var(--space-lg);
-            text-align: center;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            backdrop-filter: blur(10px);
-            position: relative;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .material-tile:nth-child(2) {
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .material-tile:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .material-frame {
-            width: 100%;
-            height: 140px;
-            background: var(--color-white);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: var(--corner-small);
-            margin-bottom: var(--space-md);
-            overflow: hidden;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .material-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transition: transform 0.3s ease;
-        }
-
-        .material-tile:hover .material-image {
-            transform: scale(1.05);
-        }
-
-        .material-frame::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 10px;
-            height: 10px;
-            background: var(--color-yellow);
-            border-radius: var(--corner-small) 0 2px 2px;
-            z-index: 2;
-        }
-
-        .material-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
-            font-size: 2rem;
-            color: var(--color-white);
-            text-align: center;
-        }
-
-        .material-icon {
-            font-size: 2.5rem;
-            margin-bottom: var(--space-sm);
-            display: block;
-        }
-
-        .material-name {
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--color-oak);
-            font-size: 1.1rem;
-        }
-
-        /* ================================
-           CONTACT SECTION
-           ================================ */
-
-        .contact-section {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-        }
-
-        .contact-form {
-            display: grid;
-            gap: var(--space-lg);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-xs);
-        }
-
-        .form-label {
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        
+        .footer p {
+            font-family: 'Menlo', monospace;
             font-size: 0.9rem;
-        }
-
-        .form-input {
-            padding: var(--space-md);
-            border: 3px solid var(--color-white);
-            background: transparent;
-            color: var(--color-white);
-            font-family: var(--font-secondary);
-            font-size: 1rem;
-            border-radius: var(--corner-small);
-            transition: all 0.2s ease;
-        }
-
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--color-electric);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3);
-        }
-
-        .form-submit {
-            background: var(--color-electric);
-            color: var(--color-white);
-            border: 3px solid var(--color-electric);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-yellow);
-            margin-top: var(--space-lg);
-        }
-
-        .form-submit:hover {
-            background: var(--color-white);
-            color: var(--color-electric);
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
-        }
-
-        /* ================================
-           CHAT SECTION
-           ================================ */
-
-        .copenhagen-section {
-            background: var(--color-yellow);
-            color: var(--color-charcoal);
-            text-align: center;
-            position: relative;
-        }
-
-        .copenhagen-section::before {
-            content: '💬';
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            font-size: 4rem;
-            opacity: 0.2;
-            animation: float 7s ease-in-out infinite;
-        }
-
-        .copenhagen-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: var(--space-lg);
-        }
-
-        .copenhagen-subtitle {
-            font-family: var(--font-primary);
-            font-size: 1.1rem;
-            margin-bottom: var(--space-2xl);
             opacity: 0.8;
         }
-
-        .chat-options {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-            max-width: 320px;
-            margin: 0 auto var(--space-xl);
-        }
-
-        .chat-btn {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-forest);
-            cursor: pointer;
-        }
-
-        .chat-btn:nth-child(2) {
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .chat-btn.faq {
-            background: var(--color-oak);
-            border-color: var(--color-oak);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #B8935A;
-        }
-
-        .chat-btn.email {
-            background: var(--color-electric);
-            border-color: var(--color-electric);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #0052CC;
-        }
-
-        .chat-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
-        }
-
-        .chat-btn.faq:hover {
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #B8935A;
-        }
-
-        .chat-btn.email:hover {
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #0052CC;
-        }
-
-        .chat-subtitle {
-            font-family: var(--font-primary);
-            font-size: 0.9rem;
-            opacity: 0.7;
-            font-style: italic;
-        }
-
-        /* ================================
-           SWIPE INDICATOR
-           ================================ */
-
-        .swipe-indicator {
-            position: absolute;
-            bottom: var(--space-lg);
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-xs);
-            opacity: 0.6;
-            animation: bounce 2s infinite;
-        }
-
-        .swipe-text {
-            font-family: var(--font-primary);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .swipe-arrow {
-            font-size: 1.2rem;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
-
-        /* ================================
-           RESPONSIVE ADJUSTMENTS
-           ================================ */
-
-        @media (min-width: 768px) {
-            .section-content {
-                padding: var(--space-3xl) var(--space-2xl);
+        
+        @media (max-width: 768px) {
+            .demos {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
-
-            .materials-grid {
-                grid-template-columns: repeat(3, 1fr);
-                max-width: 600px;
+            
+            .hero {
+                padding: 60px 0;
             }
-
-            .size-grid {
-                flex-direction: row;
-                justify-content: center;
-                max-width: 1000px;
-            }
-
-            /* Larger cards on desktop while maintaining proportions */
-            .size-card:nth-child(1) {
-                width: 280px;
-                height: 160px;
-            }
-
-            .size-card:nth-child(2) {
-                width: 320px;
-                height: 180px;
-            }
-
-            .size-card:nth-child(3) {
-                width: 360px;
-                height: 180px;
-            }
-
-            .size-name {
-                font-size: 1.1rem;
-            }
-
-            .size-dimension {
-                font-size: 1.4rem;
-            }
-
-            .size-description {
-                font-size: 0.85rem;
-            }
-
-            .contact-form {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 600px;
-            }
-
-            .form-group.full-width {
-                grid-column: 1 / -1;
-            }
-
-            .choice-buttons {
-                flex-direction: row;
-                max-width: 600px;
-            }
-
-            .chat-options {
-                flex-direction: row;
-                max-width: 600px;
-            }
-
-            .nav-dots {
-                right: var(--space-xl);
-            }
-        }
-
-        /* ================================
-           TOUCH OPTIMIZATIONS
-           ================================ */
-
-        @media (hover: none) and (pointer: coarse) {
-            .choice-btn:active {
-                transform: translate(-2px, -2px);
-                box-shadow: 4px 4px 0 var(--color-yellow);
-            }
-
-            .size-card:active {
-                transform: translate(-3px, -3px);
-                box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--color-charcoal);
-            }
-
-            .form-submit:active {
-                transform: translate(-2px, -2px);
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
-            }
-
-            .chat-btn:active {
-                transform: translate(-2px, -2px);
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
-            }
-
-            .chat-btn.faq:active {
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #B8935A;
-            }
-
-            .chat-btn.email:active {
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #0052CC;
+            
+            .demo-card {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Dots -->
-    <div class="nav-dots">
-        <div class="nav-dot active" onclick="scrollToSection(0)"></div>
-        <div class="nav-dot" onclick="scrollToSection(1)"></div>
-        <div class="nav-dot" onclick="scrollToSection(2)"></div>
-        <div class="nav-dot" onclick="scrollToSection(3)"></div>
-        <div class="nav-dot" onclick="scrollToSection(4)"></div>
-    </div>
-
-    <!-- Mystery Overlay -->
-    <div class="mystery-overlay" id="mysteryOverlay">
-        <h1 class="mystery-title floating-element">Have you seen me?</h1>
-        <p class="mystery-subtitle">I'm the desk your workspace has been missing. How would you like to find me?</p>
-        
-        <div class="choice-buttons">
-            <button class="choice-btn ar-btn floating-element" onclick="launchAR()">
-                🔍 Find Me in AR
-                <div class="choice-description">Place me in your space</div>
-            </button>
-            <button class="choice-btn secondary floating-element" onclick="showHomepage()">
-                📱 Show Me Homepage
-                <div class="choice-description">Learn about Form Desk</div>
-            </button>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="section hero" id="hero">
-        <div class="section-content">
-            <h1 class="hero-title slide-in-up">
-                Finally, office furniture with <span class="highlight floating-element">personality</span>
-            </h1>
-            <p class="hero-subtitle slide-in-up">
-                Skip the supplier maze. Three sizes, quality materials, single source. Your brand deserves better than generic.
-            </p>
-            <a href="#" class="hero-cta slide-in-up floating-element" onclick="scrollToSection(1)">Configure Your Desk</a>
-        </div>
-        <div class="swipe-indicator">
-            <span class="swipe-text">Swipe Up</span>
-            <span class="swipe-arrow">↑</span>
-        </div>
-    </section>
-
-    <!-- Size Selector -->
-    <section class="section size-selector" id="configure">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Choose Your Size</h2>
-            <div class="size-grid">
-                <div class="size-card slide-in-up floating-element" onclick="selectSize(1)">
-                    <div class="size-number">1</div>
-                    <h3 class="size-name">Focused</h3>
-                    <div class="size-dimension">120×70cm</div>
-                    <p class="size-description">Laptop + notebook + coffee. Nothing excess.</p>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">FORM</div>
+                <div style="font-family: 'Menlo', monospace; font-size: 0.9rem; opacity: 0.8;">
+                    Copenhagen 2025
                 </div>
-                <div class="size-card slide-in-up floating-element active" onclick="selectSize(2)">
-                    <div class="size-number">2</div>
-                    <h3 class="size-name">Balanced</h3>
-                    <div class="size-dimension">140×80cm</div>
-                    <p class="size-description">Monitor + materials. Room to think.</p>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>
+                    Finally, office furniture with <span class="highlight">personality</span>
+                </h1>
+                <p class="subline">
+                    Skip the supplier maze. Three sizes, quality materials, single source. 
+                    Your brand deserves better than generic.
+                </p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="demos">
+                <div class="demo-card">
+                    <h3>Complete Demo</h3>
+                    <p>Full interactive website with all sections, typography, and components</p>
+                    <a href="design/wireframes/form-desk-optimized.html" class="btn">View Complete Site</a>
                 </div>
-                <div class="size-card slide-in-up floating-element" onclick="selectSize(3)">
-                    <div class="size-number">3</div>
-                    <h3 class="size-name">Full Spread</h3>
-                    <div class="size-dimension">160×80cm</div>
-                    <p class="size-description">Dual monitors + collaboration space.</p>
+                
+                <div class="demo-card">
+                    <h3>Design System</h3>
+                    <p>Typography, corner system, colors, and component wireframes</p>
+                    <a href="design/wireframes/wireframe-visual.html" class="btn">View Design System</a>
+                </div>
+                
+                <div class="demo-card">
+                    <h3>Hero Concepts</h3>
+                    <p>Alternative layouts and concept variations for the landing section</p>
+                    <a href="design/wireframes/hero-concepts.html" class="btn">View Concepts</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Materials Section -->
-    <section class="section materials-section" id="materials">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Your Brand. Our Quality.</h2>
-            <div class="materials-grid">
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-frame">
-                        <img src="assets/images/desk-playful.jpg" alt="Playful Desk Design" class="material-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="material-placeholder" style="display: none;">
-                            🎪
-                        </div>
-                    </div>
-                    <div class="material-name">Playful</div>
-                </div>
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-frame">
-                        <img src="assets/images/desk-brand-identity.jpg" alt="Brand Identity Desk Design" class="material-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="material-placeholder" style="display: none;">
-                            🎨
-                        </div>
-                    </div>
-                    <div class="material-name">Brand Identity</div>
-                </div>
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-frame">
-                        <img src="assets/images/desk-premium.jpg" alt="Premium Desk Design" class="material-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="material-placeholder" style="display: none;">
-                            ✨
-                        </div>
-                    </div>
-                    <div class="material-name">Premium</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="section contact-section" id="contact">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Get Early Access</h2>
-            <form class="contact-form" onsubmit="submitContact(event)">
-                <div class="form-group slide-in-up">
-                    <label class="form-label">Your Name</label>
-                    <input type="text" class="form-input" placeholder="First Last" required>
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" placeholder="name@company.com" required>
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label">Company</label>
-                    <input type="text" class="form-input" placeholder="Optional">
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label">Team Size</label>
-                    <input type="text" class="form-input" placeholder="5, 20, 100+">
-                </div>
-                <div class="form-group full-width slide-in-up">
-                    <label class="form-label">How did you find us?</label>
-                    <input type="text" class="form-input" placeholder="QR code, social media, referral...">
-                </div>
-                <button type="submit" class="form-submit slide-in-up floating-element">Join Early Access</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Chat Section -->
-    <section class="section copenhagen-section" id="chat">
-        <div class="section-content">
-            <h2 class="copenhagen-title slide-in-up">Let's Chat!</h2>
-            <p class="copenhagen-subtitle slide-in-up">
-                Questions about your workspace?<br>
-                Start a conversation with our team
-            </p>
-            <div class="chat-options">
-                <a href="faq.html" class="chat-btn faq slide-in-up floating-element">
-                    ❓ FAQ & Answers
-                </a>
-                <a href="mailto:hello@formdesk.dk?subject=Form Desk Inquiry&body=Hi! I'm interested in learning more about Form Desk..." class="chat-btn email slide-in-up floating-element">
-                    📧 Email Us
-                </a>
-                <button class="chat-btn schedule slide-in-up floating-element" onclick="scheduleCall()">
-                    📅 Schedule Call
-                </button>
-            </div>
-            <p class="chat-subtitle slide-in-up">
-                🇩🇰 Copenhagen team • Usually responds within 1 hour
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Form Desk • 3 Days of Design • Copenhagen Design Festival</p>
+            <p style="margin-top: 10px;">
+                Udviklet af <a href="https://designforusers.com" style="color: var(--electric); text-decoration: none;">designforusers.com</a>
             </p>
         </div>
-    </section>
-
-    <script>
-        let currentSection = 0;
-        const sections = document.querySelectorAll('.section');
-        const navDots = document.querySelectorAll('.nav-dot');
-
-        // Mystery Overlay Control
-        function launchAR() {
-            alert('AR Experience launching...\n\nThis will open the camera and load the 3D desk model for you to place in your space.');
-            showHomepage();
-        }
-
-        function showHomepage() {
-            document.getElementById('mysteryOverlay').classList.add('hidden');
-            setTimeout(triggerAnimations, 500);
-        }
-
-        // Section Navigation
-        function scrollToSection(index) {
-            const section = sections[index];
-            section.scrollIntoView({ behavior: 'smooth' });
-            updateNavigation(index);
-        }
-
-        function updateNavigation(index) {
-            navDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-            currentSection = index;
-        }
-
-        // Size Selection
-        function selectSize(sizeNumber) {
-            document.querySelectorAll('.size-card').forEach(card => {
-                card.classList.remove('active');
-            });
-            document.querySelectorAll('.size-card')[sizeNumber - 1].classList.add('active');
-        }
-
-        // Contact Form
-        function submitContact(event) {
-            event.preventDefault();
-            alert('Thank you for your interest! We\'ll be in touch about early access to Form desk configurator.');
-        }
-
-        // Schedule Call Function
-        function scheduleCall() {
-            alert('Scheduling feature coming soon!\n\nFor now, please send us an email at hello@formdesk.dk or WhatsApp us, and we\'ll set up a call within 24 hours.');
-            // TODO: Integrate with Calendly or similar scheduling tool
-        }
-
-        // Animation Triggers
-        function triggerAnimations() {
-            const animatedElements = document.querySelectorAll('.slide-in-up');
-            animatedElements.forEach((element, index) => {
-                setTimeout(() => {
-                    element.classList.add('active');
-                }, index * 100);
-            });
-        }
-
-        // Intersection Observer for Section Detection
-        const observerOptions = {
-            threshold: 0.5,
-            rootMargin: '0px'
-        };
-
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const sectionIndex = Array.from(sections).indexOf(entry.target);
-                    updateNavigation(sectionIndex);
-                    
-                    // Trigger animations for current section
-                    const sectionElements = entry.target.querySelectorAll('.slide-in-up');
-                    sectionElements.forEach((element, index) => {
-                        setTimeout(() => {
-                            element.classList.add('active');
-                        }, index * 100);
-                    });
-                }
-            });
-        }, observerOptions);
-
-        sections.forEach(section => {
-            sectionObserver.observe(section);
-        });
-
-        // Touch/Swipe Detection
-        let startY = 0;
-        let endY = 0;
-
-        document.addEventListener('touchstart', (e) => {
-            startY = e.touches[0].clientY;
-        });
-
-        document.addEventListener('touchend', (e) => {
-            endY = e.changedTouches[0].clientY;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = startY - endY;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    // Swipe up
-                    if (currentSection < sections.length - 1) {
-                        scrollToSection(currentSection + 1);
-                    }
-                } else {
-                    // Swipe down
-                    if (currentSection > 0) {
-                        scrollToSection(currentSection - 1);
-                    }
-                }
-            }
-        }
-
-        // Keyboard Navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown' || e.key === ' ') {
-                e.preventDefault();
-                if (currentSection < sections.length - 1) {
-                    scrollToSection(currentSection + 1);
-                }
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (currentSection > 0) {
-                    scrollToSection(currentSection - 1);
-                }
-            }
-        });
-
-        // Auto-show homepage after 8 seconds if no interaction
-        setTimeout(() => {
-            if (!document.getElementById('mysteryOverlay').classList.contains('hidden')) {
-                showHomepage();
-            }
-        }, 8000);
-
-        // Initial animation trigger
-        setTimeout(triggerAnimations, 1000);
-    </script>
+    </footer>
 </body>
 </html>
