@@ -1,0 +1,69 @@
+%!PS-Adobe-3.0
+%%Creator: Rhinoceros
+%%Title: (160x70.)
+%%BoundingBox: 575 -278 18738 1990
+%%DocumentProcessColors: Black
+%%DocumentNeededResources: procset Adobe_packedarray 2.0 0
+%%+ procset Adobe_cmykcolor 1.1 0
+%%+ procset Adobe_cshow 1.1 0
+%%+ procset Adobe_customcolor 1.0 0
+%%+ procset Adobe_typography_AI3 1.0 0
+%%+ procset Adobe_IllustratorA_AI3 1.0 0
+%AI3_ColorUsage: Color
+%AI3_TemplateBox: 288 384 288 384
+%AI3_TileBox: 0 0 576 768
+%AI3_DocumentPreview: None
+%%Template:
+%%PageOrigin:0 0
+%%EndComments
+%%BeginProlog
+%%IncludeResource: procset Adobe_packedarray 2.0 0
+Adobe_packedarray /initialize get exec
+%%IncludeResource: procset Adobe_cmykcolor 1.1 0
+%%IncludeResource: procset Adobe_cshow 1.1 0
+%%IncludeResource: procset Adobe_customcolor 1.0 0
+%%IncludeResource: procset Adobe_typography_AI3 1.0 0
+%%IncludeResource: procset Adobe_IllustratorA_AI3 1.0 0
+%%EndProlog
+%%BeginSetup
+Adobe_cmykcolor /initialize get exec
+Adobe_cshow /initialize get exec
+Adobe_customcolor /initialize get exec
+Adobe_typography_AI3 /initialize get exec
+Adobe_IllustratorA_AI3 /initialize get exec
+%%EndSetup
+%AI5_BeginLayer
+1 1 1 1 0 0 -1 255 255 220 Lb
+(Poly::00) Ln
+0 A
+0 R
+1.0000 1.0000 0.8627 XA
+1.0000 1.0000 0.8627 Xa
+0 i 1 J 1 j 1.0000 w 4 M []0 d
+0 D
+18737.0079 1961.5748 m
+18737.0079 1252.9134 18737.0079 544.2520 18737.0079 -164.4094 c
+18737.0079 -194.4810 18725.0621 -223.3210 18703.7983 -244.5849 c
+18682.5343 -265.8492 18653.6940 -277.7953 18623.6220 -277.7953 c
+17159.0551 -277.7953 15694.4882 -277.7953 14229.9213 -277.7953 c
+14222.4034 -277.7953 14215.1934 -274.8088 14209.8774 -269.4929 c
+14204.5613 -264.1769 14201.5748 -256.9668 14201.5748 -249.4488 c
+14201.5748 487.5591 14201.5748 1224.5669 14201.5748 1961.5748 c
+14201.5748 1969.0927 14204.5613 1976.3027 14209.8772 1981.6187 c
+14215.1932 1986.9347 14222.4033 1989.9213 14229.9213 1989.9213 c
+15722.8346 1989.9213 17215.7480 1989.9213 18708.6614 1989.9213 c
+18716.1793 1989.9213 18723.3893 1986.9348 18728.7053 1981.6189 c
+18734.0213 1976.3029 18737.0079 1969.0928 18737.0079 1961.5748 C
+s
+LB
+%AI5_EndLayer--
+%%PageTrailer
+gsave annotatepage grestore showpage
+%%Trailer
+Adobe_IllustratorA_AI3 /terminate get exec
+Adobe_typography_AI3 /terminate get exec
+Adobe_customcolor /terminate get exec
+Adobe_cshow /terminate get exec
+Adobe_cmykcolor /terminate get exec
+Adobe_packedarray /terminate get exec
+%%EOF
