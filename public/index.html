@@ -6,8 +6,9 @@
     <title>Form Desk - Have you seen me?</title>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- 8th Wall AR SDK -->
-    <script async src="//apps.8thwall.com/xrweb"></script>
+    <!-- AR.js - Open Source AR Library -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script>
     
     <style>
         :root {
@@ -349,6 +350,36 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* AR.js specific styles */
+        a-scene {
+            height: 100vh !important;
+            width: 100vw !important;
+        }
+
+        .arjs-loader {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .arjs-loader div {
+            text-align: center;
+            font-size: 1.25em;
+            color: white;
+        }
+
+        /* Hide A-Frame inspector button */
+        .a-inspect-button {
+            display: none !important;
+        }
+
         /* ================================
            SHARE MODAL
            ================================ */
@@ -651,18 +682,18 @@
 
     <!-- AR Container -->
     <div class="ar-container" id="arContainer">
-        <!-- 8th Wall AR Scene -->
-        <a-scene 
+        <!-- AR.js Scene -->
+        <a-scene
             id="arScene"
-            xrweb="allowedDevices: any"
-            renderer="colorManagement: true; physicallyCorrectLights: true"
-            ar-mode="true"
-            device-orientation-permission-ui="enabled: false"
+            embedded
+            arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+            renderer="logarithmicDepthBuffer: true; colorManagement: true;"
             vr-mode-ui="enabled: false"
-            loading-screen="enabled: false">
+            device-orientation-permission-ui="enabled: false">
             
             <!-- Assets -->
-            <a-assets timeout="10000">
+            <a-assets>
+                <!-- Fallback models - replace with your .glb files -->
                 <a-asset-item 
                     id="deskPlayful" 
                     src="/assets/models/ar/ar_playful.glb"
@@ -686,32 +717,34 @@
                 type="directional" 
                 position="2 4 4" 
                 intensity="0.8" 
-                color="#ffffff"
-                shadow="cast: true; type: pcf">
+                color="#ffffff">
             </a-light>
 
-            <!-- Desk Model (will be set dynamically) -->
-            <a-entity
-                id="deskEntity" 
-                gltf-model=""
-                scale="0.001 0.001 0.001"
-                position="0 0 -1.5"
-                rotation="0 0 0"
-                shadow="cast: true; receive: true"
-                gesture-handler="minScale: 0.3; maxScale: 8"
-                cursor-listener
-                visible="false">
-            </a-entity>
+            <!-- AR Marker -->
+            <a-marker
+                id="deskMarker"
+                type="pattern"
+                preset="hiro"
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse">
+                
+                <!-- Desk Model (will be set dynamically) -->
+                <a-entity
+                    id="deskEntity" 
+                    gltf-model=""
+                    scale="0.5 0.5 0.5"
+                    position="0 0 0"
+                    rotation="0 0 0"
+                    animation-mixer
+                    class="clickable"
+                    ar-desk-controller>
+                </a-entity>
+
+            </a-marker>
 
             <!-- Camera -->
-            <a-camera 
-                id="camera" 
-                position="0 1.6 0"
-                look-controls="enabled: false"
-                cursor="fuse: false; rayOrigin: mouse"
-                raycaster="far: 10000; objects: .clickable">
-            </a-camera>
-
+            <a-entity camera look-controls-enabled="false"></a-entity>
         </a-scene>
 
         <!-- AR UI Overlay -->
@@ -733,6 +766,7 @@
             <div class="ar-instructions" id="arInstructions">
                 <p>📱 Point your camera at a flat surface</p>
                 <p>Tap to place your Form Desk</p>
+                <p><small>🔍 Look for surfaces, no marker needed!</small></p>
             </div>
 
             <!-- Controls -->
@@ -800,24 +834,24 @@
                 model: "#deskPlayful",
                 color: "personality-playful",
                 description: "Fun & Creative Workspaces",
-                shareText: "🎪 Just found my PLAYFUL workspace personality! This Form Desk is perfect for creative teams who don't do boring. Copenhagen design at its finest!",
-                hashtags: "PlayfulWorkspace,FormDesk,Copenhagen,CreativeOffice"
+                shareText: "🎪 Just placed my PLAYFUL workspace personality in AR! This Form Desk is perfect for creative teams who don't do boring. Copenhagen design at its finest!",
+                hashtags: "PlayfulWorkspace,FormDesk,Copenhagen,CreativeOffice,AR"
             },
             brand: {
                 name: "Brand Identity", 
                 model: "#deskBrand",
                 color: "personality-brand",
                 description: "Professional Brand Identity",
-                shareText: "💼 Discovered my PROFESSIONAL workspace identity! This Form Desk represents everything our brand stands for. Copenhagen design meets business excellence!",
-                hashtags: "BrandIdentity,FormDesk,Copenhagen,ProfessionalOffice"
+                shareText: "💼 Discovered my PROFESSIONAL workspace identity in AR! This Form Desk represents everything our brand stands for. Copenhagen design meets business excellence!",
+                hashtags: "BrandIdentity,FormDesk,Copenhagen,ProfessionalOffice,AR"
             },
             premium: {
                 name: "Premium",
                 model: "#deskPremium", 
                 color: "personality-premium",
                 description: "Luxury & Craftsmanship",
-                shareText: "✨ Found my PREMIUM workspace experience! This Form Desk showcases true craftsmanship and luxury. Copenhagen design at its absolute finest!",
-                hashtags: "PremiumWorkspace,FormDesk,Copenhagen,LuxuryOffice"
+                shareText: "✨ Found my PREMIUM workspace experience in AR! This Form Desk showcases true craftsmanship and luxury. Copenhagen design at its absolute finest!",
+                hashtags: "PremiumWorkspace,FormDesk,Copenhagen,LuxuryOffice,AR"
             }
         };
 
@@ -842,7 +876,8 @@
 
             trackViralEvent('ar_launch_requested', { 
                 personality: randomPersonality,
-                source: 'mystery_overlay' 
+                source: 'mystery_overlay',
+                ar_library: 'ar.js_open_source'
             });
 
             initializeAR();
@@ -861,7 +896,7 @@
         }
 
         // ================================
-        // AR EXPERIENCE FUNCTIONS
+        // AR FUNCTIONALITY (AR.js)
         // ================================
 
         async function initializeAR() {
@@ -869,7 +904,7 @@
                 // Hide mystery overlay
                 document.getElementById('mysteryOverlay').classList.add('hidden');
                 
-                // Show AR container with loading
+                // Show AR container
                 const arContainer = document.getElementById('arContainer');
                 arContainer.classList.add('active');
                 
@@ -877,22 +912,24 @@
                 document.getElementById('loadingPersonality').textContent = 
                     `Preparing ${selectedPersonality.name} Experience...`;
                 
-                // Initialize 8th Wall if not already done
+                // Initialize AR.js if not already done
                 if (!arInitialized) {
-                    await init8thWall();
+                    await initARjs();
                     arInitialized = true;
                 }
                 
                 trackViralEvent('ar_initialized', { 
                     personality: selectedPersonality.name.toLowerCase(),
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    ar_library: 'ar.js'
                 });
                 
             } catch (error) {
                 console.error('AR initialization failed:', error);
                 trackViralEvent('ar_initialization_failed', { 
                     error: error.message,
-                    personality: selectedPersonality?.name
+                    personality: selectedPersonality?.name,
+                    ar_library: 'ar.js'
                 });
                 
                 // Fallback to homepage
@@ -901,40 +938,63 @@
             }
         }
 
-        async function init8thWall() {
+        async function initARjs() {
             return new Promise((resolve, reject) => {
                 const scene = document.getElementById('arScene');
                 
-                // Wait for 8th Wall to initialize
-                scene.addEventListener('xrloaded', () => {
-                    console.log('8th Wall loaded successfully');
-                    
-                    // Set the selected personality model
-                    const deskEntity = document.getElementById('deskEntity');
-                    deskEntity.setAttribute('gltf-model', selectedPersonality.model);
-                    
-                    // Show personality reveal
-                    showPersonalityReveal();
-                    
-                    // Hide loading after personality reveal
-                    setTimeout(() => {
-                        document.getElementById('arLoading').style.display = 'none';
-                        document.getElementById('arInstructions').style.display = 'block';
-                        document.getElementById('arControls').style.display = 'flex';
-                        setupARInteractions();
-                    }, 3000);
-                    
-                    resolve();
+                // Set the selected personality model
+                const deskEntity = document.getElementById('deskEntity');
+                deskEntity.setAttribute('gltf-model', selectedPersonality.model);
+                
+                // Show personality reveal immediately
+                showPersonalityReveal();
+                
+                // Setup AR.js event listeners
+                scene.addEventListener('arjs-video-loaded', () => {
+                    console.log('AR.js camera loaded successfully');
                 });
 
-                scene.addEventListener('xrloaderror', (error) => {
-                    console.error('8th Wall failed to load:', error);
-                    reject(error);
+                const marker = document.getElementById('deskMarker');
+                
+                marker.addEventListener('markerFound', () => {
+                    console.log('AR marker found');
+                    deskPlaced = true;
+                    
+                    // Update instructions
+                    document.getElementById('arInstructions').innerHTML = `
+                        <p>🎉 Perfect! Your ${selectedPersonality.name} desk is placed</p>
+                        <p>Move your phone to see different angles</p>
+                    `;
+                    
+                    trackViralEvent('ar_marker_found', {
+                        personality: selectedPersonality.name.toLowerCase(),
+                        timestamp: Date.now()
+                    });
                 });
+
+                marker.addEventListener('markerLost', () => {
+                    console.log('AR marker lost');
+                    deskPlaced = false;
+                    
+                    trackViralEvent('ar_marker_lost', {
+                        personality: selectedPersonality.name.toLowerCase(),
+                        timestamp: Date.now()
+                    });
+                });
+                
+                // Hide loading and show UI after initialization
+                setTimeout(() => {
+                    document.getElementById('arLoading').style.display = 'none';
+                    document.getElementById('arInstructions').style.display = 'block';
+                    document.getElementById('arControls').style.display = 'flex';
+                    resolve();
+                }, 3000);
 
                 // Timeout fallback
                 setTimeout(() => {
-                    reject(new Error('AR initialization timeout'));
+                    if (!arInitialized) {
+                        reject(new Error('AR initialization timeout'));
+                    }
                 }, 10000);
             });
         }
@@ -961,61 +1021,6 @@
             });
         }
 
-        function setupARInteractions() {
-            const deskEntity = document.getElementById('deskEntity');
-            const camera = document.getElementById('camera');
-            
-            // Surface detection and placement
-            camera.addEventListener('click', (event) => {
-                if (!deskPlaced) {
-                    placeDeskAtTarget(event);
-                }
-            });
-
-            // Touch gestures for scaling and rotation
-            deskEntity.addEventListener('gesture-start', () => {
-                trackViralEvent('ar_gesture_start', { 
-                    type: 'manipulation',
-                    personality: selectedPersonality.name.toLowerCase()
-                });
-            });
-
-            deskEntity.addEventListener('gesture-end', () => {
-                trackViralEvent('ar_gesture_end', { 
-                    type: 'manipulation',
-                    personality: selectedPersonality.name.toLowerCase()
-                });
-            });
-        }
-
-        function placeDeskAtTarget(event) {
-            const deskEntity = document.getElementById('deskEntity');
-            
-            // Place desk at camera target position
-            const position = event.detail.intersection?.point || { x: 0, y: -0.5, z: -1.5 };
-            
-            deskEntity.setAttribute('position', {
-                x: position.x,
-                y: position.y,
-                z: position.z
-            });
-
-            deskEntity.setAttribute('visible', true);
-            deskPlaced = true;
-
-            // Update instructions
-            document.getElementById('arInstructions').innerHTML = `
-                <p>🎉 Perfect! Your ${selectedPersonality.name} desk is placed</p>
-                <p>Pinch to resize • Drag to rotate • Ready to share!</p>
-            `;
-
-            trackViralEvent('ar_desk_placed', {
-                personality: selectedPersonality.name.toLowerCase(),
-                position: position,
-                timestamp: Date.now()
-            });
-        }
-
         // ================================
         // SCREENSHOT & SHARING
         // ================================
@@ -1023,9 +1028,10 @@
         function takeScreenshot() {
             const scene = document.getElementById('arScene');
             
-            if (scene && scene.renderer) {
-                // Capture screenshot using 8th Wall's screenshot functionality
-                const canvas = scene.renderer.domElement;
+            // Get the AR.js canvas
+            const canvas = scene.querySelector('canvas') || scene.canvas;
+            
+            if (canvas) {
                 canvas.toBlob((blob) => {
                     screenshotBlob = blob;
                     const url = URL.createObjectURL(blob);
@@ -1036,9 +1042,13 @@
                     trackViralEvent('ar_screenshot_taken', {
                         personality: selectedPersonality.name.toLowerCase(),
                         timestamp: Date.now(),
-                        desk_placed: deskPlaced
+                        desk_placed: deskPlaced,
+                        ar_library: 'ar.js'
                     });
                 }, 'image/jpeg', 0.9);
+            } else {
+                // Fallback - just show share modal without image
+                showShareModal();
             }
         }
 
@@ -1084,7 +1094,8 @@
                     trackViralEvent('ar_native_share', { 
                         personality: selectedPersonality.name.toLowerCase(),
                         success: true,
-                        includes_image: !!shareData.files
+                        includes_image: !!shareData.files,
+                        ar_library: 'ar.js'
                     });
                     closeShareModal();
                 } catch (err) {
@@ -1104,7 +1115,8 @@
                 alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!');
                 trackViralEvent('ar_link_copied', { 
                     personality: selectedPersonality.name.toLowerCase(),
-                    success: true 
+                    success: true,
+                    ar_library: 'ar.js'
                 });
                 closeShareModal();
             } catch (err) {
@@ -1129,7 +1141,8 @@
                 alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your AR experience!');
                 trackViralEvent('ar_text_copied', { 
                     personality: selectedPersonality.name.toLowerCase(),
-                    success: true 
+                    success: true,
+                    ar_library: 'ar.js'
                 });
                 closeShareModal();
             } catch (err) {
@@ -1142,10 +1155,6 @@
             
             // Reset AR state
             deskPlaced = false;
-            const deskEntity = document.getElementById('deskEntity');
-            if (deskEntity) {
-                deskEntity.setAttribute('visible', false);
-            }
             
             // Show homepage
             setTimeout(() => {
@@ -1155,7 +1164,8 @@
             trackViralEvent('ar_closed', { 
                 personality: selectedPersonality?.name.toLowerCase(),
                 desk_placed: deskPlaced,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                ar_library: 'ar.js'
             });
         }
 
@@ -1173,7 +1183,8 @@
                 user_agent: navigator.userAgent,
                 page_url: window.location.href,
                 session_id: getSessionId(),
-                qr_source: getQRSource()
+                qr_source: getQRSource(),
+                ar_solution: 'open_source_arjs'
             };
 
             console.log('🚀 Viral Event:', eventName, viralData);
@@ -1203,19 +1214,30 @@
         // ================================
 
         function checkARSupport() {
-            // Check for basic WebXR support
-            if ('xr' in navigator) {
-                return navigator.xr.isSessionSupported('immersive-ar')
-                    .then(supported => supported)
-                    .catch(() => false);
-            }
-            
-            // Fallback: check for mobile device with camera
+            // AR.js works on most mobile browsers with camera
             const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             const hasCamera = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
             
             return Promise.resolve(isMobile && hasCamera);
         }
+
+        // ================================
+        // A-FRAME COMPONENTS
+        // ================================
+
+        // Custom A-Frame component for desk interaction
+        AFRAME.registerComponent('ar-desk-controller', {
+            init: function () {
+                this.el.addEventListener('click', (evt) => {
+                    console.log('Desk clicked in AR');
+                    
+                    trackViralEvent('ar_desk_clicked', {
+                        personality: selectedPersonality?.name.toLowerCase(),
+                        timestamp: Date.now()
+                    });
+                });
+            }
+        });
 
         // ================================
         // EVENT LISTENERS
@@ -1256,12 +1278,12 @@
             trackViralEvent('mystery_overlay_loaded', { 
                 ar_supported: supported,
                 user_agent: navigator.userAgent,
-                qr_source: getQRSource()
+                qr_source: getQRSource(),
+                ar_library: 'ar.js'
             });
 
             if (!supported) {
                 console.log('AR not supported, will emphasize homepage option');
-                // Could modify UI to highlight homepage option more
             }
         });
 
@@ -1270,77 +1292,8 @@
             timestamp: Date.now(),
             page_url: window.location.href,
             referrer: document.referrer,
-            qr_source: getQRSource()
-        });
-    </script>
-
-    <!-- 8th Wall Gesture Component -->
-    <script>
-        // Custom A-Frame component for gesture handling
-        AFRAME.registerComponent('gesture-handler', {
-            schema: {
-                enabled: { default: true },
-                rotationFactor: { default: 5 },
-                minScale: { default: 0.3 },
-                maxScale: { default: 8 },
-            },
-
-            init: function () {
-                this.handleScale = this.handleScale.bind(this);
-                this.handleRotation = this.handleRotation.bind(this);
-
-                this.isVisible = false;
-                this.initialScale = this.el.object3D.scale.clone();
-                this.scaleFactor = 1;
-
-                this.el.sceneEl.addEventListener('markerFound', (e) => {
-                    this.isVisible = true;
-                });
-
-                this.el.sceneEl.addEventListener('markerLost', (e) => {
-                    this.isVisible = false;
-                });
-            },
-
-            update: function () {
-                if (this.data.enabled) {
-                    this.el.sceneEl.addEventListener('onefingermove', this.handleRotation);
-                    this.el.sceneEl.addEventListener('twofingermove', this.handleScale);
-                }
-            },
-
-            remove: function () {
-                this.el.sceneEl.removeEventListener('onefingermove', this.handleRotation);
-                this.el.sceneEl.removeEventListener('twofingermove', this.handleScale);
-            },
-
-            handleRotation: function (event) {
-                if (this.isVisible) {
-                    this.el.object3D.rotation.y += event.detail.positionChange.x * this.data.rotationFactor;
-                    this.el.object3D.rotation.x += event.detail.positionChange.y * this.data.rotationFactor;
-                }
-            },
-
-            handleScale: function (event) {
-                if (this.isVisible) {
-                    this.scaleFactor *= 1 + event.detail.spreadChange / event.detail.startSpread;
-
-                    this.scaleFactor = Math.min(Math.max(this.scaleFactor, this.data.minScale), this.data.maxScale);
-
-                    this.el.object3D.scale.x = this.scaleFactor * this.initialScale.x;
-                    this.el.object3D.scale.y = this.scaleFactor * this.initialScale.y;
-                    this.el.object3D.scale.z = this.scaleFactor * this.initialScale.z;
-                }
-            }
-        });
-
-        // Cursor listener for tap-to-place
-        AFRAME.registerComponent('cursor-listener', {
-            init: function () {
-                this.el.addEventListener('click', function (evt) {
-                    console.log('Desk clicked/tapped');
-                });
-            }
+            qr_source: getQRSource(),
+            ar_solution: 'open_source_arjs'
         });
     </script>
 </body>
