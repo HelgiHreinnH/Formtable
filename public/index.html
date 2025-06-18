@@ -247,12 +247,12 @@
             border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
         }
 
-        .choice-btn:hover {
+        .choice-btn:hover, .choice-btn:active {
             transform: translate(-2px, -2px);
             box-shadow: 4px 4px 0 var(--color-yellow);
         }
 
-        .choice-btn.secondary:hover {
+        .choice-btn.secondary:hover, .choice-btn.secondary:active {
             background: var(--color-white);
             color: var(--color-charcoal);
         }
@@ -265,72 +265,43 @@
         }
 
         /* ================================
-           WEBXR AR STYLES
+           AR QUICK LOOK STYLES
            ================================ */
 
-        .ar-container {
+        .ar-loading {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            background: rgba(26, 26, 26, 0.9);
             z-index: 2000;
-            background: #000;
             display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--color-white);
+            padding: var(--space-xl);
         }
 
-        .ar-container.active {
-            display: block;
+        .ar-loading.active {
+            display: flex;
         }
 
-        .ar-canvas {
-            width: 100vw !important;
-            height: 100vh !important;
-            display: block;
-        }
-
-        .ar-ui {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 2001;
-            pointer-events: none;
-        }
-
-        .ar-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .personality-reveal {
             background: rgba(26, 26, 26, 0.9);
             color: var(--color-white);
             padding: var(--space-2xl);
             border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
             text-align: center;
             backdrop-filter: blur(10px);
-            pointer-events: auto;
-        }
-
-        .personality-reveal {
-            position: absolute;
-            top: var(--space-xl);
-            left: var(--space-md);
-            right: var(--space-md);
-            background: rgba(26, 26, 26, 0.9);
-            color: var(--color-white);
-            padding: var(--space-lg);
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            text-align: center;
-            backdrop-filter: blur(10px);
-            pointer-events: auto;
-            display: none;
+            margin-bottom: var(--space-2xl);
         }
 
         .personality-title {
             font-family: var(--font-secondary);
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -343,81 +314,19 @@
 
         .personality-description {
             font-family: var(--font-primary);
-            font-size: 0.9rem;
+            font-size: 1rem;
             opacity: 0.8;
-        }
-
-        .ar-instructions {
-            position: absolute;
-            top: var(--space-xl);
-            left: var(--space-md);
-            right: var(--space-md);
-            background: rgba(26, 26, 26, 0.8);
-            color: var(--color-white);
-            padding: var(--space-lg);
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            text-align: center;
-            backdrop-filter: blur(10px);
-            pointer-events: auto;
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            letter-spacing: 1px;
-            display: none;
-        }
-
-        .ar-controls {
-            position: absolute;
-            bottom: var(--space-xl);
-            left: var(--space-md);
-            right: var(--space-md);
-            display: flex;
-            gap: var(--space-md);
-            pointer-events: auto;
-            display: none;
-        }
-
-        .ar-btn {
-            background: var(--color-electric);
-            color: var(--color-white);
-            border: 3px solid var(--color-electric);
-            padding: var(--space-md) var(--space-lg);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-small);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex: 1;
-            text-align: center;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-        }
-
-        .ar-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
-        }
-
-        .ar-btn.screenshot {
-            background: var(--color-yellow);
-            color: var(--color-charcoal);
-            border-color: var(--color-yellow);
-        }
-
-        .ar-btn.close {
-            background: var(--color-oak);
-            border-color: var(--color-oak);
-            flex: 0 0 60px;
+            margin-bottom: var(--space-lg);
         }
 
         .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid var(--color-electric);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--color-electric);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto var(--space-lg);
+            margin-bottom: var(--space-lg);
         }
 
         @keyframes spin {
@@ -425,19 +334,34 @@
             100% { transform: rotate(360deg); }
         }
 
-        .ar-error {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(26, 26, 26, 0.9);
-            color: var(--color-white);
-            padding: var(--space-2xl);
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+        .ar-instructions {
+            font-family: var(--font-secondary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
             text-align: center;
-            backdrop-filter: blur(10px);
-            pointer-events: auto;
-            display: none;
+        }
+
+        .ar-fallback {
+            background: var(--color-white);
+            color: var(--color-charcoal);
+            border: 3px solid var(--color-charcoal);
+            padding: var(--space-lg) var(--space-xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: var(--space-lg);
+        }
+
+        .ar-fallback:hover, .ar-fallback:active {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--color-electric);
         }
 
         /* ================================
@@ -501,7 +425,7 @@
             box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
         }
 
-        .hero-cta:hover {
+        .hero-cta:hover, .hero-cta:active {
             transform: translate(-2px, -2px);
             box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
         }
@@ -523,7 +447,7 @@
             overflow: hidden;
         }
 
-        .share-btn:hover {
+        .share-btn:hover, .share-btn:active {
             background: var(--color-forest);
             color: var(--color-white);
             border-color: var(--color-forest);
@@ -585,7 +509,7 @@
             animation: pulse 3s infinite;
         }
 
-        .floating-share:hover {
+        .floating-share:hover, .floating-share:active {
             transform: translate(-2px, -2px) scale(1.1);
             box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
             background: var(--color-forest);
@@ -670,7 +594,7 @@
             gap: var(--space-xs);
         }
 
-        .share-option:hover {
+        .share-option:hover, .share-option:active {
             background: var(--color-electric);
             color: var(--color-white);
             transform: translate(-2px, -2px);
@@ -723,7 +647,7 @@
             margin-top: var(--space-lg);
         }
 
-        .configurator-cta:hover {
+        .configurator-cta:hover, .configurator-cta:active {
             background: var(--color-charcoal);
             border-color: var(--color-charcoal);
             transform: translate(-2px, -2px);
@@ -761,49 +685,6 @@
             .nav-dots {
                 right: var(--space-xl);
             }
-
-            .ar-instructions,
-            .personality-reveal {
-                left: var(--space-xl);
-                right: var(--space-xl);
-            }
-
-            .ar-controls {
-                left: var(--space-xl);
-                right: var(--space-xl);
-            }
-        }
-
-        /* ================================
-           TOUCH OPTIMIZATIONS
-           ================================ */
-
-        @media (hover: none) and (pointer: coarse) {
-            .choice-btn:active {
-                transform: translate(-2px, -2px);
-                box-shadow: 4px 4px 0 var(--color-yellow);
-            }
-
-            .share-btn:active {
-                transform: translate(-2px, -2px) scale(0.95);
-                background: var(--color-forest);
-                color: var(--color-white);
-            }
-
-            .floating-share:active {
-                transform: translate(-2px, -2px) scale(1.05);
-            }
-
-            .share-option:active {
-                transform: translate(-2px, -2px) scale(0.95);
-                background: var(--color-electric);
-                color: var(--color-white);
-            }
-
-            .ar-btn:active {
-                transform: translate(-2px, -2px);
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
-            }
         }
     </style>
 </head>
@@ -824,9 +705,9 @@
         <p class="mystery-subtitle">I'm the desk your workspace has been missing. How would you like to find me?</p>
         
         <div class="choice-buttons">
-            <button class="choice-btn ar-btn floating-element pulse" onclick="launchWebXRAR()">
+            <button class="choice-btn ar-btn floating-element pulse" onclick="launchQuickAR()">
                 🔍 Find Me in AR
-                <div class="choice-description">Place me in your space</div>
+                <div class="choice-description">iPhone native AR experience</div>
             </button>
             <button class="choice-btn secondary floating-element" onclick="showHomepage()">
                 📱 Show Me Homepage
@@ -835,48 +716,23 @@
         </div>
     </div>
 
-    <!-- WebXR AR Container -->
-    <div class="ar-container" id="arContainer">
-        <canvas class="ar-canvas" id="arCanvas"></canvas>
-        
-        <div class="ar-ui">
-            <!-- Loading Indicator -->
-            <div class="ar-loading" id="arLoading">
-                <div class="loading-spinner"></div>
-                <p>Loading your desk...</p>
-                <p class="personality-description" id="loadingPersonality"></p>
-            </div>
-
-            <!-- Personality Reveal -->
-            <div class="personality-reveal" id="personalityReveal">
-                <div class="personality-title" id="personalityTitle"></div>
-                <div class="personality-description" id="personalityDescription"></div>
-            </div>
-
-            <!-- Instructions -->
-            <div class="ar-instructions" id="arInstructions">
-                <p>🔍 Find a flat surface</p>
-                <p>Point your camera at the ground or table</p>
-                <p><small>Tap when you see the placement circle</small></p>
-            </div>
-
-            <!-- Controls -->
-            <div class="ar-controls" id="arControls">
-                <button class="ar-btn screenshot" onclick="takeARScreenshot()">
-                    📸 Capture & Share
-                </button>
-                <button class="ar-btn close" onclick="closeWebXRAR()">
-                    ✕
-                </button>
-            </div>
-
-            <!-- Error State -->
-            <div class="ar-error" id="arError">
-                <h2>❌ AR Unavailable</h2>
-                <p id="arErrorMessage">WebXR AR not supported on this device</p>
-                <button class="ar-btn" onclick="showHomepage()">Continue to Website</button>
-            </div>
+    <!-- Quick AR Loading Screen -->
+    <div class="ar-loading" id="arLoading">
+        <div class="personality-reveal">
+            <div class="personality-title" id="personalityTitle"></div>
+            <div class="personality-description" id="personalityDescription"></div>
         </div>
+        
+        <div class="loading-spinner"></div>
+        
+        <div class="ar-instructions">
+            <p>🍎 Launching iPhone AR...</p>
+            <p><small>Your desk will open in Apple's AR viewer</small></p>
+        </div>
+        
+        <a href="#" class="ar-fallback" onclick="showHomepage()">
+            Continue to Website
+        </a>
     </div>
 
     <!-- Share Modal -->
@@ -927,11 +783,7 @@
         </div>
     </section>
 
-    <!-- Import Three.js and WebXR Implementation -->
-    <script type="module">
-        import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
-        import { GLTFLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
-
+    <script>
         // ================================
         // AR PERSONALITY MODELS
         // ================================
@@ -939,404 +791,166 @@
         const AR_PERSONALITIES = {
             playful: {
                 name: "Playful",
-                modelPath: "/assets/models/ar/ar_playful.glb",
+                usdz: "/assets/models/ar/ar_playful.usdz",
                 color: "personality-playful",
                 description: "Fun & Creative Workspaces",
                 shareText: "🎪 Just placed my PLAYFUL workspace personality in AR! This Form Desk is perfect for creative teams who don't do boring. Copenhagen design at its finest!",
-                hashtags: "PlayfulWorkspace,FormDesk,Copenhagen,CreativeOffice,WebXR"
+                hashtags: "PlayfulWorkspace,FormDesk,Copenhagen,CreativeOffice,QuickAR"
             },
             brand: {
                 name: "Brand Identity", 
-                modelPath: "/assets/models/ar/ar_brand.glb",
+                usdz: "/assets/models/ar/ar_brand.usdz",
                 color: "personality-brand",
                 description: "Professional Brand Identity",
                 shareText: "💼 Discovered my PROFESSIONAL workspace identity in AR! This Form Desk represents everything our brand stands for. Copenhagen design meets business excellence!",
-                hashtags: "BrandIdentity,FormDesk,Copenhagen,ProfessionalOffice,WebXR"
+                hashtags: "BrandIdentity,FormDesk,Copenhagen,ProfessionalOffice,QuickAR"
             },
             premium: {
                 name: "Premium",
-                modelPath: "/assets/models/ar/ar_premium.glb", 
+                usdz: "/assets/models/ar/ar_premium.usdz", 
                 color: "personality-premium",
                 description: "Luxury & Craftsmanship",
                 shareText: "✨ Found my PREMIUM workspace experience in AR! This Form Desk showcases true craftsmanship and luxury. Copenhagen design at its absolute finest!",
-                hashtags: "PremiumWorkspace,FormDesk,Copenhagen,LuxuryOffice,WebXR"
+                hashtags: "PremiumWorkspace,FormDesk,Copenhagen,LuxuryOffice,QuickAR"
             }
         };
-
-        // ================================
-        // WEBXR AR CLASS
-        // ================================
-
-        class FormDeskWebXRAR {
-            constructor() {
-                this.scene = null;
-                this.camera = null;
-                this.renderer = null;
-                this.xrSession = null;
-                this.deskModel = null;
-                this.reticle = null;
-                this.hitTestSource = null;
-                this.selectedPersonality = this.getRandomPersonality();
-                this.deskPlaced = false;
-                this.screenshotBlob = null;
-            }
-
-            getRandomPersonality() {
-                const personalities = Object.keys(AR_PERSONALITIES);
-                const random = personalities[Math.floor(Math.random() * personalities.length)];
-                return AR_PERSONALITIES[random];
-            }
-
-            async init() {
-                try {
-                    // Check WebXR support
-                    if (!navigator.xr) {
-                        throw new Error('WebXR not supported in this browser');
-                    }
-
-                    const supported = await navigator.xr.isSessionSupported('immersive-ar');
-                    if (!supported) {
-                        throw new Error('AR not supported on this device');
-                    }
-
-                    this.setupScene();
-                    this.createReticle();
-                    await this.loadDeskModel();
-                    await this.startARSession();
-
-                    trackViralEvent('webxr_ar_initialized', { 
-                        personality: this.selectedPersonality.name.toLowerCase(),
-                        ar_library: 'webxr_native'
-                    });
-
-                } catch (error) {
-                    console.error('WebXR AR initialization failed:', error);
-                    this.showError(error.message);
-                    
-                    trackViralEvent('webxr_ar_initialization_failed', { 
-                        error: error.message,
-                        personality: this.selectedPersonality?.name,
-                        ar_library: 'webxr_native'
-                    });
-                }
-            }
-
-            setupScene() {
-                this.scene = new THREE.Scene();
-                this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
-                
-                this.renderer = new THREE.WebGLRenderer({ 
-                    canvas: document.getElementById('arCanvas'),
-                    antialias: true, 
-                    alpha: true 
-                });
-                this.renderer.setSize(window.innerWidth, window.innerHeight);
-                this.renderer.xr.enabled = true;
-
-                // Lighting setup
-                const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-                directionalLight.position.set(2, 4, 4);
-                directionalLight.castShadow = true;
-                
-                this.scene.add(ambientLight);
-                this.scene.add(directionalLight);
-
-                console.log('WebXR scene setup complete');
-            }
-
-            createReticle() {
-                const geometry = new THREE.RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2);
-                const material = new THREE.MeshBasicMaterial({ 
-                    color: 0x0066ff,
-                    transparent: true,
-                    opacity: 0.7
-                });
-                
-                this.reticle = new THREE.Mesh(geometry, material);
-                this.reticle.matrixAutoUpdate = false;
-                this.reticle.visible = false;
-                this.scene.add(this.reticle);
-
-                console.log('AR reticle created');
-            }
-
-            async loadDeskModel() {
-                const loader = new GLTFLoader();
-                
-                try {
-                    const gltf = await new Promise((resolve, reject) => {
-                        loader.load(
-                            this.selectedPersonality.modelPath,
-                            resolve,
-                            (progress) => {
-                                console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%');
-                            },
-                            reject
-                        );
-                    });
-                    
-                    this.deskModel = gltf.scene;
-                    this.deskModel.scale.setScalar(0.3);
-                    this.deskModel.visible = false;
-                    this.scene.add(this.deskModel);
-                    
-                    console.log(`Loaded ${this.selectedPersonality.name} personality model`);
-                } catch (error) {
-                    console.warn('Failed to load desk model, creating fallback:', error);
-                    // Create a fallback desk representation
-                    const geometry = new THREE.BoxGeometry(1.4, 0.05, 0.8);
-                    const material = new THREE.MeshStandardMaterial({ 
-                        color: this.selectedPersonality.name === 'playful' ? 0xffd700 : 
-                               this.selectedPersonality.name === 'premium' ? 0xd4a574 : 0x0066ff 
-                    });
-                    this.deskModel = new THREE.Mesh(geometry, material);
-                    this.deskModel.visible = false;
-                    this.scene.add(this.deskModel);
-                }
-            }
-
-            async startARSession() {
-                try {
-                    this.xrSession = await navigator.xr.requestSession('immersive-ar', {
-                        requiredFeatures: ['hit-test'],
-                        optionalFeatures: ['dom-overlay'],
-                        domOverlay: { root: document.getElementById('arContainer') }
-                    });
-
-                    await this.renderer.xr.setSession(this.xrSession);
-
-                    // Set up hit testing
-                    const referenceSpace = await this.xrSession.requestReferenceSpace('viewer');
-                    this.hitTestSource = await this.xrSession.requestHitTestSource({ space: referenceSpace });
-
-                    // Handle session events
-                    this.xrSession.addEventListener('end', () => {
-                        this.xrSession = null;
-                        this.hitTestSource = null;
-                        this.deskPlaced = false;
-                        console.log('AR session ended');
-                    });
-
-                    // Handle touch events for placement
-                    this.renderer.domElement.addEventListener('click', this.onSelect.bind(this));
-
-                    // Show personality reveal
-                    this.showPersonalityReveal();
-
-                    // Hide loading, show instructions and controls
-                    setTimeout(() => {
-                        document.getElementById('arLoading').style.display = 'none';
-                        document.getElementById('arInstructions').style.display = 'block';
-                        document.getElementById('arControls').style.display = 'flex';
-                    }, 2000);
-
-                    // Start render loop
-                    this.renderer.setAnimationLoop(this.render.bind(this));
-
-                    console.log('WebXR AR session started successfully');
-                } catch (error) {
-                    console.error('Failed to start AR session:', error);
-                    throw new Error('Failed to start AR. Please ensure you have a camera and try again.');
-                }
-            }
-
-            render(timestamp, frame) {
-                if (!frame) return;
-
-                if (this.hitTestSource) {
-                    const hitTestResults = frame.getHitTestResults(this.hitTestSource);
-                    
-                    if (hitTestResults.length > 0) {
-                        const hit = hitTestResults[0];
-                        this.reticle.visible = true;
-                        this.reticle.matrix.fromArray(hit.getPose(this.renderer.xr.getReferenceSpace()).transform.matrix);
-                    } else {
-                        this.reticle.visible = false;
-                    }
-                }
-
-                this.renderer.render(this.scene, this.camera);
-            }
-
-            onSelect() {
-                if (this.reticle.visible && this.deskModel && !this.deskPlaced) {
-                    // Place the desk at the reticle position
-                    this.deskModel.position.setFromMatrixPosition(this.reticle.matrix);
-                    this.deskModel.visible = true;
-                    this.deskPlaced = true;
-                    
-                    // Hide reticle after placement
-                    this.reticle.visible = false;
-                    
-                    // Update instructions
-                    document.getElementById('arInstructions').innerHTML = `
-                        <p>🎉 Perfect! Your ${this.selectedPersonality.name} desk is placed</p>
-                        <p>Walk around to see different angles</p>
-                        <p><small>Ready to capture and share?</small></p>
-                    `;
-                    
-                    console.log(`Placed ${this.selectedPersonality.name} desk in AR`);
-                    
-                    trackViralEvent('webxr_desk_placed', {
-                        personality: this.selectedPersonality.name.toLowerCase(),
-                        ar_library: 'webxr_native'
-                    });
-                }
-            }
-
-            showPersonalityReveal() {
-                const reveal = document.getElementById('personalityReveal');
-                const title = document.getElementById('personalityTitle');
-                const description = document.getElementById('personalityDescription');
-                
-                title.textContent = this.selectedPersonality.name;
-                title.className = `personality-title ${this.selectedPersonality.color}`;
-                description.textContent = this.selectedPersonality.description;
-                
-                reveal.style.display = 'block';
-                
-                // Hide after 3 seconds
-                setTimeout(() => {
-                    reveal.style.display = 'none';
-                }, 3000);
-                
-                trackViralEvent('webxr_personality_revealed', {
-                    personality: this.selectedPersonality.name.toLowerCase()
-                });
-            }
-
-            showError(message) {
-                document.getElementById('arError').style.display = 'block';
-                document.getElementById('arErrorMessage').textContent = message;
-                document.getElementById('arLoading').style.display = 'none';
-            }
-
-            takeScreenshot() {
-                const canvas = this.renderer.domElement;
-                canvas.toBlob((blob) => {
-                    this.screenshotBlob = blob;
-                    
-                    // Show share modal
-                    window.showShareModal();
-                    
-                    trackViralEvent('webxr_screenshot_taken', {
-                        personality: this.selectedPersonality.name.toLowerCase(),
-                        desk_placed: this.deskPlaced,
-                        ar_library: 'webxr_native'
-                    });
-                }, 'image/jpeg', 0.9);
-            }
-
-            close() {
-                if (this.xrSession) {
-                    this.xrSession.end();
-                }
-                
-                trackViralEvent('webxr_ar_closed', { 
-                    personality: this.selectedPersonality?.name.toLowerCase(),
-                    desk_placed: this.deskPlaced,
-                    ar_library: 'webxr_native'
-                });
-            }
-        }
 
         // ================================
         // GLOBAL STATE
         // ================================
 
-        let webxrAR = null;
+        let selectedPersonality = null;
         let currentSection = 0;
 
         // ================================
-        // GLOBAL FUNCTIONS
+        // QUICK AR FUNCTIONALITY
         // ================================
 
-        window.launchWebXRAR = async function() {
-            try {
-                // Hide mystery overlay
-                document.getElementById('mysteryOverlay').classList.add('hidden');
-                
-                // Show AR container
-                const arContainer = document.getElementById('arContainer');
-                arContainer.classList.add('active');
-                
-                // Initialize WebXR AR
-                webxrAR = new FormDeskWebXRAR();
-                
-                // Update loading with personality info
-                document.getElementById('loadingPersonality').textContent = 
-                    `Preparing ${webxrAR.selectedPersonality.name} Experience...`;
-                
-                await webxrAR.init();
-                
-                trackViralEvent('webxr_ar_launch_requested', { 
-                    personality: webxrAR.selectedPersonality.name.toLowerCase(),
-                    source: 'mystery_overlay',
-                    ar_library: 'webxr_native'
-                });
-                
-            } catch (error) {
-                console.error('WebXR AR launch failed:', error);
-                trackViralEvent('webxr_ar_launch_failed', { 
-                    error: error.message,
-                    ar_library: 'webxr_native'
-                });
-                
-                // Fallback to homepage
-                alert('AR not supported on this device. Showing homepage instead.');
-                window.showHomepage();
-            }
-        };
+        function launchQuickAR() {
+            // Select random personality for mystery element
+            const personalities = Object.keys(AR_PERSONALITIES);
+            const randomPersonality = personalities[Math.floor(Math.random() * personalities.length)];
+            selectedPersonality = AR_PERSONALITIES[randomPersonality];
 
-        window.takeARScreenshot = function() {
-            if (webxrAR) {
-                webxrAR.takeScreenshot();
-            }
-        };
+            trackViralEvent('quickar_launch_requested', { 
+                personality: randomPersonality,
+                source: 'mystery_overlay',
+                ar_library: 'apple_quickar'
+            });
 
-        window.closeWebXRAR = function() {
-            if (webxrAR) {
-                webxrAR.close();
-            }
-            
-            document.getElementById('arContainer').classList.remove('active');
-            
-            // Show homepage
-            setTimeout(() => {
-                window.showHomepage();
-            }, 500);
-        };
-
-        window.showHomepage = function() {
-            trackViralEvent('homepage_selected', { source: 'mystery_overlay_or_ar_close' });
+            // Hide mystery overlay
             document.getElementById('mysteryOverlay').classList.add('hidden');
-            setTimeout(window.triggerAnimations, 500);
-        };
+            
+            // Show loading screen with personality reveal
+            document.getElementById('arLoading').classList.add('active');
+            
+            // Update personality display
+            document.getElementById('personalityTitle').textContent = selectedPersonality.name;
+            document.getElementById('personalityTitle').className = `personality-title ${selectedPersonality.color}`;
+            document.getElementById('personalityDescription').textContent = selectedPersonality.description;
+
+            // Check device and launch AR
+            if (isIOSDevice()) {
+                // Launch Quick AR after short delay
+                setTimeout(() => {
+                    launchIOSQuickAR();
+                }, 2000);
+            } else {
+                // Show fallback for non-iOS devices
+                setTimeout(() => {
+                    showARFallback();
+                }, 2000);
+            }
+        }
+
+        function isIOSDevice() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+
+        function launchIOSQuickAR() {
+            // Create AR Quick Look link
+            const arLink = document.createElement('a');
+            arLink.href = selectedPersonality.usdz;
+            arLink.rel = 'ar';
+            arLink.style.display = 'none';
+            
+            // Add to page and trigger
+            document.body.appendChild(arLink);
+            arLink.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(arLink);
+                handleARReturn();
+            }, 1000);
+
+            trackViralEvent('quickar_launched', {
+                personality: selectedPersonality.name.toLowerCase(),
+                ar_library: 'apple_quickar'
+            });
+        }
+
+        function showARFallback() {
+            document.getElementById('arLoading').querySelector('.ar-instructions').innerHTML = `
+                <p>❌ iPhone Required</p>
+                <p><small>AR experience works best on iPhone devices</small></p>
+            `;
+            
+            trackViralEvent('quickar_fallback_shown', {
+                user_agent: navigator.userAgent,
+                ar_library: 'apple_quickar'
+            });
+        }
+
+        function handleARReturn() {
+            // Hide loading after user returns from AR
+            setTimeout(() => {
+                document.getElementById('arLoading').classList.remove('active');
+                
+                // Show share modal automatically
+                shareExperience();
+                
+                trackViralEvent('quickar_returned', {
+                    personality: selectedPersonality.name.toLowerCase(),
+                    ar_library: 'apple_quickar'
+                });
+            }, 500);
+        }
+
+        // ================================
+        // HOMEPAGE FUNCTIONALITY
+        // ================================
+
+        function showHomepage() {
+            trackViralEvent('homepage_selected', { source: 'mystery_overlay_or_ar_fallback' });
+            document.getElementById('mysteryOverlay').classList.add('hidden');
+            document.getElementById('arLoading').classList.remove('active');
+            setTimeout(triggerAnimations, 500);
+        }
 
         // ================================
         // SHARE FUNCTIONALITY
         // ================================
 
-        window.shareExperience = function() {
+        function shareExperience() {
             document.getElementById('shareModal').classList.add('visible');
-            window.setupShareLinks();
-        };
+            setupShareLinks();
+        }
 
-        window.closeShareModal = function() {
+        function closeShareModal() {
             document.getElementById('shareModal').classList.remove('visible');
-        };
+        }
 
-        window.setupShareLinks = function() {
-            const url = window.location.href + (webxrAR ? 
-                `?ref=webxr_share&personality=${webxrAR.selectedPersonality.name.toLowerCase()}` : 
+        function setupShareLinks() {
+            const url = window.location.href + (selectedPersonality ? 
+                `?ref=quickar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
                 '?ref=general_share');
-            const text = webxrAR ? 
-                webxrAR.selectedPersonality.shareText : 
-                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces with WebXR AR!";
-            const hashtags = webxrAR ? 
-                webxrAR.selectedPersonality.hashtags : 
-                "FormDesk,Copenhagen,DesignFurniture,WorkspaceGoals,WebXR";
+            const text = selectedPersonality ? 
+                selectedPersonality.shareText : 
+                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces with iPhone AR!";
+            const hashtags = selectedPersonality ? 
+                selectedPersonality.hashtags : 
+                "FormDesk,Copenhagen,DesignFurniture,WorkspaceGoals,iPhoneAR";
             
             // Twitter
             const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${hashtags}`;
@@ -1345,58 +959,51 @@
             // LinkedIn
             const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent('Form Desk - Office Furniture with Personality')}&summary=${encodeURIComponent(text)}`;
             document.getElementById('linkedinShare').href = linkedinUrl;
-        };
+        }
 
-        window.shareNative = async function() {
+        async function shareNative() {
             const shareData = {
-                title: webxrAR ? 
-                    `Form Desk - ${webxrAR.selectedPersonality.name} Personality` : 
+                title: selectedPersonality ? 
+                    `Form Desk - ${selectedPersonality.name} Personality` : 
                     'Form Desk - Finally, office furniture with personality',
-                text: webxrAR ? 
-                    webxrAR.selectedPersonality.shareText : 
-                    '🚀 Found something amazing! Check out this Copenhagen design company that\'s changing how we think about workspaces with WebXR AR!',
-                url: window.location.href + (webxrAR ? 
-                    `?ref=webxr_share&personality=${webxrAR.selectedPersonality.name.toLowerCase()}` : 
+                text: selectedPersonality ? 
+                    selectedPersonality.shareText : 
+                    '🚀 Found something amazing! Check out this Copenhagen design company that\'s changing how we think about workspaces with iPhone AR!',
+                url: window.location.href + (selectedPersonality ? 
+                    `?ref=quickar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
                     '?ref=general_share')
             };
-
-            // Add image if supported and available
-            if (webxrAR?.screenshotBlob && navigator.canShare && navigator.canShare({files: [webxrAR.screenshotBlob]})) {
-                const file = new File([webxrAR.screenshotBlob], 'form-desk-webxr-ar.jpg', { type: 'image/jpeg' });
-                shareData.files = [file];
-            }
 
             if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
                 try {
                     await navigator.share(shareData);
-                    trackViralEvent('webxr_native_share', { 
-                        personality: webxrAR?.selectedPersonality.name.toLowerCase(),
-                        success: true,
-                        includes_image: !!shareData.files
+                    trackViralEvent('quickar_native_share', { 
+                        personality: selectedPersonality?.name.toLowerCase(),
+                        success: true
                     });
-                    window.closeShareModal();
+                    closeShareModal();
                 } catch (err) {
                     if (err.name !== 'AbortError') {
-                        window.copyShareText();
+                        copyShareText();
                     }
                 }
             } else {
-                window.copyShareText();
+                copyShareText();
             }
-        };
+        }
 
-        window.copyLink = async function() {
-            const url = window.location.href + (webxrAR ? 
-                `?ref=webxr_share&personality=${webxrAR.selectedPersonality.name.toLowerCase()}` : 
+        async function copyLink() {
+            const url = window.location.href + (selectedPersonality ? 
+                `?ref=quickar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
                 '?ref=general_share');
             try {
                 await navigator.clipboard.writeText(url);
                 alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!');
-                trackViralEvent('webxr_link_copied', { 
-                    personality: webxrAR?.selectedPersonality.name.toLowerCase(),
+                trackViralEvent('quickar_link_copied', { 
+                    personality: selectedPersonality?.name.toLowerCase(),
                     success: true 
                 });
-                window.closeShareModal();
+                closeShareModal();
             } catch (err) {
                 // Fallback for older browsers
                 const textArea = document.createElement('textarea');
@@ -1406,149 +1013,138 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 alert('🔗 Link copied to clipboard!');
-                window.closeShareModal();
+                closeShareModal();
             }
-        };
+        }
 
-        window.copyShareText = async function() {
-            const text = webxrAR ? webxrAR.selectedPersonality.shareText : 
-                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces with WebXR AR.";
-            const url = window.location.href + (webxrAR ? 
-                `?ref=webxr_share&personality=${webxrAR.selectedPersonality.name.toLowerCase()}` : 
+        async function copyShareText() {
+            const text = selectedPersonality ? selectedPersonality.shareText : 
+                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces with iPhone AR.";
+            const url = window.location.href + (selectedPersonality ? 
+                `?ref=quickar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
                 '?ref=general_share');
             const fullText = text + ' ' + url;
             
             try {
                 await navigator.clipboard.writeText(fullText);
-                alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your WebXR AR experience!');
-                trackViralEvent('webxr_text_copied', { 
-                    personality: webxrAR?.selectedPersonality.name.toLowerCase(),
+                alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your iPhone AR experience!');
+                trackViralEvent('quickar_text_copied', { 
+                    personality: selectedPersonality?.name.toLowerCase(),
                     success: true 
                 });
-                window.closeShareModal();
+                closeShareModal();
             } catch (err) {
                 console.error('Copy failed:', err);
             }
-        };
+        }
 
         // ================================
         // ANIMATION TRIGGERS
         // ================================
 
-        window.triggerAnimations = function() {
+        function triggerAnimations() {
             const animatedElements = document.querySelectorAll('.slide-in-up');
             animatedElements.forEach((element, index) => {
                 setTimeout(() => {
                     element.classList.add('active');
                 }, index * 100);
             });
-        };
+        }
 
         // ================================
         // VIRAL CAMPAIGN ANALYTICS
         // ================================
 
-        window.trackViralEvent = function(eventName, properties = {}) {
+        function trackViralEvent(eventName, properties = {}) {
             const viralData = {
                 ...properties,
-                campaign: 'copenhagen_webxr_2025',
+                campaign: 'copenhagen_quickar_2025',
                 event_type: 'viral_engagement',
                 timestamp: Date.now(),
                 user_agent: navigator.userAgent,
                 page_url: window.location.href,
-                session_id: window.getSessionId(),
-                qr_source: window.getQRSource(),
-                ar_solution: 'webxr_native'
+                session_id: getSessionId(),
+                qr_source: getQRSource(),
+                ar_solution: 'apple_quickar',
+                device_type: isIOSDevice() ? 'ios' : 'other'
             };
 
             console.log('🚀 Viral Event:', eventName, viralData);
             
             // TODO: Replace with your analytics service
             // analytics.track(eventName, viralData);
-        };
+        }
 
-        window.getSessionId = function() {
+        function getSessionId() {
             let sessionId = sessionStorage.getItem('form_desk_session');
             if (!sessionId) {
                 sessionId = 'fd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
                 sessionStorage.setItem('form_desk_session', sessionId);
             }
             return sessionId;
-        };
+        }
 
-        window.getQRSource = function() {
+        function getQRSource() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('qr') || urlParams.get('source') || 'direct';
-        };
+        }
 
         // ================================
         // INITIALIZATION
         // ================================
 
         window.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, initializing Form Desk WebXR experience...');
+            console.log('DOM loaded, initializing Form Desk Quick AR experience...');
             
             // Close modal when clicking outside
             const shareModal = document.getElementById('shareModal');
             if (shareModal) {
                 shareModal.addEventListener('click', function(e) {
                     if (e.target === this) {
-                        window.closeShareModal();
+                        closeShareModal();
                     }
                 });
             }
 
             // Track page load with campaign context
-            window.trackViralEvent('copenhagen_webxr_campaign_start', {
+            trackViralEvent('copenhagen_quickar_campaign_start', {
                 timestamp: Date.now(),
                 page_url: window.location.href,
                 referrer: document.referrer,
-                qr_source: window.getQRSource(),
-                ar_solution: 'webxr_native'
+                qr_source: getQRSource(),
+                ar_solution: 'apple_quickar',
+                ios_device: isIOSDevice()
             });
-
-            // Check WebXR support and track
-            if (navigator.xr) {
-                navigator.xr.isSessionSupported('immersive-ar').then(supported => {
-                    window.trackViralEvent('webxr_mystery_overlay_loaded', { 
-                        webxr_ar_supported: supported,
-                        user_agent: navigator.userAgent,
-                        qr_source: window.getQRSource()
-                    });
-
-                    if (!supported) {
-                        console.log('WebXR AR not supported, will emphasize homepage option');
-                    }
-                });
-            } else {
-                window.trackViralEvent('webxr_mystery_overlay_loaded', { 
-                    webxr_ar_supported: false,
-                    user_agent: navigator.userAgent,
-                    qr_source: window.getQRSource()
-                });
-            }
             
             // Auto-show homepage after 8 seconds if no interaction
             setTimeout(() => {
                 const mysteryOverlay = document.getElementById('mysteryOverlay');
                 if (mysteryOverlay && !mysteryOverlay.classList.contains('hidden')) {
-                    window.showHomepage();
+                    showHomepage();
                 }
             }, 8000);
 
             // Initial animation trigger
-            setTimeout(window.triggerAnimations, 1000);
+            setTimeout(triggerAnimations, 1000);
         });
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                // Close AR or modals
+                // Close modals
                 if (document.getElementById('shareModal').classList.contains('visible')) {
-                    window.closeShareModal();
-                } else if (document.getElementById('arContainer').classList.contains('active')) {
-                    window.closeWebXRAR();
+                    closeShareModal();
+                } else if (document.getElementById('arLoading').classList.contains('active')) {
+                    showHomepage();
                 }
+            }
+        });
+
+        // Handle page visibility change (when user returns from AR)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && selectedPersonality && document.getElementById('arLoading').classList.contains('active')) {
+                // User returned from AR
+                handleARReturn();
             }
         });
     </script>
