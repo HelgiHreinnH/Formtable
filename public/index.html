@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Desk - Have you seen me?</title>
-    <meta name="description" content="Finally, office furniture with personality. Copenhagen Design Festival 2025. Interactive mobile experience with AR desk placement.">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 8th Wall AR SDK -->
+    <script async src="//apps.8thwall.com/xrweb"></script>
+    
     <style>
         :root {
             /* Brand Colors */
@@ -46,7 +49,6 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
             overscroll-behavior: none;
         }
 
@@ -58,31 +60,6 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -webkit-overflow-scrolling: touch;
-        }
-
-        /* ================================
-           FULL SCREEN SECTIONS
-           ================================ */
-
-        .section {
-            height: 100vh;
-            height: 100dvh; /* Dynamic viewport height for mobile */
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: var(--space-xl) var(--space-md);
-            position: relative;
-            z-index: 2;
         }
 
         /* ================================
@@ -108,52 +85,14 @@
             75% { transform: translateY(-15px) rotate(0.5deg); }
         }
 
-        .slide-in-up {
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        .pulse {
+            animation: pulse 2s infinite;
         }
 
-        .slide-in-up.active {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* Staggered animation delays */
-        .slide-in-up:nth-child(1) { transition-delay: 0.1s; }
-        .slide-in-up:nth-child(2) { transition-delay: 0.2s; }
-        .slide-in-up:nth-child(3) { transition-delay: 0.3s; }
-        .slide-in-up:nth-child(4) { transition-delay: 0.4s; }
-
-        /* ================================
-           NAVIGATION DOTS
-           ================================ */
-
-        .nav-dots {
-            position: fixed;
-            right: var(--space-md);
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-sm);
-        }
-
-        .nav-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(26, 26, 26, 0.3);
-            border: 2px solid var(--color-charcoal);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-dot.active {
-            background: var(--color-electric);
-            transform: scale(1.2);
-            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.2);
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         /* ================================
@@ -256,680 +195,158 @@
         }
 
         /* ================================
-           HERO SECTION
+           AR EXPERIENCE STYLES
            ================================ */
 
-        .hero {
-            background: var(--color-cream);
-            text-align: center;
-        }
-
-        .hero-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 0.9;
-            margin-bottom: var(--space-lg);
-        }
-
-        .highlight {
-            background: var(--color-electric);
-            color: var(--color-white);
-            padding: 0 var(--space-sm);
-            transform: rotate(-1deg);
-            display: inline-block;
-            border-radius: var(--corner-small);
-        }
-
-        .hero-subtitle {
-            font-family: var(--font-primary);
-            font-size: 1rem;
-            margin-bottom: var(--space-2xl);
-            opacity: 0.8;
-            max-width: 350px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-            align-items: center;
-        }
-
-        .hero-cta {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-        }
-
-        .hero-cta:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
-        }
-
-        .share-btn {
-            background: var(--color-yellow);
-            color: var(--color-charcoal);
-            border: 3px solid var(--color-yellow);
-            padding: var(--space-md) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-forest);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .share-btn:hover {
-            background: var(--color-forest);
-            color: var(--color-white);
-            border-color: var(--color-forest);
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
-        }
-
-        .share-btn::before {
-            content: '';
-            position: absolute;
+        .ar-container {
+            position: fixed;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s ease;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            background: #000;
+            display: none;
         }
 
-        .share-btn:hover::before {
-            left: 100%;
-        }
-
-        /* Floating background elements */
-        .hero::before,
-        .hero::after {
-            content: '';
-            position: absolute;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            opacity: 0.1;
-        }
-
-        .hero::before {
-            top: 10%;
-            left: -5%;
-            width: 80px;
-            height: 80px;
-            background: var(--color-electric);
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .hero::after {
-            bottom: 15%;
-            right: -3%;
-            width: 60px;
-            height: 60px;
-            background: var(--color-oak);
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            animation: float 6s ease-in-out infinite reverse;
-        }
-
-        /* ================================
-           SIZE SELECTOR
-           ================================ */
-
-        .size-selector {
-            background: var(--color-white);
-            position: relative;
-        }
-
-        .section-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(1.5rem, 6vw, 2.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-            margin-bottom: var(--space-2xl);
-        }
-
-        .size-grid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-xl);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .size-card {
-            background: var(--color-cream);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg);
-            text-align: center;
-            position: relative;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        /* Size Card Dimensions - Proportional to actual desk sizes */
-        .size-card:nth-child(1) {
-            width: 240px;
-            height: 140px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-        }
-
-        .size-card:nth-child(2) {
-            width: 280px;
-            height: 160px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .size-card:nth-child(3) {
-            width: 320px;
-            height: 160px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-        }
-
-        .size-card:hover,
-        .size-card.active {
-            transform: translate(-3px, -3px);
-            box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--color-charcoal);
-        }
-
-        .size-card.active {
-            background: var(--color-electric);
-            color: var(--color-white);
-        }
-
-        .size-number {
-            position: absolute;
-            top: -12px;
-            right: -12px;
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            border: 2px solid var(--color-electric);
-            border-radius: var(--corner-small);
-        }
-
-        .size-name {
-            font-family: var(--font-secondary);
-            font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: var(--space-xs);
-        }
-
-        .size-dimension {
-            font-family: var(--font-primary);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--color-electric);
-            margin: var(--space-xs) 0;
-        }
-
-        .size-card.active .size-dimension {
-            color: var(--color-white);
-        }
-
-        .size-description {
-            font-family: var(--font-primary);
-            font-size: 0.75rem;
-            opacity: 0.8;
-            line-height: 1.3;
-            margin-top: var(--space-xs);
-        }
-
-        /* ================================
-           MATERIALS SECTION
-           ================================ */
-
-        .materials-section {
-            background: var(--color-forest);
-            color: var(--color-white);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .materials-section::before {
-            content: '◆ ● ■';
-            position: absolute;
-            top: 20%;
-            right: -10%;
-            font-size: 8rem;
-            color: var(--color-yellow);
-            opacity: 0.1;
-            letter-spacing: 40px;
-            animation: float 10s ease-in-out infinite;
-            transform: rotate(15deg);
-        }
-
-        .materials-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--space-lg);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .material-tile {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: var(--space-lg);
-            text-align: center;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            backdrop-filter: blur(10px);
-            position: relative;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .material-tile:nth-child(2) {
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .material-tile:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .material-frame {
-            width: 100%;
-            height: 140px;
-            background: var(--color-white);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: var(--corner-small);
-            margin-bottom: var(--space-md);
-            overflow: hidden;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .material-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transition: transform 0.3s ease;
-        }
-
-        .material-tile:hover .material-image {
-            transform: scale(1.05);
-        }
-
-        .material-frame::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 10px;
-            height: 10px;
-            background: var(--color-yellow);
-            border-radius: var(--corner-small) 0 2px 2px;
-            z-index: 2;
-        }
-
-        .material-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
-            font-size: 2rem;
-            color: var(--color-white);
-            text-align: center;
-        }
-
-        .material-icon {
-            font-size: 2.5rem;
-            margin-bottom: var(--space-sm);
+        .ar-container.active {
             display: block;
         }
 
-        .material-name {
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--color-oak);
-            font-size: 1.1rem;
-        }
-
-        /* ================================
-           CONTACT SECTION
-           ================================ */
-
-        .contact-section {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-        }
-
-        .contact-form {
-            display: grid;
-            gap: var(--space-lg);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-xs);
-        }
-
-        .form-label {
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-        }
-
-        .form-input {
-            padding: var(--space-md);
-            border: 3px solid var(--color-white);
-            background: transparent;
-            color: var(--color-white);
-            font-family: var(--font-secondary);
-            font-size: 1rem;
-            border-radius: var(--corner-small);
-            transition: all 0.2s ease;
-        }
-
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--color-electric);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3);
-        }
-
-        .form-submit {
-            background: var(--color-electric);
-            color: var(--color-white);
-            border: 3px solid var(--color-electric);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-yellow);
-            margin-top: var(--space-lg);
-        }
-
-        .form-submit:hover {
-            background: var(--color-white);
-            color: var(--color-electric);
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
-        }
-
-        /* ================================
-           RADIO BUTTONS
-           ================================ */
-
-        .radio-group {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-md);
-            margin-top: var(--space-sm);
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            font-family: var(--font-secondary);
-            font-weight: 500;
-            color: var(--color-white);
-            cursor: pointer;
-            padding: var(--space-sm);
-            border-radius: var(--corner-small);
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .radio-option:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .radio-option input[type="radio"] {
+        .ar-ui {
             position: absolute;
-            opacity: 0;
-            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2001;
+            pointer-events: none;
         }
 
-        .radio-custom {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--color-white);
-            border-radius: 50%;
-            position: relative;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .radio-option input[type="radio"]:checked + .radio-custom {
-            border-color: var(--color-electric);
-            background: var(--color-electric);
-        }
-
-        .radio-option input[type="radio"]:checked + .radio-custom::after {
-            content: '';
+        .ar-loading {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
-            background: var(--color-white);
-            border-radius: 50%;
-        }
-
-        .radio-option:hover .radio-custom {
-            border-color: var(--color-electric);
-            background: rgba(0, 102, 255, 0.2);
-        }
-
-        /* ================================
-           CHAT SECTION
-           ================================ */
-
-        .copenhagen-section {
-            background: var(--color-yellow);
-            color: var(--color-charcoal);
+            background: rgba(26, 26, 26, 0.9);
+            color: var(--color-white);
+            padding: var(--space-2xl);
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
             text-align: center;
-            position: relative;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
         }
 
-        .copenhagen-section::before {
-            content: '💬';
+        .personality-reveal {
             position: absolute;
-            top: 10%;
-            left: 10%;
-            font-size: 4rem;
-            opacity: 0.2;
-            animation: float 7s ease-in-out infinite;
+            top: var(--space-xl);
+            left: var(--space-md);
+            right: var(--space-md);
+            background: rgba(26, 26, 26, 0.9);
+            color: var(--color-white);
+            padding: var(--space-lg);
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+            display: none;
         }
 
-        .copenhagen-title {
+        .personality-title {
             font-family: var(--font-secondary);
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
-            font-weight: 900;
+            font-size: 1.2rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: var(--space-lg);
+            margin-bottom: var(--space-xs);
         }
 
-        .copenhagen-subtitle {
+        .personality-playful { color: var(--color-yellow); }
+        .personality-brand { color: var(--color-electric); }
+        .personality-premium { color: var(--color-oak); }
+
+        .personality-description {
             font-family: var(--font-primary);
-            font-size: 1.1rem;
-            margin-bottom: var(--space-2xl);
+            font-size: 0.9rem;
             opacity: 0.8;
         }
 
-        .chat-options {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-            max-width: 320px;
-            margin: 0 auto var(--space-xl);
+        .ar-instructions {
+            position: absolute;
+            top: var(--space-xl);
+            left: var(--space-md);
+            right: var(--space-md);
+            background: rgba(26, 26, 26, 0.8);
+            color: var(--color-white);
+            padding: var(--space-lg);
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: none;
         }
 
-        .chat-btn {
-            background: var(--color-charcoal);
+        .ar-controls {
+            position: absolute;
+            bottom: var(--space-xl);
+            left: var(--space-md);
+            right: var(--space-md);
+            display: flex;
+            gap: var(--space-md);
+            pointer-events: auto;
+            display: none;
+        }
+
+        .ar-btn {
+            background: var(--color-electric);
             color: var(--color-white);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg) var(--space-xl);
+            border: 3px solid var(--color-electric);
+            padding: var(--space-md) var(--space-lg);
             font-family: var(--font-secondary);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-forest);
+            border-radius: var(--corner-small);
             cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
         }
 
-        .chat-btn:nth-child(2) {
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .chat-btn.faq {
-            background: var(--color-oak);
-            border-color: var(--color-oak);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #B8935A;
-        }
-
-        .chat-btn.email {
-            background: var(--color-electric);
-            border-color: var(--color-electric);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #0052CC;
-        }
-
-        .chat-btn:hover {
+        .ar-btn:hover {
             transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
         }
 
-        .chat-btn.faq:hover {
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #B8935A;
-        }
-
-        .chat-btn.email:hover {
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #0052CC;
-        }
-
-        .chat-subtitle {
-            font-family: var(--font-primary);
-            font-size: 0.9rem;
-            opacity: 0.7;
-            font-style: italic;
-        }
-
-        /* ================================
-           SWIPE INDICATOR
-           ================================ */
-
-        .swipe-indicator {
-            position: absolute;
-            bottom: var(--space-lg);
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-xs);
-            opacity: 0.6;
-            animation: bounce 2s infinite;
-        }
-
-        .swipe-text {
-            font-family: var(--font-primary);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .swipe-arrow {
-            font-size: 1.2rem;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
-
-        /* ================================
-           FLOATING SHARE BUTTON
-           ================================ */
-
-        .floating-share {
-            position: fixed;
-            bottom: var(--space-xl);
-            left: var(--space-md);
+        .ar-btn.screenshot {
             background: var(--color-yellow);
             color: var(--color-charcoal);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-md);
+            border-color: var(--color-yellow);
+        }
+
+        .ar-btn.close {
+            background: var(--color-oak);
+            border-color: var(--color-oak);
+            flex: 0 0 60px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid var(--color-electric);
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 50;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-            animation: pulse 3s infinite;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--space-lg);
         }
 
-        .floating-share:hover {
-            transform: translate(-2px, -2px) scale(1.1);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
-            background: var(--color-forest);
-            color: var(--color-white);
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* ================================
@@ -943,7 +360,7 @@
             right: 0;
             bottom: 0;
             background: rgba(26, 26, 26, 0.9);
-            z-index: 200;
+            z-index: 3000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1046,93 +463,148 @@
             opacity: 1;
         }
 
+        .configurator-cta {
+            background: var(--color-forest);
+            color: var(--color-white);
+            border: 3px solid var(--color-forest);
+            padding: var(--space-lg) var(--space-xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
+            margin-top: var(--space-lg);
+        }
+
+        .configurator-cta:hover {
+            background: var(--color-charcoal);
+            border-color: var(--color-charcoal);
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
+        }
+
+        /* ================================
+           HOMEPAGE PREVIEW
+           ================================ */
+
+        .homepage-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--color-cream);
+            z-index: 1500;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-xl) var(--space-md);
+        }
+
+        .homepage-container.active {
+            display: flex;
+        }
+
+        .homepage-title {
+            font-family: var(--font-secondary);
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 0.9;
+            margin-bottom: var(--space-lg);
+        }
+
+        .highlight {
+            background: var(--color-electric);
+            color: var(--color-white);
+            padding: 0 var(--space-sm);
+            transform: rotate(-1deg);
+            display: inline-block;
+            border-radius: var(--corner-small);
+        }
+
+        .homepage-subtitle {
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            margin-bottom: var(--space-2xl);
+            opacity: 0.8;
+            max-width: 350px;
+        }
+
+        .homepage-cta {
+            background: var(--color-charcoal);
+            color: var(--color-white);
+            border: 3px solid var(--color-charcoal);
+            padding: var(--space-lg) var(--space-xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
+            margin-bottom: var(--space-lg);
+        }
+
+        .homepage-cta:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
+        }
+
+        .back-btn {
+            background: var(--color-oak);
+            color: var(--color-white);
+            border: 3px solid var(--color-oak);
+            padding: var(--space-md) var(--space-lg);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
+        }
+
+        .back-btn:hover {
+            background: var(--color-charcoal);
+            border-color: var(--color-charcoal);
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-oak);
+        }
+
         /* ================================
            RESPONSIVE ADJUSTMENTS
            ================================ */
 
         @media (min-width: 768px) {
-            .section-content {
-                padding: var(--space-3xl) var(--space-2xl);
-            }
-
-            .hero-actions {
-                flex-direction: row;
-                gap: var(--space-xl);
-            }
-
-            .materials-grid {
-                grid-template-columns: repeat(3, 1fr);
-                max-width: 600px;
-            }
-
-            .size-grid {
-                flex-direction: row;
-                justify-content: center;
-                max-width: 1000px;
-            }
-
-            /* Larger cards on desktop while maintaining proportions */
-            .size-card:nth-child(1) {
-                width: 280px;
-                height: 160px;
-            }
-
-            .size-card:nth-child(2) {
-                width: 320px;
-                height: 180px;
-            }
-
-            .size-card:nth-child(3) {
-                width: 360px;
-                height: 180px;
-            }
-
-            .size-name {
-                font-size: 1.1rem;
-            }
-
-            .size-dimension {
-                font-size: 1.4rem;
-            }
-
-            .size-description {
-                font-size: 0.85rem;
-            }
-
-            .contact-form {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 600px;
-            }
-
-            .form-group.full-width {
-                grid-column: 1 / -1;
-            }
-
-            .radio-group {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
             .choice-buttons {
                 flex-direction: row;
                 max-width: 600px;
             }
 
-            .chat-options {
-                flex-direction: row;
-                max-width: 600px;
+            .ar-instructions,
+            .personality-reveal {
+                left: var(--space-xl);
+                right: var(--space-xl);
             }
 
-            .floating-share {
+            .ar-controls {
                 left: var(--space-xl);
-                bottom: var(--space-2xl);
+                right: var(--space-xl);
             }
 
             .share-options {
                 grid-template-columns: repeat(4, 1fr);
-            }
-
-            .nav-dots {
-                right: var(--space-xl);
             }
         }
 
@@ -1146,23 +618,9 @@
                 box-shadow: 4px 4px 0 var(--color-yellow);
             }
 
-            .size-card:active {
-                transform: translate(-3px, -3px);
-                box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--color-charcoal);
-            }
-
-            .form-submit:active {
+            .ar-btn:active {
                 transform: translate(-2px, -2px);
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
-            }
-
-            .chat-btn:active {
-                transform: translate(-2px, -2px);
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
-            }
-
-            .floating-share:active {
-                transform: translate(-2px, -2px) scale(1.05);
+                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
             }
 
             .share-option:active {
@@ -1171,610 +629,719 @@
                 color: var(--color-white);
             }
         }
-
-        /* ================================
-           ACCESSIBILITY IMPROVEMENTS
-           ================================ */
-
-        @media (prefers-reduced-motion: reduce) {
-            .floating-element,
-            .swipe-indicator,
-            .floating-share {
-                animation: none;
-            }
-
-            .slide-in-up {
-                transition: none;
-                transform: none;
-                opacity: 1;
-            }
-
-            html {
-                scroll-behavior: auto;
-            }
-        }
-
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            .nav-dot {
-                border-width: 3px;
-            }
-
-            .form-input,
-            .choice-btn,
-            .chat-btn,
-            .size-card {
-                border-width: 4px;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Navigation Dots -->
-    <div class="nav-dots">
-        <div class="nav-dot active" onclick="scrollToSection(0)" aria-label="Go to hero section"></div>
-        <div class="nav-dot" onclick="scrollToSection(1)" aria-label="Go to size selector"></div>
-        <div class="nav-dot" onclick="scrollToSection(2)" aria-label="Go to materials section"></div>
-        <div class="nav-dot" onclick="scrollToSection(3)" aria-label="Go to contact form"></div>
-        <div class="nav-dot" onclick="scrollToSection(4)" aria-label="Go to chat section"></div>
-    </div>
-
-    <!-- Floating Share Button -->
-    <button class="floating-share" onclick="shareExperience()" title="Share Form Desk" aria-label="Share this experience">
-        🚀
-    </button>
-
-    <!-- Share Modal -->
-    <div class="share-modal" id="shareModal" role="dialog" aria-labelledby="shareTitle" aria-hidden="true">
-        <div class="share-content">
-            <button class="close-modal" onclick="closeShareModal()" aria-label="Close share modal">×</button>
-            <h3 class="share-title" id="shareTitle">Spread the Hype!</h3>
-            <p class="share-subtitle">Help your friends discover furniture with personality</p>
-            <div class="share-options">
-                <button class="share-option" onclick="shareNative()" aria-label="Share using native options">
-                    <span class="share-option-icon">📱</span>
-                    <span class="share-option-text">Native Share</span>
-                </button>
-                <a href="#" class="share-option" id="twitterShare" target="_blank" aria-label="Share on Twitter">
-                    <span class="share-option-icon">🐦</span>
-                    <span class="share-option-text">Twitter</span>
-                </a>
-                <a href="#" class="share-option" id="linkedinShare" target="_blank" aria-label="Share on LinkedIn">
-                    <span class="share-option-icon">💼</span>
-                    <span class="share-option-text">LinkedIn</span>
-                </a>
-                <button class="share-option" onclick="copyLink()" aria-label="Copy link to clipboard">
-                    <span class="share-option-icon">🔗</span>
-                    <span class="share-option-text">Copy Link</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Mystery Overlay -->
-    <div class="mystery-overlay" id="mysteryOverlay" role="dialog" aria-labelledby="mysteryTitle">
-        <h1 class="mystery-title floating-element" id="mysteryTitle">Have you seen me?</h1>
+    <div class="mystery-overlay" id="mysteryOverlay">
+        <h1 class="mystery-title floating-element">Have you seen me?</h1>
         <p class="mystery-subtitle">I'm the desk your workspace has been missing. How would you like to find me?</p>
         
         <div class="choice-buttons">
-            <button class="choice-btn ar-btn floating-element" onclick="launchAR()" aria-label="Launch AR experience">
+            <button class="choice-btn ar-btn floating-element pulse" onclick="launchAR()">
                 🔍 Find Me in AR
                 <div class="choice-description">Place me in your space</div>
             </button>
-            <button class="choice-btn secondary floating-element" onclick="showHomepage()" aria-label="Show homepage">
+            <button class="choice-btn secondary floating-element" onclick="showHomepage()">
                 📱 Show Me Homepage
                 <div class="choice-description">Learn about Form Desk</div>
             </button>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="section hero" id="hero" role="banner">
-        <div class="section-content">
-            <h1 class="hero-title slide-in-up">
-                Finally, office furniture with <span class="highlight floating-element">personality</span>
-            </h1>
-            <p class="hero-subtitle slide-in-up">
-                Skip the supplier maze. Three sizes, quality materials, single source. Your brand deserves better than generic.
-            </p>
-            <div class="hero-actions slide-in-up">
-                <a href="#configure" class="hero-cta floating-element" onclick="scrollToSection(1)">Configure Your Desk</a>
-                <button class="share-btn floating-element" onclick="shareExperience()">
-                    🚀 Share the Hype
+    <!-- AR Container -->
+    <div class="ar-container" id="arContainer">
+        <!-- 8th Wall AR Scene -->
+        <a-scene 
+            id="arScene"
+            xrweb="allowedDevices: any"
+            renderer="colorManagement: true; physicallyCorrectLights: true"
+            ar-mode="true"
+            device-orientation-permission-ui="enabled: false"
+            vr-mode-ui="enabled: false"
+            loading-screen="enabled: false">
+            
+            <!-- Assets -->
+            <a-assets timeout="10000">
+                <a-asset-item 
+                    id="deskPlayful" 
+                    src="/assets/models/ar/ar_playful.glb"
+                    crossorigin="anonymous">
+                </a-asset-item>
+                <a-asset-item 
+                    id="deskBrand" 
+                    src="/assets/models/ar/ar_brand.glb"
+                    crossorigin="anonymous">
+                </a-asset-item>
+                <a-asset-item 
+                    id="deskPremium" 
+                    src="/assets/models/ar/ar_premium.glb"
+                    crossorigin="anonymous">
+                </a-asset-item>
+            </a-assets>
+
+            <!-- Lights -->
+            <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
+            <a-light 
+                type="directional" 
+                position="2 4 4" 
+                intensity="0.8" 
+                color="#ffffff"
+                shadow="cast: true; type: pcf">
+            </a-light>
+
+            <!-- Desk Model (will be set dynamically) -->
+            <a-entity
+                id="deskEntity" 
+                gltf-model=""
+                scale="0.001 0.001 0.001"
+                position="0 0 -1.5"
+                rotation="0 0 0"
+                shadow="cast: true; receive: true"
+                gesture-handler="minScale: 0.3; maxScale: 8"
+                cursor-listener
+                visible="false">
+            </a-entity>
+
+            <!-- Camera -->
+            <a-camera 
+                id="camera" 
+                position="0 1.6 0"
+                look-controls="enabled: false"
+                cursor="fuse: false; rayOrigin: mouse"
+                raycaster="far: 10000; objects: .clickable">
+            </a-camera>
+
+        </a-scene>
+
+        <!-- AR UI Overlay -->
+        <div class="ar-ui">
+            <!-- Loading Indicator -->
+            <div class="ar-loading" id="arLoading">
+                <div class="loading-spinner"></div>
+                <p>Loading your desk...</p>
+                <p class="personality-description" id="loadingPersonality"></p>
+            </div>
+
+            <!-- Personality Reveal -->
+            <div class="personality-reveal" id="personalityReveal">
+                <div class="personality-title" id="personalityTitle"></div>
+                <div class="personality-description" id="personalityDescription"></div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="ar-instructions" id="arInstructions">
+                <p>📱 Point your camera at a flat surface</p>
+                <p>Tap to place your Form Desk</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="ar-controls" id="arControls">
+                <button class="ar-btn screenshot" onclick="takeScreenshot()">
+                    📸 Capture & Share
+                </button>
+                <button class="ar-btn close" onclick="closeAR()">
+                    ✕
                 </button>
             </div>
         </div>
-        <div class="swipe-indicator">
-            <span class="swipe-text">Swipe Up</span>
-            <span class="swipe-arrow">↑</span>
-        </div>
-    </section>
+    </div>
 
-    <!-- Size Selector -->
-    <section class="section size-selector" id="configure" role="main">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Choose Your Size</h2>
-            <div class="size-grid" role="group" aria-label="Desk size options">
-                <div class="size-card slide-in-up floating-element" onclick="selectSize(1)" role="button" tabindex="0" aria-label="Select focused desk size">
-                    <div class="size-number" aria-hidden="true">1</div>
-                    <h3 class="size-name">Focused</h3>
-                    <div class="size-dimension">120×70cm</div>
-                    <p class="size-description">Laptop + notebook + coffee. Nothing excess.</p>
-                </div>
-                <div class="size-card slide-in-up floating-element active" onclick="selectSize(2)" role="button" tabindex="0" aria-label="Select balanced desk size">
-                    <div class="size-number" aria-hidden="true">2</div>
-                    <h3 class="size-name">Balanced</h3>
-                    <div class="size-dimension">140×80cm</div>
-                    <p class="size-description">Monitor + materials. Room to think.</p>
-                </div>
-                <div class="size-card slide-in-up floating-element" onclick="selectSize(3)" role="button" tabindex="0" aria-label="Select full spread desk size">
-                    <div class="size-number" aria-hidden="true">3</div>
-                    <h3 class="size-name">Full Spread</h3>
-                    <div class="size-dimension">160×80cm</div>
-                    <p class="size-description">Dual monitors + collaboration space.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Materials Section -->
-    <section class="section materials-section" id="materials">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Your Brand. Our Quality.</h2>
-            <div class="materials-grid">
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-frame">
-                        <div class="material-placeholder">
-                            🎪
-                        </div>
-                    </div>
-                    <div class="material-name">Playful</div>
-                </div>
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-frame">
-                        <div class="material-placeholder">
-                            🎨
-                        </div>
-                    </div>
-                    <div class="material-name">Brand Identity</div>
-                </div>
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-frame">
-                        <div class="material-placeholder">
-                            ✨
-                        </div>
-                    </div>
-                    <div class="material-name">Premium</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="section contact-section" id="contact">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Get Early Access</h2>
-            <form class="contact-form" onsubmit="submitContact(event)" role="form" aria-label="Early access signup form">
-                <div class="form-group slide-in-up">
-                    <label class="form-label" for="name">Your Name</label>
-                    <input type="text" id="name" class="form-input" placeholder="First Last" required aria-required="true">
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label" for="email">Email</label>
-                    <input type="email" id="email" class="form-input" placeholder="name@company.com" required aria-required="true">
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label" for="company">Company</label>
-                    <input type="text" id="company" class="form-input" placeholder="Optional">
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label" for="teamsize">Team Size</label>
-                    <input type="text" id="teamsize" class="form-input" placeholder="5, 20, 100+">
-                </div>
-                <div class="form-group full-width slide-in-up">
-                    <label class="form-label">How did you find us?</label>
-                    <div class="radio-group" role="radiogroup" aria-label="How did you find us">
-                        <label class="radio-option">
-                            <input type="radio" name="source" value="qr" required aria-required="true">
-                            <span class="radio-custom" aria-hidden="true"></span>
-                            📱 QR Code
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="source" value="flyer" required aria-required="true">
-                            <span class="radio-custom" aria-hidden="true"></span>
-                            📄 Flyer
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="source" value="friends" required aria-required="true">
-                            <span class="radio-custom" aria-hidden="true"></span>
-                            👥 Friends
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="source" value="aliens" required aria-required="true">
-                            <span class="radio-custom" aria-hidden="true"></span>
-                            👽 Aliens
-                        </label>
-                    </div>
-                </div>
-                <button type="submit" class="form-submit slide-in-up floating-element">Join Early Access</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Chat Section -->
-    <section class="section copenhagen-section" id="chat">
-        <div class="section-content">
-            <h2 class="copenhagen-title slide-in-up">Let's Chat!</h2>
-            <p class="copenhagen-subtitle slide-in-up">
-                Questions about your workspace?<br>
-                Start a conversation with our team
-            </p>
-            <div class="chat-options">
-                <a href="design/wireframes/form-desk-optimized.html" class="chat-btn faq slide-in-up floating-element">
-                    ❓ Full Website Demo
+    <!-- Share Modal -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-content">
+            <button class="close-modal" onclick="closeShareModal()">×</button>
+            <h3 class="share-title">Spread the Hype!</h3>
+            <p class="share-subtitle">Help your friends discover furniture with personality</p>
+            <div class="share-options">
+                <button class="share-option" onclick="shareNative()">
+                    <span class="share-option-icon">📱</span>
+                    <span class="share-option-text">Native Share</span>
+                </button>
+                <a href="#" class="share-option" id="twitterShare" target="_blank">
+                    <span class="share-option-icon">🐦</span>
+                    <span class="share-option-text">Twitter</span>
                 </a>
-                <a href="mailto:hello@formdesk.dk?subject=Form Desk Inquiry&body=Hi! I'm interested in learning more about Form Desk..." class="chat-btn email slide-in-up floating-element">
-                    📧 Email Us
+                <a href="#" class="share-option" id="linkedinShare" target="_blank">
+                    <span class="share-option-icon">💼</span>
+                    <span class="share-option-text">LinkedIn</span>
                 </a>
-                <button class="chat-btn schedule slide-in-up floating-element" onclick="scheduleCall()">
-                    📅 Schedule Call
+                <button class="share-option" onclick="copyLink()">
+                    <span class="share-option-icon">🔗</span>
+                    <span class="share-option-text">Copy Link</span>
                 </button>
             </div>
-            <p class="chat-subtitle slide-in-up">
-                🇩🇰 Copenhagen team • Usually responds within 1 hour
-            </p>
+            <a href="/configurator" class="configurator-cta">
+                🛠️ Want this exact style? Build Your Own!
+            </a>
         </div>
-    </section>
+    </div>
+
+    <!-- Homepage Preview -->
+    <div class="homepage-container" id="homepageContainer">
+        <h1 class="homepage-title floating-element">
+            Finally, office furniture with <span class="highlight floating-element">personality</span>
+        </h1>
+        <p class="homepage-subtitle">
+            Skip the supplier maze. Three sizes, quality materials, single source. Your brand deserves better than generic.
+        </p>
+        <a href="/configurator" class="homepage-cta floating-element">Configure Your Desk</a>
+        <button class="back-btn" onclick="backToMystery()">← Back to Mystery</button>
+    </div>
 
     <script>
-        let currentSection = 0;
-        const sections = document.querySelectorAll('.section');
-        const navDots = document.querySelectorAll('.nav-dot');
+        // ================================
+        // AR PERSONALITY MODELS
+        // ================================
 
-        // Mystery Overlay Control
+        const AR_PERSONALITIES = {
+            playful: {
+                name: "Playful",
+                model: "#deskPlayful",
+                color: "personality-playful",
+                description: "Fun & Creative Workspaces",
+                shareText: "🎪 Just found my PLAYFUL workspace personality! This Form Desk is perfect for creative teams who don't do boring. Copenhagen design at its finest!",
+                hashtags: "PlayfulWorkspace,FormDesk,Copenhagen,CreativeOffice"
+            },
+            brand: {
+                name: "Brand Identity", 
+                model: "#deskBrand",
+                color: "personality-brand",
+                description: "Professional Brand Identity",
+                shareText: "💼 Discovered my PROFESSIONAL workspace identity! This Form Desk represents everything our brand stands for. Copenhagen design meets business excellence!",
+                hashtags: "BrandIdentity,FormDesk,Copenhagen,ProfessionalOffice"
+            },
+            premium: {
+                name: "Premium",
+                model: "#deskPremium", 
+                color: "personality-premium",
+                description: "Luxury & Craftsmanship",
+                shareText: "✨ Found my PREMIUM workspace experience! This Form Desk showcases true craftsmanship and luxury. Copenhagen design at its absolute finest!",
+                hashtags: "PremiumWorkspace,FormDesk,Copenhagen,LuxuryOffice"
+            }
+        };
+
+        // ================================
+        // GLOBAL STATE
+        // ================================
+
+        let selectedPersonality = null;
+        let arInitialized = false;
+        let deskPlaced = false;
+        let screenshotBlob = null;
+
+        // ================================
+        // MYSTERY OVERLAY CONTROL
+        // ================================
+
         function launchAR() {
-            // Simulate AR experience launch
-            const arMessages = [
-                '📱 Initializing AR camera...',
-                '🔍 Scanning your space...',
-                '✨ Loading 3D desk model...',
-                '🎯 Ready! Point your camera where you want the desk'
-            ];
-            
-            let messageIndex = 0;
-            const showMessage = () => {
-                if (messageIndex < arMessages.length) {
-                    alert(arMessages[messageIndex]);
-                    messageIndex++;
-                    if (messageIndex < arMessages.length) {
-                        setTimeout(showMessage, 1000);
-                    } else {
-                        showHomepage();
-                    }
-                }
-            };
-            showMessage();
+            // Select random personality for mystery element
+            const personalities = Object.keys(AR_PERSONALITIES);
+            const randomPersonality = personalities[Math.floor(Math.random() * personalities.length)];
+            selectedPersonality = AR_PERSONALITIES[randomPersonality];
+
+            trackViralEvent('ar_launch_requested', { 
+                personality: randomPersonality,
+                source: 'mystery_overlay' 
+            });
+
+            initializeAR();
         }
 
         function showHomepage() {
+            trackViralEvent('homepage_selected', { source: 'mystery_overlay' });
             document.getElementById('mysteryOverlay').classList.add('hidden');
-            setTimeout(triggerAnimations, 500);
+            document.getElementById('homepageContainer').classList.add('active');
         }
 
-        // Section Navigation
-        function scrollToSection(index) {
-            const section = sections[index];
-            section.scrollIntoView({ behavior: 'smooth' });
-            updateNavigation(index);
+        function backToMystery() {
+            document.getElementById('homepageContainer').classList.remove('active');
+            document.getElementById('mysteryOverlay').classList.remove('hidden');
+            trackViralEvent('back_to_mystery', { source: 'homepage' });
         }
 
-        function updateNavigation(index) {
-            navDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-                dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+        // ================================
+        // AR EXPERIENCE FUNCTIONS
+        // ================================
+
+        async function initializeAR() {
+            try {
+                // Hide mystery overlay
+                document.getElementById('mysteryOverlay').classList.add('hidden');
+                
+                // Show AR container with loading
+                const arContainer = document.getElementById('arContainer');
+                arContainer.classList.add('active');
+                
+                // Update loading with personality info
+                document.getElementById('loadingPersonality').textContent = 
+                    `Preparing ${selectedPersonality.name} Experience...`;
+                
+                // Initialize 8th Wall if not already done
+                if (!arInitialized) {
+                    await init8thWall();
+                    arInitialized = true;
+                }
+                
+                trackViralEvent('ar_initialized', { 
+                    personality: selectedPersonality.name.toLowerCase(),
+                    timestamp: Date.now()
+                });
+                
+            } catch (error) {
+                console.error('AR initialization failed:', error);
+                trackViralEvent('ar_initialization_failed', { 
+                    error: error.message,
+                    personality: selectedPersonality?.name
+                });
+                
+                // Fallback to homepage
+                alert('AR not supported on this device. Showing homepage instead.');
+                showHomepage();
+            }
+        }
+
+        async function init8thWall() {
+            return new Promise((resolve, reject) => {
+                const scene = document.getElementById('arScene');
+                
+                // Wait for 8th Wall to initialize
+                scene.addEventListener('xrloaded', () => {
+                    console.log('8th Wall loaded successfully');
+                    
+                    // Set the selected personality model
+                    const deskEntity = document.getElementById('deskEntity');
+                    deskEntity.setAttribute('gltf-model', selectedPersonality.model);
+                    
+                    // Show personality reveal
+                    showPersonalityReveal();
+                    
+                    // Hide loading after personality reveal
+                    setTimeout(() => {
+                        document.getElementById('arLoading').style.display = 'none';
+                        document.getElementById('arInstructions').style.display = 'block';
+                        document.getElementById('arControls').style.display = 'flex';
+                        setupARInteractions();
+                    }, 3000);
+                    
+                    resolve();
+                });
+
+                scene.addEventListener('xrloaderror', (error) => {
+                    console.error('8th Wall failed to load:', error);
+                    reject(error);
+                });
+
+                // Timeout fallback
+                setTimeout(() => {
+                    reject(new Error('AR initialization timeout'));
+                }, 10000);
             });
-            currentSection = index;
         }
 
-        // Size Selection
-        function selectSize(sizeNumber) {
-            document.querySelectorAll('.size-card').forEach((card, index) => {
-                card.classList.toggle('active', index === sizeNumber - 1);
-                card.setAttribute('aria-selected', index === sizeNumber - 1 ? 'true' : 'false');
+        function showPersonalityReveal() {
+            const reveal = document.getElementById('personalityReveal');
+            const title = document.getElementById('personalityTitle');
+            const description = document.getElementById('personalityDescription');
+            
+            title.textContent = selectedPersonality.name;
+            title.className = `personality-title ${selectedPersonality.color}`;
+            description.textContent = selectedPersonality.description;
+            
+            reveal.style.display = 'block';
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                reveal.style.display = 'none';
+            }, 3000);
+            
+            trackViralEvent('personality_revealed', {
+                personality: selectedPersonality.name.toLowerCase(),
+                timestamp: Date.now()
             });
-            
-            // Provide feedback for screen readers
-            const sizeName = ['Focused', 'Balanced', 'Full Spread'][sizeNumber - 1];
-            const announcement = `Selected ${sizeName} desk size`;
-            
-            // Create temporary announcement for screen readers
-            const announcement_el = document.createElement('div');
-            announcement_el.setAttribute('aria-live', 'polite');
-            announcement_el.setAttribute('aria-atomic', 'true');
-            announcement_el.classList.add('sr-only');
-            announcement_el.textContent = announcement;
-            document.body.appendChild(announcement_el);
-            setTimeout(() => document.body.removeChild(announcement_el), 1000);
         }
 
-        // Contact Form
-        function submitContact(event) {
-            event.preventDefault();
+        function setupARInteractions() {
+            const deskEntity = document.getElementById('deskEntity');
+            const camera = document.getElementById('camera');
             
-            // Get form data
-            const formData = new FormData(event.target);
-            const selectedSource = formData.get('source');
-            const name = formData.get('name') || document.getElementById('name').value;
-            const email = formData.get('email') || document.getElementById('email').value;
-            
-            // Campaign tracking - this data helps measure QR code effectiveness!
-            const trackingData = {
-                source: selectedSource,
-                timestamp: new Date().toISOString(),
-                userAgent: navigator.userAgent.substring(0, 100),
-                referrer: document.referrer,
-                url: window.location.href
-            };
-            
-            // TODO: Send to Supabase or your backend
-            console.log('Contact submission with tracking:', trackingData);
-            
-            alert(`Thank you ${name}! We'll be in touch about early access.\n\nSource: ${selectedSource ? selectedSource.charAt(0).toUpperCase() + selectedSource.slice(1) : 'not specified'}\n\nThis helps us understand which channels work best!`);
-            
-            // Reset form
-            event.target.reset();
+            // Surface detection and placement
+            camera.addEventListener('click', (event) => {
+                if (!deskPlaced) {
+                    placeDeskAtTarget(event);
+                }
+            });
+
+            // Touch gestures for scaling and rotation
+            deskEntity.addEventListener('gesture-start', () => {
+                trackViralEvent('ar_gesture_start', { 
+                    type: 'manipulation',
+                    personality: selectedPersonality.name.toLowerCase()
+                });
+            });
+
+            deskEntity.addEventListener('gesture-end', () => {
+                trackViralEvent('ar_gesture_end', { 
+                    type: 'manipulation',
+                    personality: selectedPersonality.name.toLowerCase()
+                });
+            });
         }
 
-        // Schedule Call Function
-        function scheduleCall() {
-            alert('Scheduling feature coming soon!\n\nFor now, please send us an email at hello@formdesk.dk and we\'ll set up a call within 24 hours.\n\n🇩🇰 Copenhagen team is standing by!');
-            // TODO: Integrate with Calendly or similar scheduling tool
+        function placeDeskAtTarget(event) {
+            const deskEntity = document.getElementById('deskEntity');
+            
+            // Place desk at camera target position
+            const position = event.detail.intersection?.point || { x: 0, y: -0.5, z: -1.5 };
+            
+            deskEntity.setAttribute('position', {
+                x: position.x,
+                y: position.y,
+                z: position.z
+            });
+
+            deskEntity.setAttribute('visible', true);
+            deskPlaced = true;
+
+            // Update instructions
+            document.getElementById('arInstructions').innerHTML = `
+                <p>🎉 Perfect! Your ${selectedPersonality.name} desk is placed</p>
+                <p>Pinch to resize • Drag to rotate • Ready to share!</p>
+            `;
+
+            trackViralEvent('ar_desk_placed', {
+                personality: selectedPersonality.name.toLowerCase(),
+                position: position,
+                timestamp: Date.now()
+            });
         }
 
-        // Share Functionality
-        function shareExperience() {
+        // ================================
+        // SCREENSHOT & SHARING
+        // ================================
+
+        function takeScreenshot() {
+            const scene = document.getElementById('arScene');
+            
+            if (scene && scene.renderer) {
+                // Capture screenshot using 8th Wall's screenshot functionality
+                const canvas = scene.renderer.domElement;
+                canvas.toBlob((blob) => {
+                    screenshotBlob = blob;
+                    const url = URL.createObjectURL(blob);
+                    
+                    // Show share modal immediately
+                    showShareModal();
+                    
+                    trackViralEvent('ar_screenshot_taken', {
+                        personality: selectedPersonality.name.toLowerCase(),
+                        timestamp: Date.now(),
+                        desk_placed: deskPlaced
+                    });
+                }, 'image/jpeg', 0.9);
+            }
+        }
+
+        function showShareModal() {
             document.getElementById('shareModal').classList.add('visible');
-            document.getElementById('shareModal').setAttribute('aria-hidden', 'false');
             setupShareLinks();
-            
-            // Focus management for accessibility
-            document.querySelector('.close-modal').focus();
         }
 
         function closeShareModal() {
             document.getElementById('shareModal').classList.remove('visible');
-            document.getElementById('shareModal').setAttribute('aria-hidden', 'true');
-            
-            // Return focus to share button
-            document.querySelector('.floating-share').focus();
         }
 
         function setupShareLinks() {
-            const url = window.location.href;
-            const text = "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces. Their AR experience is incredible!";
-            const hashtags = "FormDesk,Copenhagen,DesignFurniture,WorkspaceGoals,3DaysOfDesign";
+            const url = window.location.href + `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}`;
+            const text = selectedPersonality.shareText;
+            const hashtags = selectedPersonality.hashtags;
             
             // Twitter
             const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${hashtags}`;
             document.getElementById('twitterShare').href = twitterUrl;
             
             // LinkedIn
-            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent('Form Desk - Office Furniture with Personality')}&summary=${encodeURIComponent(text)}`;
+            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent('Form Desk - ' + selectedPersonality.name + ' Personality')}&summary=${encodeURIComponent(text)}`;
             document.getElementById('linkedinShare').href = linkedinUrl;
         }
 
         async function shareNative() {
             const shareData = {
-                title: 'Form Desk - Finally, office furniture with personality',
-                text: '🚀 Found something amazing! Check out this Copenhagen design company that\'s changing how we think about workspaces. Their AR experience is mind-blowing!',
-                url: window.location.href
+                title: `Form Desk - ${selectedPersonality.name} Personality`,
+                text: selectedPersonality.shareText,
+                url: window.location.href + `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}`
             };
+
+            // Add image if supported
+            if (screenshotBlob && navigator.canShare && navigator.canShare({files: [screenshotBlob]})) {
+                const file = new File([screenshotBlob], 'form-desk-ar.jpg', { type: 'image/jpeg' });
+                shareData.files = [file];
+            }
 
             if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
                 try {
                     await navigator.share(shareData);
+                    trackViralEvent('ar_native_share', { 
+                        personality: selectedPersonality.name.toLowerCase(),
+                        success: true,
+                        includes_image: !!shareData.files
+                    });
                     closeShareModal();
                 } catch (err) {
-                    // User cancelled or error occurred
                     if (err.name !== 'AbortError') {
-                        copyLink(); // Fallback to copy link
+                        copyShareText();
                     }
                 }
             } else {
-                copyLink(); // Fallback for non-supporting browsers
+                copyShareText();
             }
         }
 
         async function copyLink() {
+            const url = window.location.href + `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}`;
             try {
-                await navigator.clipboard.writeText(window.location.href);
-                alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!\n\n#FormDesk #Copenhagen #DesignFurniture');
+                await navigator.clipboard.writeText(url);
+                alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!');
+                trackViralEvent('ar_link_copied', { 
+                    personality: selectedPersonality.name.toLowerCase(),
+                    success: true 
+                });
                 closeShareModal();
             } catch (err) {
                 // Fallback for older browsers
                 const textArea = document.createElement('textarea');
-                textArea.value = window.location.href;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-999999px';
-                textArea.style.top = '-999999px';
+                textArea.value = url;
                 document.body.appendChild(textArea);
-                textArea.focus();
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!');
+                alert('🔗 Link copied to clipboard!');
                 closeShareModal();
             }
         }
 
-        // Close modal when clicking outside or pressing Escape
+        async function copyShareText() {
+            const fullText = selectedPersonality.shareText + ' ' + 
+                window.location.href + `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}`;
+            
+            try {
+                await navigator.clipboard.writeText(fullText);
+                alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your AR experience!');
+                trackViralEvent('ar_text_copied', { 
+                    personality: selectedPersonality.name.toLowerCase(),
+                    success: true 
+                });
+                closeShareModal();
+            } catch (err) {
+                console.error('Copy failed:', err);
+            }
+        }
+
+        function closeAR() {
+            document.getElementById('arContainer').classList.remove('active');
+            
+            // Reset AR state
+            deskPlaced = false;
+            const deskEntity = document.getElementById('deskEntity');
+            if (deskEntity) {
+                deskEntity.setAttribute('visible', false);
+            }
+            
+            // Show homepage
+            setTimeout(() => {
+                showHomepage();
+            }, 500);
+            
+            trackViralEvent('ar_closed', { 
+                personality: selectedPersonality?.name.toLowerCase(),
+                desk_placed: deskPlaced,
+                timestamp: Date.now()
+            });
+        }
+
+        // ================================
+        // VIRAL CAMPAIGN ANALYTICS
+        // ================================
+
+        function trackViralEvent(eventName, properties = {}) {
+            // Enhanced analytics for viral campaign tracking
+            const viralData = {
+                ...properties,
+                campaign: 'copenhagen_ar_2025',
+                event_type: 'viral_engagement',
+                timestamp: Date.now(),
+                user_agent: navigator.userAgent,
+                page_url: window.location.href,
+                session_id: getSessionId(),
+                qr_source: getQRSource()
+            };
+
+            console.log('🚀 Viral Event:', eventName, viralData);
+            
+            // TODO: Replace with your analytics service
+            // analytics.track(eventName, viralData);
+        }
+
+        function getSessionId() {
+            // Generate or retrieve session ID for campaign tracking
+            let sessionId = sessionStorage.getItem('form_desk_session');
+            if (!sessionId) {
+                sessionId = 'fd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                sessionStorage.setItem('form_desk_session', sessionId);
+            }
+            return sessionId;
+        }
+
+        function getQRSource() {
+            // Check URL parameters for QR source tracking
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('qr') || urlParams.get('source') || 'direct';
+        }
+
+        // ================================
+        // DEVICE CAPABILITY DETECTION
+        // ================================
+
+        function checkARSupport() {
+            // Check for basic WebXR support
+            if ('xr' in navigator) {
+                return navigator.xr.isSessionSupported('immersive-ar')
+                    .then(supported => supported)
+                    .catch(() => false);
+            }
+            
+            // Fallback: check for mobile device with camera
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const hasCamera = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+            
+            return Promise.resolve(isMobile && hasCamera);
+        }
+
+        // ================================
+        // EVENT LISTENERS
+        // ================================
+
+        // Close modal when clicking outside
         document.getElementById('shareModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeShareModal();
             }
         });
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && document.getElementById('shareModal').classList.contains('visible')) {
-                closeShareModal();
-            }
-        });
-
-        // Animation Triggers
-        function triggerAnimations() {
-            const animatedElements = document.querySelectorAll('.slide-in-up');
-            animatedElements.forEach((element, index) => {
-                setTimeout(() => {
-                    element.classList.add('active');
-                }, index * 100);
-            });
-        }
-
-        // Intersection Observer for Section Detection
-        const observerOptions = {
-            threshold: 0.5,
-            rootMargin: '0px'
-        };
-
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const sectionIndex = Array.from(sections).indexOf(entry.target);
-                    updateNavigation(sectionIndex);
-                    
-                    // Trigger animations for current section
-                    const sectionElements = entry.target.querySelectorAll('.slide-in-up');
-                    sectionElements.forEach((element, index) => {
-                        setTimeout(() => {
-                            element.classList.add('active');
-                        }, index * 100);
-                    });
-                }
-            });
-        }, observerOptions);
-
-        sections.forEach(section => {
-            sectionObserver.observe(section);
-        });
-
-        // Touch/Swipe Detection
-        let startY = 0;
-        let endY = 0;
-        let startTime = 0;
-
-        document.addEventListener('touchstart', (e) => {
-            startY = e.touches[0].clientY;
-            startTime = Date.now();
-        });
-
-        document.addEventListener('touchend', (e) => {
-            endY = e.changedTouches[0].clientY;
-            const endTime = Date.now();
-            const timeDiff = endTime - startTime;
-            
-            // Only trigger swipe if it's quick enough (under 300ms)
-            if (timeDiff < 300) {
-                handleSwipe();
-            }
-        });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = startY - endY;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    // Swipe up
-                    if (currentSection < sections.length - 1) {
-                        scrollToSection(currentSection + 1);
-                    }
-                } else {
-                    // Swipe down
-                    if (currentSection > 0) {
-                        scrollToSection(currentSection - 1);
-                    }
-                }
-            }
-        }
-
-        // Keyboard Navigation
+        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            // Skip if user is typing in a form field
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-                return;
-            }
-
-            if (e.key === 'ArrowDown' || e.key === ' ') {
-                e.preventDefault();
-                if (currentSection < sections.length - 1) {
-                    scrollToSection(currentSection + 1);
-                }
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (currentSection > 0) {
-                    scrollToSection(currentSection - 1);
-                }
-            } else if (e.key >= '1' && e.key <= '5') {
-                // Number keys for direct section navigation
-                const sectionIndex = parseInt(e.key) - 1;
-                if (sectionIndex < sections.length) {
-                    scrollToSection(sectionIndex);
+            if (e.key === 'Escape') {
+                // Close AR or modals
+                if (document.getElementById('shareModal').classList.contains('visible')) {
+                    closeShareModal();
+                } else if (document.getElementById('arContainer').classList.contains('active')) {
+                    closeAR();
                 }
             }
         });
 
-        // Keyboard navigation for size cards
-        document.querySelectorAll('.size-card').forEach((card, index) => {
-            card.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    selectSize(index + 1);
-                }
-            });
-        });
+        // ================================
+        // INITIALIZATION
+        // ================================
 
         // Auto-show homepage after 8 seconds if no interaction
-        const autoShowTimer = setTimeout(() => {
+        setTimeout(() => {
             if (!document.getElementById('mysteryOverlay').classList.contains('hidden')) {
                 showHomepage();
             }
         }, 8000);
 
-        // Clear timer if user interacts
-        document.getElementById('mysteryOverlay').addEventListener('click', () => {
-            clearTimeout(autoShowTimer);
+        // Check AR support and track page load
+        checkARSupport().then(supported => {
+            trackViralEvent('mystery_overlay_loaded', { 
+                ar_supported: supported,
+                user_agent: navigator.userAgent,
+                qr_source: getQRSource()
+            });
+
+            if (!supported) {
+                console.log('AR not supported, will emphasize homepage option');
+                // Could modify UI to highlight homepage option more
+            }
         });
 
-        // Performance optimization: Reduce animations on slower devices
-        if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) {
-            document.documentElement.style.setProperty('--animation-duration', '0.4s');
-        }
+        // Track page load with campaign context
+        trackViralEvent('copenhagen_campaign_start', {
+            timestamp: Date.now(),
+            page_url: window.location.href,
+            referrer: document.referrer,
+            qr_source: getQRSource()
+        });
+    </script>
 
-        // Initial animation trigger
-        setTimeout(triggerAnimations, 1000);
+    <!-- 8th Wall Gesture Component -->
+    <script>
+        // Custom A-Frame component for gesture handling
+        AFRAME.registerComponent('gesture-handler', {
+            schema: {
+                enabled: { default: true },
+                rotationFactor: { default: 5 },
+                minScale: { default: 0.3 },
+                maxScale: { default: 8 },
+            },
 
-        // Screen reader announcements for section changes
-        function announceSection(sectionName) {
-            const announcement = document.createElement('div');
-            announcement.setAttribute('aria-live', 'polite');
-            announcement.setAttribute('aria-atomic', 'true');
-            announcement.style.position = 'absolute';
-            announcement.style.left = '-10000px';
-            announcement.style.width = '1px';
-            announcement.style.height = '1px';
-            announcement.style.overflow = 'hidden';
-            announcement.textContent = `Now viewing ${sectionName} section`;
-            document.body.appendChild(announcement);
-            setTimeout(() => document.body.removeChild(announcement), 1000);
-        }
+            init: function () {
+                this.handleScale = this.handleScale.bind(this);
+                this.handleRotation = this.handleRotation.bind(this);
 
-        // Update section announcements
-        const sectionNames = ['Hero', 'Size Selector', 'Materials', 'Contact', 'Chat'];
-        const originalUpdateNavigation = updateNavigation;
-        updateNavigation = function(index) {
-            originalUpdateNavigation(index);
-            announceSection(sectionNames[index]);
-        };
+                this.isVisible = false;
+                this.initialScale = this.el.object3D.scale.clone();
+                this.scaleFactor = 1;
+
+                this.el.sceneEl.addEventListener('markerFound', (e) => {
+                    this.isVisible = true;
+                });
+
+                this.el.sceneEl.addEventListener('markerLost', (e) => {
+                    this.isVisible = false;
+                });
+            },
+
+            update: function () {
+                if (this.data.enabled) {
+                    this.el.sceneEl.addEventListener('onefingermove', this.handleRotation);
+                    this.el.sceneEl.addEventListener('twofingermove', this.handleScale);
+                }
+            },
+
+            remove: function () {
+                this.el.sceneEl.removeEventListener('onefingermove', this.handleRotation);
+                this.el.sceneEl.removeEventListener('twofingermove', this.handleScale);
+            },
+
+            handleRotation: function (event) {
+                if (this.isVisible) {
+                    this.el.object3D.rotation.y += event.detail.positionChange.x * this.data.rotationFactor;
+                    this.el.object3D.rotation.x += event.detail.positionChange.y * this.data.rotationFactor;
+                }
+            },
+
+            handleScale: function (event) {
+                if (this.isVisible) {
+                    this.scaleFactor *= 1 + event.detail.spreadChange / event.detail.startSpread;
+
+                    this.scaleFactor = Math.min(Math.max(this.scaleFactor, this.data.minScale), this.data.maxScale);
+
+                    this.el.object3D.scale.x = this.scaleFactor * this.initialScale.x;
+                    this.el.object3D.scale.y = this.scaleFactor * this.initialScale.y;
+                    this.el.object3D.scale.z = this.scaleFactor * this.initialScale.z;
+                }
+            }
+        });
+
+        // Cursor listener for tap-to-place
+        AFRAME.registerComponent('cursor-listener', {
+            init: function () {
+                this.el.addEventListener('click', function (evt) {
+                    console.log('Desk clicked/tapped');
+                });
+            }
+        });
     </script>
 </body>
 </html>
