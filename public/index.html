@@ -50,6 +50,7 @@
 
         html {
             scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
             overscroll-behavior: none;
         }
 
@@ -61,6 +62,31 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -webkit-overflow-scrolling: touch;
+        }
+
+        /* ================================
+           FULL SCREEN SECTIONS
+           ================================ */
+
+        .section {
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height for mobile */
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-xl) var(--space-md);
+            position: relative;
+            z-index: 2;
         }
 
         /* ================================
@@ -86,6 +112,23 @@
             75% { transform: translateY(-15px) rotate(0.5deg); }
         }
 
+        .slide-in-up {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-in-up.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Staggered animation delays */
+        .slide-in-up:nth-child(1) { transition-delay: 0.1s; }
+        .slide-in-up:nth-child(2) { transition-delay: 0.2s; }
+        .slide-in-up:nth-child(3) { transition-delay: 0.3s; }
+        .slide-in-up:nth-child(4) { transition-delay: 0.4s; }
+
         .pulse {
             animation: pulse 2s infinite;
         }
@@ -94,6 +137,37 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
+        }
+
+        /* ================================
+           NAVIGATION DOTS
+           ================================ */
+
+        .nav-dots {
+            position: fixed;
+            right: var(--space-md);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(26, 26, 26, 0.3);
+            border: 2px solid var(--color-charcoal);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--color-electric);
+            transform: scale(1.2);
+            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.2);
         }
 
         /* ================================
@@ -381,6 +455,638 @@
         }
 
         /* ================================
+           HERO SECTION
+           ================================ */
+
+        .hero {
+            background: var(--color-cream);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: var(--font-secondary);
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 0.9;
+            margin-bottom: var(--space-lg);
+        }
+
+        .highlight {
+            background: var(--color-electric);
+            color: var(--color-white);
+            padding: 0 var(--space-sm);
+            transform: rotate(-1deg);
+            display: inline-block;
+            border-radius: var(--corner-small);
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            margin-bottom: var(--space-2xl);
+            opacity: 0.8;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+
+        .hero-cta {
+            background: var(--color-charcoal);
+            color: var(--color-white);
+            border: 3px solid var(--color-charcoal);
+            padding: var(--space-lg) var(--space-xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
+        }
+
+        .hero-cta:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
+        }
+
+        .share-btn {
+            background: var(--color-yellow);
+            color: var(--color-charcoal);
+            border: 3px solid var(--color-yellow);
+            padding: var(--space-md) var(--space-xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-forest);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .share-btn:hover {
+            background: var(--color-forest);
+            color: var(--color-white);
+            border-color: var(--color-forest);
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
+        }
+
+        .share-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .share-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Floating background elements */
+        .hero::before,
+        .hero::after {
+            content: '';
+            position: absolute;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            opacity: 0.1;
+        }
+
+        .hero::before {
+            top: 10%;
+            left: -5%;
+            width: 80px;
+            height: 80px;
+            background: var(--color-electric);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            bottom: 15%;
+            right: -3%;
+            width: 60px;
+            height: 60px;
+            background: var(--color-oak);
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        /* ================================
+           SIZE SELECTOR
+           ================================ */
+
+        .size-selector {
+            background: var(--color-white);
+            position: relative;
+        }
+
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .size-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-xl);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .size-card {
+            background: var(--color-cream);
+            border: 3px solid var(--color-charcoal);
+            padding: var(--space-lg);
+            text-align: center;
+            position: relative;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Size Card Dimensions - Proportional to actual desk sizes */
+        .size-card:nth-child(1) {
+            width: 240px;
+            height: 140px;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+        }
+
+        .size-card:nth-child(2) {
+            width: 280px;
+            height: 160px;
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+        }
+
+        .size-card:nth-child(3) {
+            width: 320px;
+            height: 160px;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+        }
+
+        .size-card:hover,
+        .size-card.active {
+            transform: translate(-3px, -3px);
+            box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--color-charcoal);
+        }
+
+        .size-card.active {
+            background: var(--color-electric);
+            color: var(--color-white);
+        }
+
+        .size-number {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: var(--color-charcoal);
+            color: var(--color-white);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid var(--color-electric);
+            border-radius: var(--corner-small);
+        }
+
+        .size-name {
+            font-family: var(--font-secondary);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: var(--space-xs);
+        }
+
+        .size-dimension {
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-electric);
+            margin: var(--space-xs) 0;
+        }
+
+        .size-card.active .size-dimension {
+            color: var(--color-white);
+        }
+
+        .size-description {
+            font-family: var(--font-primary);
+            font-size: 0.75rem;
+            opacity: 0.8;
+            line-height: 1.3;
+            margin-top: var(--space-xs);
+        }
+
+        /* ================================
+           MATERIALS SECTION
+           ================================ */
+
+        .materials-section {
+            background: var(--color-forest);
+            color: var(--color-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .materials-section::before {
+            content: '◆ ● ■';
+            position: absolute;
+            top: 20%;
+            right: -10%;
+            font-size: 8rem;
+            color: var(--color-yellow);
+            opacity: 0.1;
+            letter-spacing: 40px;
+            animation: float 10s ease-in-out infinite;
+            transform: rotate(15deg);
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-lg);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .material-tile {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: var(--space-lg);
+            text-align: center;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            backdrop-filter: blur(10px);
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .material-tile:nth-child(2) {
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+        }
+
+        .material-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .material-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-sm);
+            display: block;
+        }
+
+        .material-name {
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-oak);
+            font-size: 1.1rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .material-description {
+            font-family: var(--font-primary);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        /* ================================
+           CONTACT SECTION
+           ================================ */
+
+        .contact-section {
+            background: var(--color-charcoal);
+            color: var(--color-white);
+        }
+
+        .contact-form {
+            display: grid;
+            gap: var(--space-lg);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .form-label {
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            padding: var(--space-md);
+            border: 3px solid var(--color-white);
+            background: transparent;
+            color: var(--color-white);
+            font-family: var(--font-secondary);
+            font-size: 1rem;
+            border-radius: var(--corner-small);
+            transition: all 0.2s ease;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-electric);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3);
+        }
+
+        .form-submit {
+            background: var(--color-electric);
+            color: var(--color-white);
+            border: 3px solid var(--color-electric);
+            padding: var(--space-lg) var(--space-xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-yellow);
+            margin-top: var(--space-lg);
+        }
+
+        .form-submit:hover {
+            background: var(--color-white);
+            color: var(--color-electric);
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
+        }
+
+        /* ================================
+           RADIO BUTTONS
+           ================================ */
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+            margin-top: var(--space-sm);
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-family: var(--font-secondary);
+            font-weight: 500;
+            color: var(--color-white);
+            cursor: pointer;
+            padding: var(--space-sm);
+            border-radius: var(--corner-small);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .radio-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--color-white);
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-custom {
+            border-color: var(--color-electric);
+            background: var(--color-electric);
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-custom::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--color-white);
+            border-radius: 50%;
+        }
+
+        .radio-option:hover .radio-custom {
+            border-color: var(--color-electric);
+            background: rgba(0, 102, 255, 0.2);
+        }
+
+        /* ================================
+           CHAT SECTION
+           ================================ */
+
+        .copenhagen-section {
+            background: var(--color-yellow);
+            color: var(--color-charcoal);
+            text-align: center;
+            position: relative;
+        }
+
+        .copenhagen-section::before {
+            content: '💬';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            font-size: 4rem;
+            opacity: 0.2;
+            animation: float 7s ease-in-out infinite;
+        }
+
+        .copenhagen-title {
+            font-family: var(--font-secondary);
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .copenhagen-subtitle {
+            font-family: var(--font-primary);
+            font-size: 1.1rem;
+            margin-bottom: var(--space-2xl);
+            opacity: 0.8;
+        }
+
+        .chat-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+            max-width: 320px;
+            margin: 0 auto var(--space-xl);
+        }
+
+        .chat-btn {
+            background: var(--color-charcoal);
+            color: var(--color-white);
+            border: 3px solid var(--color-charcoal);
+            padding: var(--space-lg) var(--space-xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-forest);
+            cursor: pointer;
+        }
+
+        .chat-btn:nth-child(2) {
+            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
+        }
+
+        .chat-btn.faq {
+            background: var(--color-oak);
+            border-color: var(--color-oak);
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #B8935A;
+        }
+
+        .chat-btn.email {
+            background: var(--color-electric);
+            border-color: var(--color-electric);
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #0052CC;
+        }
+
+        .chat-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
+        }
+
+        .chat-btn.faq:hover {
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #B8935A;
+        }
+
+        .chat-btn.email:hover {
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #0052CC;
+        }
+
+        .chat-subtitle {
+            font-family: var(--font-primary);
+            font-size: 0.9rem;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        /* ================================
+           SWIPE INDICATOR
+           ================================ */
+
+        .swipe-indicator {
+            position: absolute;
+            bottom: var(--space-lg);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-xs);
+            opacity: 0.6;
+            animation: bounce 2s infinite;
+        }
+
+        .swipe-text {
+            font-family: var(--font-primary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .swipe-arrow {
+            font-size: 1.2rem;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* ================================
+           FLOATING SHARE BUTTON
+           ================================ */
+
+        .floating-share {
+            position: fixed;
+            bottom: var(--space-xl);
+            left: var(--space-md);
+            background: var(--color-yellow);
+            color: var(--color-charcoal);
+            border: 3px solid var(--color-charcoal);
+            padding: var(--space-md);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 50;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
+            animation: pulse 3s infinite;
+        }
+
+        .floating-share:hover {
+            transform: translate(-2px, -2px) scale(1.1);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
+            background: var(--color-forest);
+            color: var(--color-white);
+        }
+
+        /* ================================
            SHARE MODAL
            ================================ */
 
@@ -519,108 +1225,80 @@
         }
 
         /* ================================
-           HOMEPAGE PREVIEW
-           ================================ */
-
-        .homepage-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--color-cream);
-            z-index: 1500;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: var(--space-xl) var(--space-md);
-        }
-
-        .homepage-container.active {
-            display: flex;
-        }
-
-        .homepage-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 0.9;
-            margin-bottom: var(--space-lg);
-        }
-
-        .highlight {
-            background: var(--color-electric);
-            color: var(--color-white);
-            padding: 0 var(--space-sm);
-            transform: rotate(-1deg);
-            display: inline-block;
-            border-radius: var(--corner-small);
-        }
-
-        .homepage-subtitle {
-            font-family: var(--font-primary);
-            font-size: 1rem;
-            margin-bottom: var(--space-2xl);
-            opacity: 0.8;
-            max-width: 350px;
-        }
-
-        .homepage-cta {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-            margin-bottom: var(--space-lg);
-        }
-
-        .homepage-cta:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
-        }
-
-        .back-btn {
-            background: var(--color-oak);
-            color: var(--color-white);
-            border: 3px solid var(--color-oak);
-            padding: var(--space-md) var(--space-lg);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-        }
-
-        .back-btn:hover {
-            background: var(--color-charcoal);
-            border-color: var(--color-charcoal);
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-oak);
-        }
-
-        /* ================================
            RESPONSIVE ADJUSTMENTS
            ================================ */
 
         @media (min-width: 768px) {
+            .section-content {
+                padding: var(--space-3xl) var(--space-2xl);
+            }
+
+            .hero-actions {
+                flex-direction: row;
+                gap: var(--space-xl);
+            }
+
+            .materials-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 600px;
+            }
+
+            .size-grid {
+                flex-direction: row;
+                justify-content: center;
+                max-width: 1000px;
+            }
+
+            /* Larger cards on desktop while maintaining proportions */
+            .size-card:nth-child(1) {
+                width: 280px;
+                height: 160px;
+            }
+
+            .size-card:nth-child(2) {
+                width: 320px;
+                height: 180px;
+            }
+
+            .size-card:nth-child(3) {
+                width: 360px;
+                height: 180px;
+            }
+
+            .contact-form {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 600px;
+            }
+
+            .form-group.full-width {
+                grid-column: 1 / -1;
+            }
+
+            .radio-group {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
             .choice-buttons {
                 flex-direction: row;
                 max-width: 600px;
+            }
+
+            .chat-options {
+                flex-direction: row;
+                max-width: 600px;
+            }
+
+            .floating-share {
+                left: var(--space-xl);
+                bottom: var(--space-2xl);
+            }
+
+            .share-options {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .nav-dots {
+                right: var(--space-xl);
             }
 
             .ar-instructions,
@@ -632,10 +1310,6 @@
             .ar-controls {
                 left: var(--space-xl);
                 right: var(--space-xl);
-            }
-
-            .share-options {
-                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -649,9 +1323,42 @@
                 box-shadow: 4px 4px 0 var(--color-yellow);
             }
 
-            .ar-btn:active {
+            .size-card:active {
+                transform: translate(-3px, -3px);
+                box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--color-charcoal);
+            }
+
+            .form-submit:active {
                 transform: translate(-2px, -2px);
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
+                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
+            }
+
+            .chat-btn:active {
+                transform: translate(-2px, -2px);
+                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
+            }
+
+            .chat-btn.faq:active {
+                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #B8935A;
+            }
+
+            .chat-btn.email:active {
+                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #0052CC;
+            }
+
+            .radio-option:active {
+                background: rgba(255, 255, 255, 0.2);
+                transform: scale(0.98);
+            }
+
+            .share-btn:active {
+                transform: translate(-2px, -2px) scale(0.95);
+                background: var(--color-forest);
+                color: var(--color-white);
+            }
+
+            .floating-share:active {
+                transform: translate(-2px, -2px) scale(1.05);
             }
 
             .share-option:active {
@@ -659,10 +1366,30 @@
                 background: var(--color-electric);
                 color: var(--color-white);
             }
+
+            .ar-btn:active {
+                transform: translate(-2px, -2px);
+                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToSection(0)"></div>
+        <div class="nav-dot" onclick="scrollToSection(1)"></div>
+        <div class="nav-dot" onclick="scrollToSection(2)"></div>
+        <div class="nav-dot" onclick="scrollToSection(3)"></div>
+        <div class="nav-dot" onclick="scrollToSection(4)"></div>
+        <div class="nav-dot" onclick="scrollToSection(5)"></div>
+    </div>
+
+    <!-- Floating Share Button -->
+    <button class="floating-share" onclick="shareExperience()" title="Share Form Desk">
+        🚀
+    </button>
+
     <!-- Mystery Overlay -->
     <div class="mystery-overlay" id="mysteryOverlay">
         <h1 class="mystery-title floating-element">Have you seen me?</h1>
@@ -693,7 +1420,7 @@
             
             <!-- Assets -->
             <a-assets>
-                <!-- Fallback models - replace with your .glb files -->
+                <!-- Your .glb models -->
                 <a-asset-item 
                     id="deskPlayful" 
                     src="/assets/models/ar/ar_playful.glb"
@@ -765,8 +1492,8 @@
             <!-- Instructions -->
             <div class="ar-instructions" id="arInstructions">
                 <p>📱 Point your camera at a flat surface</p>
-                <p>Tap to place your Form Desk</p>
-                <p><small>🔍 Look for surfaces, no marker needed!</small></p>
+                <p>Look for the AR marker or any flat surface</p>
+                <p><small>🔍 Move your phone to see the desk appear!</small></p>
             </div>
 
             <!-- Controls -->
@@ -811,17 +1538,154 @@
         </div>
     </div>
 
-    <!-- Homepage Preview -->
-    <div class="homepage-container" id="homepageContainer">
-        <h1 class="homepage-title floating-element">
-            Finally, office furniture with <span class="highlight floating-element">personality</span>
-        </h1>
-        <p class="homepage-subtitle">
-            Skip the supplier maze. Three sizes, quality materials, single source. Your brand deserves better than generic.
-        </p>
-        <a href="/configurator" class="homepage-cta floating-element">Configure Your Desk</a>
-        <button class="back-btn" onclick="backToMystery()">← Back to Mystery</button>
-    </div>
+    <!-- Hero Section -->
+    <section class="section hero" id="hero">
+        <div class="section-content">
+            <h1 class="hero-title slide-in-up">
+                Finally, office furniture with <span class="highlight floating-element">personality</span>
+            </h1>
+            <p class="hero-subtitle slide-in-up">
+                Skip the supplier maze. Three sizes, quality materials, single source. Your brand deserves better than generic.
+            </p>
+            <div class="hero-actions slide-in-up">
+                <a href="#" class="hero-cta floating-element" onclick="scrollToSection(1)">Configure Your Desk</a>
+                <button class="share-btn floating-element" onclick="shareExperience()">
+                    🚀 Share the Hype
+                </button>
+            </div>
+        </div>
+        <div class="swipe-indicator">
+            <span class="swipe-text">Swipe Up</span>
+            <span class="swipe-arrow">↑</span>
+        </div>
+    </section>
+
+    <!-- Size Selector -->
+    <section class="section size-selector" id="configure">
+        <div class="section-content">
+            <h2 class="section-title slide-in-up">Choose Your Size</h2>
+            <div class="size-grid">
+                <div class="size-card slide-in-up floating-element" onclick="selectSize(1)">
+                    <div class="size-number">1</div>
+                    <h3 class="size-name">Focused</h3>
+                    <div class="size-dimension">120×70cm</div>
+                    <p class="size-description">Laptop + notebook + coffee. Nothing excess.</p>
+                </div>
+                <div class="size-card slide-in-up floating-element active" onclick="selectSize(2)">
+                    <div class="size-number">2</div>
+                    <h3 class="size-name">Balanced</h3>
+                    <div class="size-dimension">140×80cm</div>
+                    <p class="size-description">Monitor + materials. Room to think.</p>
+                </div>
+                <div class="size-card slide-in-up floating-element" onclick="selectSize(3)">
+                    <div class="size-number">3</div>
+                    <h3 class="size-name">Full Spread</h3>
+                    <div class="size-dimension">160×80cm</div>
+                    <p class="size-description">Dual monitors + collaboration space.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Materials Section -->
+    <section class="section materials-section" id="materials">
+        <div class="section-content">
+            <h2 class="section-title slide-in-up">Your Brand. Our Quality.</h2>
+            <div class="materials-grid">
+                <div class="material-tile slide-in-up floating-element">
+                    <div class="material-icon">🎪</div>
+                    <div class="material-name">Playful</div>
+                    <div class="material-description">Fun & creative workspaces for teams who don't do boring</div>
+                </div>
+                <div class="material-tile slide-in-up floating-element">
+                    <div class="material-icon">🎨</div>
+                    <div class="material-name">Brand Identity</div>
+                    <div class="material-description">Professional surfaces that represent your company values</div>
+                </div>
+                <div class="material-tile slide-in-up floating-element">
+                    <div class="material-icon">✨</div>
+                    <div class="material-name">Premium</div>
+                    <div class="material-description">Luxury craftsmanship for executive spaces</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section" id="contact">
+        <div class="section-content">
+            <h2 class="section-title slide-in-up">Get Early Access</h2>
+            <form class="contact-form" onsubmit="submitContact(event)">
+                <div class="form-group slide-in-up">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" placeholder="First Last" required>
+                </div>
+                <div class="form-group slide-in-up">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" placeholder="name@company.com" required>
+                </div>
+                <div class="form-group slide-in-up">
+                    <label class="form-label">Company</label>
+                    <input type="text" class="form-input" placeholder="Optional">
+                </div>
+                <div class="form-group slide-in-up">
+                    <label class="form-label">Team Size</label>
+                    <input type="text" class="form-input" placeholder="5, 20, 100+">
+                </div>
+                <div class="form-group full-width slide-in-up">
+                    <label class="form-label">How did you find us?</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="source" value="qr" required>
+                            <span class="radio-custom"></span>
+                            📱 QR Code
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="source" value="flyer" required>
+                            <span class="radio-custom"></span>
+                            📄 Flyer
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="source" value="friends" required>
+                            <span class="radio-custom"></span>
+                            👥 Friends
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="source" value="aliens" required>
+                            <span class="radio-custom"></span>
+                            👽 Aliens
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="form-submit slide-in-up floating-element">Join Early Access</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Chat Section -->
+    <section class="section copenhagen-section" id="chat">
+        <div class="section-content">
+            <h2 class="copenhagen-title slide-in-up">Let's Chat!</h2>
+            <p class="copenhagen-subtitle slide-in-up">
+                Questions about your workspace?<br>
+                Start a conversation with our team
+            </p>
+            <div class="chat-options">
+                <a href="/faq" class="chat-btn faq slide-in-up floating-element">
+                    ❓ FAQ & Answers
+                </a>
+                <a href="mailto:hello@formdesk.dk?subject=Form Desk Inquiry&body=Hi! I'm interested in learning more about Form Desk..." class="chat-btn email slide-in-up floating-element">
+                    📧 Email Us
+                </a>
+                <button class="chat-btn schedule slide-in-up floating-element" onclick="scheduleCall()">
+                    📅 Schedule Call
+                </button>
+            </div>
+            <p class="chat-subtitle slide-in-up">
+                🇩🇰 Copenhagen team • Usually responds within 1 hour
+            </p>
+        </div>
+    </section>
 
     <script>
         // ================================
@@ -859,6 +1723,9 @@
         // GLOBAL STATE
         // ================================
 
+        let currentSection = 0;
+        const sections = document.querySelectorAll('.section');
+        const navDots = document.querySelectorAll('.nav-dot');
         let selectedPersonality = null;
         let arInitialized = false;
         let deskPlaced = false;
@@ -886,13 +1753,7 @@
         function showHomepage() {
             trackViralEvent('homepage_selected', { source: 'mystery_overlay' });
             document.getElementById('mysteryOverlay').classList.add('hidden');
-            document.getElementById('homepageContainer').classList.add('active');
-        }
-
-        function backToMystery() {
-            document.getElementById('homepageContainer').classList.remove('active');
-            document.getElementById('mysteryOverlay').classList.remove('hidden');
-            trackViralEvent('back_to_mystery', { source: 'homepage' });
+            setTimeout(triggerAnimations, 500);
         }
 
         // ================================
@@ -1052,104 +1913,6 @@
             }
         }
 
-        function showShareModal() {
-            document.getElementById('shareModal').classList.add('visible');
-            setupShareLinks();
-        }
-
-        function closeShareModal() {
-            document.getElementById('shareModal').classList.remove('visible');
-        }
-
-        function setupShareLinks() {
-            const url = window.location.href + `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}`;
-            const text = selectedPersonality.shareText;
-            const hashtags = selectedPersonality.hashtags;
-            
-            // Twitter
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${hashtags}`;
-            document.getElementById('twitterShare').href = twitterUrl;
-            
-            // LinkedIn
-            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent('Form Desk - ' + selectedPersonality.name + ' Personality')}&summary=${encodeURIComponent(text)}`;
-            document.getElementById('linkedinShare').href = linkedinUrl;
-        }
-
-        async function shareNative() {
-            const shareData = {
-                title: `Form Desk - ${selectedPersonality.name} Personality`,
-                text: selectedPersonality.shareText,
-                url: window.location.href + `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}`
-            };
-
-            // Add image if supported
-            if (screenshotBlob && navigator.canShare && navigator.canShare({files: [screenshotBlob]})) {
-                const file = new File([screenshotBlob], 'form-desk-ar.jpg', { type: 'image/jpeg' });
-                shareData.files = [file];
-            }
-
-            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-                try {
-                    await navigator.share(shareData);
-                    trackViralEvent('ar_native_share', { 
-                        personality: selectedPersonality.name.toLowerCase(),
-                        success: true,
-                        includes_image: !!shareData.files,
-                        ar_library: 'ar.js'
-                    });
-                    closeShareModal();
-                } catch (err) {
-                    if (err.name !== 'AbortError') {
-                        copyShareText();
-                    }
-                }
-            } else {
-                copyShareText();
-            }
-        }
-
-        async function copyLink() {
-            const url = window.location.href + `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}`;
-            try {
-                await navigator.clipboard.writeText(url);
-                alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!');
-                trackViralEvent('ar_link_copied', { 
-                    personality: selectedPersonality.name.toLowerCase(),
-                    success: true,
-                    ar_library: 'ar.js'
-                });
-                closeShareModal();
-            } catch (err) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = url;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('🔗 Link copied to clipboard!');
-                closeShareModal();
-            }
-        }
-
-        async function copyShareText() {
-            const fullText = selectedPersonality.shareText + ' ' + 
-                window.location.href + `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}`;
-            
-            try {
-                await navigator.clipboard.writeText(fullText);
-                alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your AR experience!');
-                trackViralEvent('ar_text_copied', { 
-                    personality: selectedPersonality.name.toLowerCase(),
-                    success: true,
-                    ar_library: 'ar.js'
-                });
-                closeShareModal();
-            } catch (err) {
-                console.error('Copy failed:', err);
-            }
-        }
-
         function closeAR() {
             document.getElementById('arContainer').classList.remove('active');
             
@@ -1168,6 +1931,270 @@
                 ar_library: 'ar.js'
             });
         }
+
+        // ================================
+        // SECTION NAVIGATION
+        // ================================
+
+        function scrollToSection(index) {
+            const section = sections[index];
+            section.scrollIntoView({ behavior: 'smooth' });
+            updateNavigation(index);
+        }
+
+        function updateNavigation(index) {
+            navDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSection = index;
+        }
+
+        // Size Selection
+        function selectSize(sizeNumber) {
+            document.querySelectorAll('.size-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelectorAll('.size-card')[sizeNumber - 1].classList.add('active');
+        }
+
+        // Contact Form
+        function submitContact(event) {
+            event.preventDefault();
+            
+            // Get the selected source
+            const selectedSource = document.querySelector('input[name="source"]:checked');
+            const sourceValue = selectedSource ? selectedSource.value : 'not specified';
+            
+            alert(`Thank you for your interest! We'll be in touch about early access to Form desk configurator.\n\nSource: ${sourceValue.charAt(0).toUpperCase() + sourceValue.slice(1)}`);
+            
+            trackViralEvent('contact_form_submitted', {
+                source: sourceValue,
+                timestamp: Date.now()
+            });
+        }
+
+        // Schedule Call Function
+        function scheduleCall() {
+            alert('Scheduling feature coming soon!\n\nFor now, please send us an email at hello@formdesk.dk, and we\'ll set up a call within 24 hours.');
+            trackViralEvent('schedule_call_requested', { source: 'chat_section' });
+        }
+
+        // ================================
+        // SHARE FUNCTIONALITY
+        // ================================
+
+        function shareExperience() {
+            document.getElementById('shareModal').classList.add('visible');
+            setupShareLinks();
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('visible');
+        }
+
+        function setupShareLinks() {
+            const url = window.location.href + (selectedPersonality ? 
+                `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
+                '?ref=general_share');
+            const text = selectedPersonality ? 
+                selectedPersonality.shareText : 
+                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces. Check out their campaign!";
+            const hashtags = selectedPersonality ? 
+                selectedPersonality.hashtags : 
+                "FormDesk,Copenhagen,DesignFurniture,WorkspaceGoals";
+            
+            // Twitter
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${hashtags}`;
+            document.getElementById('twitterShare').href = twitterUrl;
+            
+            // LinkedIn
+            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent('Form Desk - Office Furniture with Personality')}&summary=${encodeURIComponent(text)}`;
+            document.getElementById('linkedinShare').href = linkedinUrl;
+        }
+
+        async function shareNative() {
+            const shareData = {
+                title: selectedPersonality ? 
+                    `Form Desk - ${selectedPersonality.name} Personality` : 
+                    'Form Desk - Finally, office furniture with personality',
+                text: selectedPersonality ? 
+                    selectedPersonality.shareText : 
+                    '🚀 Found something amazing! Check out this Copenhagen design company that\'s changing how we think about workspaces!',
+                url: window.location.href + (selectedPersonality ? 
+                    `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
+                    '?ref=general_share')
+            };
+
+            // Add image if supported and available
+            if (screenshotBlob && navigator.canShare && navigator.canShare({files: [screenshotBlob]})) {
+                const file = new File([screenshotBlob], 'form-desk-ar.jpg', { type: 'image/jpeg' });
+                shareData.files = [file];
+            }
+
+            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                try {
+                    await navigator.share(shareData);
+                    trackViralEvent('native_share', { 
+                        personality: selectedPersonality?.name.toLowerCase(),
+                        success: true,
+                        includes_image: !!shareData.files
+                    });
+                    closeShareModal();
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        copyShareText();
+                    }
+                }
+            } else {
+                copyShareText();
+            }
+        }
+
+        async function copyLink() {
+            const url = window.location.href + (selectedPersonality ? 
+                `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
+                '?ref=general_share');
+            try {
+                await navigator.clipboard.writeText(url);
+                alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!');
+                trackViralEvent('link_copied', { 
+                    personality: selectedPersonality?.name.toLowerCase(),
+                    success: true 
+                });
+                closeShareModal();
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('🔗 Link copied to clipboard!');
+                closeShareModal();
+            }
+        }
+
+        async function copyShareText() {
+            const text = selectedPersonality ? selectedPersonality.shareText : 
+                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces.";
+            const url = window.location.href + (selectedPersonality ? 
+                `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
+                '?ref=general_share');
+            const fullText = text + ' ' + url;
+            
+            try {
+                await navigator.clipboard.writeText(fullText);
+                alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your experience!');
+                trackViralEvent('text_copied', { 
+                    personality: selectedPersonality?.name.toLowerCase(),
+                    success: true 
+                });
+                closeShareModal();
+            } catch (err) {
+                console.error('Copy failed:', err);
+            }
+        }
+
+        // ================================
+        // ANIMATION TRIGGERS
+        // ================================
+
+        function triggerAnimations() {
+            const animatedElements = document.querySelectorAll('.slide-in-up');
+            animatedElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('active');
+                }, index * 100);
+            });
+        }
+
+        // Intersection Observer for Section Detection
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionIndex = Array.from(sections).indexOf(entry.target);
+                    updateNavigation(sectionIndex);
+                    
+                    // Trigger animations for current section
+                    const sectionElements = entry.target.querySelectorAll('.slide-in-up');
+                    sectionElements.forEach((element, index) => {
+                        setTimeout(() => {
+                            element.classList.add('active');
+                        }, index * 100);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // ================================
+        // TOUCH/SWIPE DETECTION
+        // ================================
+
+        let startY = 0;
+        let endY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            endY = e.changedTouches[0].clientY;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = startY - endY;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe up
+                    if (currentSection < sections.length - 1) {
+                        scrollToSection(currentSection + 1);
+                    }
+                } else {
+                    // Swipe down
+                    if (currentSection > 0) {
+                        scrollToSection(currentSection - 1);
+                    }
+                }
+            }
+        }
+
+        // ================================
+        // KEYBOARD NAVIGATION
+        // ================================
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSection < sections.length - 1) {
+                    scrollToSection(currentSection + 1);
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (currentSection > 0) {
+                    scrollToSection(currentSection - 1);
+                }
+            } else if (e.key === 'Escape') {
+                // Close AR or modals
+                if (document.getElementById('shareModal').classList.contains('visible')) {
+                    closeShareModal();
+                } else if (document.getElementById('arContainer').classList.contains('active')) {
+                    closeAR();
+                }
+            }
+        });
 
         // ================================
         // VIRAL CAMPAIGN ANALYTICS
@@ -1210,91 +2237,122 @@
         }
 
         // ================================
-        // DEVICE CAPABILITY DETECTION
+        // INITIALIZATION & EVENT LISTENERS
         // ================================
 
-        function checkARSupport() {
-            // AR.js works on most mobile browsers with camera
-            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const hasCamera = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing Form Desk experience...');
             
-            return Promise.resolve(isMobile && hasCamera);
+            // Initialize A-Frame components when A-Frame is ready
+            if (typeof AFRAME !== 'undefined') {
+                initializeAFrameComponents();
+            } else {
+                // Wait for A-Frame to load
+                document.addEventListener('aframe-loaded', initializeAFrameComponents);
+            }
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Initialize analytics
+            initializeAnalytics();
+            
+            // Auto-show homepage after 8 seconds if no interaction
+            setTimeout(() => {
+                const mysteryOverlay = document.getElementById('mysteryOverlay');
+                if (mysteryOverlay && !mysteryOverlay.classList.contains('hidden')) {
+                    showHomepage();
+                }
+            }, 8000);
+
+            // Initial animation trigger
+            setTimeout(triggerAnimations, 1000);
+        });
+
+        function initializeAFrameComponents() {
+            try {
+                // Custom A-Frame component for desk interaction
+                AFRAME.registerComponent('ar-desk-controller', {
+                    init: function () {
+                        this.el.addEventListener('click', (evt) => {
+                            console.log('Desk clicked in AR');
+                            
+                            trackViralEvent('ar_desk_clicked', {
+                                personality: selectedPersonality?.name.toLowerCase(),
+                                timestamp: Date.now()
+                            });
+                        });
+                    }
+                });
+                console.log('A-Frame components registered successfully');
+            } catch (error) {
+                console.log('A-Frame not available or already registered:', error.message);
+            }
         }
 
-        // ================================
-        // A-FRAME COMPONENTS
-        // ================================
-
-        // Custom A-Frame component for desk interaction
-        AFRAME.registerComponent('ar-desk-controller', {
-            init: function () {
-                this.el.addEventListener('click', (evt) => {
-                    console.log('Desk clicked in AR');
-                    
-                    trackViralEvent('ar_desk_clicked', {
-                        personality: selectedPersonality?.name.toLowerCase(),
-                        timestamp: Date.now()
+        function setupEventListeners() {
+            try {
+                // Close modal when clicking outside
+                const shareModal = document.getElementById('shareModal');
+                if (shareModal) {
+                    shareModal.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            closeShareModal();
+                        }
                     });
-                });
-            }
-        });
-
-        // ================================
-        // EVENT LISTENERS
-        // ================================
-
-        // Close modal when clicking outside
-        document.getElementById('shareModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeShareModal();
-            }
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                // Close AR or modals
-                if (document.getElementById('shareModal').classList.contains('visible')) {
-                    closeShareModal();
-                } else if (document.getElementById('arContainer').classList.contains('active')) {
-                    closeAR();
                 }
+                
+                console.log('Event listeners set up successfully');
+            } catch (error) {
+                console.error('Error setting up event listeners:', error);
             }
-        });
+        }
 
-        // ================================
-        // INITIALIZATION
-        // ================================
+        function initializeAnalytics() {
+            try {
+                // Check AR support and track page load
+                checkARSupport().then(supported => {
+                    trackViralEvent('mystery_overlay_loaded', { 
+                        ar_supported: supported,
+                        user_agent: navigator.userAgent,
+                        qr_source: getQRSource(),
+                        ar_library: 'ar.js'
+                    });
 
-        // Auto-show homepage after 8 seconds if no interaction
-        setTimeout(() => {
-            if (!document.getElementById('mysteryOverlay').classList.contains('hidden')) {
-                showHomepage();
+                    if (!supported) {
+                        console.log('AR not supported, will emphasize homepage option');
+                    }
+                });
+
+                // Track page load with campaign context
+                trackViralEvent('copenhagen_campaign_start', {
+                    timestamp: Date.now(),
+                    page_url: window.location.href,
+                    referrer: document.referrer,
+                    qr_source: getQRSource(),
+                    ar_solution: 'open_source_arjs'
+                });
+                
+                console.log('Analytics initialized successfully');
+            } catch (error) {
+                console.error('Error initializing analytics:', error);
             }
-        }, 8000);
+        }
 
-        // Check AR support and track page load
-        checkARSupport().then(supported => {
-            trackViralEvent('mystery_overlay_loaded', { 
-                ar_supported: supported,
-                user_agent: navigator.userAgent,
-                qr_source: getQRSource(),
-                ar_library: 'ar.js'
-            });
-
-            if (!supported) {
-                console.log('AR not supported, will emphasize homepage option');
+        // Check AR support function
+        function checkARSupport() {
+            try {
+                // AR.js works on most mobile browsers with camera
+                const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                const hasCamera = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+                
+                return Promise.resolve(isMobile && hasCamera);
+            } catch (error) {
+                console.error('Error checking AR support:', error);
+                return Promise.resolve(false);
             }
-        });
-
-        // Track page load with campaign context
-        trackViralEvent('copenhagen_campaign_start', {
-            timestamp: Date.now(),
-            page_url: window.location.href,
-            referrer: document.referrer,
-            qr_source: getQRSource(),
-            ar_solution: 'open_source_arjs'
-        });
+        }
     </script>
 </body>
 </html>
