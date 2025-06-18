@@ -6,10 +6,6 @@
     <title>Form Desk - Have you seen me?</title>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- AR.js - Open Source AR Library -->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script>
-    
     <style>
         :root {
             /* Brand Colors */
@@ -70,7 +66,7 @@
 
         .section {
             height: 100vh;
-            height: 100dvh; /* Dynamic viewport height for mobile */
+            height: 100dvh;
             scroll-snap-align: start;
             scroll-snap-stop: always;
             display: flex;
@@ -123,7 +119,6 @@
             opacity: 1;
         }
 
-        /* Staggered animation delays */
         .slide-in-up:nth-child(1) { transition-delay: 0.1s; }
         .slide-in-up:nth-child(2) { transition-delay: 0.2s; }
         .slide-in-up:nth-child(3) { transition-delay: 0.3s; }
@@ -270,7 +265,7 @@
         }
 
         /* ================================
-           AR EXPERIENCE STYLES
+           WEBXR AR STYLES
            ================================ */
 
         .ar-container {
@@ -285,6 +280,12 @@
         }
 
         .ar-container.active {
+            display: block;
+        }
+
+        .ar-canvas {
+            width: 100vw !important;
+            height: 100vh !important;
             display: block;
         }
 
@@ -424,34 +425,19 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* AR.js specific styles */
-        a-scene {
-            height: 100vh !important;
-            width: 100vw !important;
-        }
-
-        .arjs-loader {
-            height: 100%;
-            width: 100%;
+        .ar-error {
             position: absolute;
-            top: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .arjs-loader div {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(26, 26, 26, 0.9);
+            color: var(--color-white);
+            padding: var(--space-2xl);
+            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
             text-align: center;
-            font-size: 1.25em;
-            color: white;
-        }
-
-        /* Hide A-Frame inspector button */
-        .a-inspect-button {
-            display: none !important;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+            display: none;
         }
 
         /* ================================
@@ -545,21 +531,6 @@
             box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
         }
 
-        .share-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .share-btn:hover::before {
-            left: 100%;
-        }
-
         /* Floating background elements */
         .hero::before,
         .hero::after {
@@ -586,471 +557,6 @@
             background: var(--color-oak);
             border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
             animation: float 6s ease-in-out infinite reverse;
-        }
-
-        /* ================================
-           SIZE SELECTOR
-           ================================ */
-
-        .size-selector {
-            background: var(--color-white);
-            position: relative;
-        }
-
-        .section-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(1.5rem, 6vw, 2.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-            margin-bottom: var(--space-2xl);
-        }
-
-        .size-grid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-xl);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .size-card {
-            background: var(--color-cream);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg);
-            text-align: center;
-            position: relative;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        /* Size Card Dimensions - Proportional to actual desk sizes */
-        .size-card:nth-child(1) {
-            width: 240px;
-            height: 140px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-        }
-
-        .size-card:nth-child(2) {
-            width: 280px;
-            height: 160px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .size-card:nth-child(3) {
-            width: 320px;
-            height: 160px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-        }
-
-        .size-card:hover,
-        .size-card.active {
-            transform: translate(-3px, -3px);
-            box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--color-charcoal);
-        }
-
-        .size-card.active {
-            background: var(--color-electric);
-            color: var(--color-white);
-        }
-
-        .size-number {
-            position: absolute;
-            top: -12px;
-            right: -12px;
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            border: 2px solid var(--color-electric);
-            border-radius: var(--corner-small);
-        }
-
-        .size-name {
-            font-family: var(--font-secondary);
-            font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: var(--space-xs);
-        }
-
-        .size-dimension {
-            font-family: var(--font-primary);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--color-electric);
-            margin: var(--space-xs) 0;
-        }
-
-        .size-card.active .size-dimension {
-            color: var(--color-white);
-        }
-
-        .size-description {
-            font-family: var(--font-primary);
-            font-size: 0.75rem;
-            opacity: 0.8;
-            line-height: 1.3;
-            margin-top: var(--space-xs);
-        }
-
-        /* ================================
-           MATERIALS SECTION
-           ================================ */
-
-        .materials-section {
-            background: var(--color-forest);
-            color: var(--color-white);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .materials-section::before {
-            content: '◆ ● ■';
-            position: absolute;
-            top: 20%;
-            right: -10%;
-            font-size: 8rem;
-            color: var(--color-yellow);
-            opacity: 0.1;
-            letter-spacing: 40px;
-            animation: float 10s ease-in-out infinite;
-            transform: rotate(15deg);
-        }
-
-        .materials-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--space-lg);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .material-tile {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: var(--space-lg);
-            text-align: center;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            backdrop-filter: blur(10px);
-            position: relative;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .material-tile:nth-child(2) {
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .material-tile:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .material-icon {
-            font-size: 2.5rem;
-            margin-bottom: var(--space-sm);
-            display: block;
-        }
-
-        .material-name {
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--color-oak);
-            font-size: 1.1rem;
-            margin-bottom: var(--space-sm);
-        }
-
-        .material-description {
-            font-family: var(--font-primary);
-            font-size: 0.9rem;
-            opacity: 0.8;
-            line-height: 1.4;
-        }
-
-        /* ================================
-           CONTACT SECTION
-           ================================ */
-
-        .contact-section {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-        }
-
-        .contact-form {
-            display: grid;
-            gap: var(--space-lg);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-xs);
-        }
-
-        .form-label {
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-        }
-
-        .form-input {
-            padding: var(--space-md);
-            border: 3px solid var(--color-white);
-            background: transparent;
-            color: var(--color-white);
-            font-family: var(--font-secondary);
-            font-size: 1rem;
-            border-radius: var(--corner-small);
-            transition: all 0.2s ease;
-        }
-
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--color-electric);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3);
-        }
-
-        .form-submit {
-            background: var(--color-electric);
-            color: var(--color-white);
-            border: 3px solid var(--color-electric);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-yellow);
-            margin-top: var(--space-lg);
-        }
-
-        .form-submit:hover {
-            background: var(--color-white);
-            color: var(--color-electric);
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
-        }
-
-        /* ================================
-           RADIO BUTTONS
-           ================================ */
-
-        .radio-group {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-md);
-            margin-top: var(--space-sm);
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            font-family: var(--font-secondary);
-            font-weight: 500;
-            color: var(--color-white);
-            cursor: pointer;
-            padding: var(--space-sm);
-            border-radius: var(--corner-small);
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .radio-option:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .radio-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .radio-custom {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--color-white);
-            border-radius: 50%;
-            position: relative;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .radio-option input[type="radio"]:checked + .radio-custom {
-            border-color: var(--color-electric);
-            background: var(--color-electric);
-        }
-
-        .radio-option input[type="radio"]:checked + .radio-custom::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
-            background: var(--color-white);
-            border-radius: 50%;
-        }
-
-        .radio-option:hover .radio-custom {
-            border-color: var(--color-electric);
-            background: rgba(0, 102, 255, 0.2);
-        }
-
-        /* ================================
-           CHAT SECTION
-           ================================ */
-
-        .copenhagen-section {
-            background: var(--color-yellow);
-            color: var(--color-charcoal);
-            text-align: center;
-            position: relative;
-        }
-
-        .copenhagen-section::before {
-            content: '💬';
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            font-size: 4rem;
-            opacity: 0.2;
-            animation: float 7s ease-in-out infinite;
-        }
-
-        .copenhagen-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: var(--space-lg);
-        }
-
-        .copenhagen-subtitle {
-            font-family: var(--font-primary);
-            font-size: 1.1rem;
-            margin-bottom: var(--space-2xl);
-            opacity: 0.8;
-        }
-
-        .chat-options {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-            max-width: 320px;
-            margin: 0 auto var(--space-xl);
-        }
-
-        .chat-btn {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-forest);
-            cursor: pointer;
-        }
-
-        .chat-btn:nth-child(2) {
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .chat-btn.faq {
-            background: var(--color-oak);
-            border-color: var(--color-oak);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #B8935A;
-        }
-
-        .chat-btn.email {
-            background: var(--color-electric);
-            border-color: var(--color-electric);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 #0052CC;
-        }
-
-        .chat-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
-        }
-
-        .chat-btn.faq:hover {
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #B8935A;
-        }
-
-        .chat-btn.email:hover {
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #0052CC;
-        }
-
-        .chat-subtitle {
-            font-family: var(--font-primary);
-            font-size: 0.9rem;
-            opacity: 0.7;
-            font-style: italic;
-        }
-
-        /* ================================
-           SWIPE INDICATOR
-           ================================ */
-
-        .swipe-indicator {
-            position: absolute;
-            bottom: var(--space-lg);
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-xs);
-            opacity: 0.6;
-            animation: bounce 2s infinite;
-        }
-
-        .swipe-text {
-            font-family: var(--font-primary);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .swipe-arrow {
-            font-size: 1.2rem;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
         }
 
         /* ================================
@@ -1238,52 +744,7 @@
                 gap: var(--space-xl);
             }
 
-            .materials-grid {
-                grid-template-columns: repeat(3, 1fr);
-                max-width: 600px;
-            }
-
-            .size-grid {
-                flex-direction: row;
-                justify-content: center;
-                max-width: 1000px;
-            }
-
-            /* Larger cards on desktop while maintaining proportions */
-            .size-card:nth-child(1) {
-                width: 280px;
-                height: 160px;
-            }
-
-            .size-card:nth-child(2) {
-                width: 320px;
-                height: 180px;
-            }
-
-            .size-card:nth-child(3) {
-                width: 360px;
-                height: 180px;
-            }
-
-            .contact-form {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 600px;
-            }
-
-            .form-group.full-width {
-                grid-column: 1 / -1;
-            }
-
-            .radio-group {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
             .choice-buttons {
-                flex-direction: row;
-                max-width: 600px;
-            }
-
-            .chat-options {
                 flex-direction: row;
                 max-width: 600px;
             }
@@ -1323,34 +784,6 @@
                 box-shadow: 4px 4px 0 var(--color-yellow);
             }
 
-            .size-card:active {
-                transform: translate(-3px, -3px);
-                box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--color-charcoal);
-            }
-
-            .form-submit:active {
-                transform: translate(-2px, -2px);
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
-            }
-
-            .chat-btn:active {
-                transform: translate(-2px, -2px);
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
-            }
-
-            .chat-btn.faq:active {
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #B8935A;
-            }
-
-            .chat-btn.email:active {
-                box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 #0052CC;
-            }
-
-            .radio-option:active {
-                background: rgba(255, 255, 255, 0.2);
-                transform: scale(0.98);
-            }
-
             .share-btn:active {
                 transform: translate(-2px, -2px) scale(0.95);
                 background: var(--color-forest);
@@ -1378,11 +811,6 @@
     <!-- Navigation Dots -->
     <div class="nav-dots">
         <div class="nav-dot active" onclick="scrollToSection(0)"></div>
-        <div class="nav-dot" onclick="scrollToSection(1)"></div>
-        <div class="nav-dot" onclick="scrollToSection(2)"></div>
-        <div class="nav-dot" onclick="scrollToSection(3)"></div>
-        <div class="nav-dot" onclick="scrollToSection(4)"></div>
-        <div class="nav-dot" onclick="scrollToSection(5)"></div>
     </div>
 
     <!-- Floating Share Button -->
@@ -1396,7 +824,7 @@
         <p class="mystery-subtitle">I'm the desk your workspace has been missing. How would you like to find me?</p>
         
         <div class="choice-buttons">
-            <button class="choice-btn ar-btn floating-element pulse" onclick="launchAR()">
+            <button class="choice-btn ar-btn floating-element pulse" onclick="launchWebXRAR()">
                 🔍 Find Me in AR
                 <div class="choice-description">Place me in your space</div>
             </button>
@@ -1407,74 +835,10 @@
         </div>
     </div>
 
-    <!-- AR Container -->
+    <!-- WebXR AR Container -->
     <div class="ar-container" id="arContainer">
-        <!-- AR.js Scene -->
-        <a-scene
-            id="arScene"
-            embedded
-            arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-            renderer="logarithmicDepthBuffer: true; colorManagement: true;"
-            vr-mode-ui="enabled: false"
-            device-orientation-permission-ui="enabled: false">
-            
-            <!-- Assets -->
-            <a-assets>
-                <!-- Your .glb models -->
-                <a-asset-item 
-                    id="deskPlayful" 
-                    src="/assets/models/ar/ar_playful.glb"
-                    crossorigin="anonymous">
-                </a-asset-item>
-                <a-asset-item 
-                    id="deskBrand" 
-                    src="/assets/models/ar/ar_brand.glb"
-                    crossorigin="anonymous">
-                </a-asset-item>
-                <a-asset-item 
-                    id="deskPremium" 
-                    src="/assets/models/ar/ar_premium.glb"
-                    crossorigin="anonymous">
-                </a-asset-item>
-            </a-assets>
-
-            <!-- Lights -->
-            <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
-            <a-light 
-                type="directional" 
-                position="2 4 4" 
-                intensity="0.8" 
-                color="#ffffff">
-            </a-light>
-
-            <!-- AR Marker -->
-            <a-marker
-                id="deskMarker"
-                type="pattern"
-                preset="hiro"
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse">
-                
-                <!-- Desk Model (will be set dynamically) -->
-                <a-entity
-                    id="deskEntity" 
-                    gltf-model=""
-                    scale="0.5 0.5 0.5"
-                    position="0 0 0"
-                    rotation="0 0 0"
-                    animation-mixer
-                    class="clickable"
-                    ar-desk-controller>
-                </a-entity>
-
-            </a-marker>
-
-            <!-- Camera -->
-            <a-entity camera look-controls-enabled="false"></a-entity>
-        </a-scene>
-
-        <!-- AR UI Overlay -->
+        <canvas class="ar-canvas" id="arCanvas"></canvas>
+        
         <div class="ar-ui">
             <!-- Loading Indicator -->
             <div class="ar-loading" id="arLoading">
@@ -1491,19 +855,26 @@
 
             <!-- Instructions -->
             <div class="ar-instructions" id="arInstructions">
-                <p>📱 Point your camera at a flat surface</p>
-                <p>Look for the AR marker or any flat surface</p>
-                <p><small>🔍 Move your phone to see the desk appear!</small></p>
+                <p>🔍 Find a flat surface</p>
+                <p>Point your camera at the ground or table</p>
+                <p><small>Tap when you see the placement circle</small></p>
             </div>
 
             <!-- Controls -->
             <div class="ar-controls" id="arControls">
-                <button class="ar-btn screenshot" onclick="takeScreenshot()">
+                <button class="ar-btn screenshot" onclick="takeARScreenshot()">
                     📸 Capture & Share
                 </button>
-                <button class="ar-btn close" onclick="closeAR()">
+                <button class="ar-btn close" onclick="closeWebXRAR()">
                     ✕
                 </button>
+            </div>
+
+            <!-- Error State -->
+            <div class="ar-error" id="arError">
+                <h2>❌ AR Unavailable</h2>
+                <p id="arErrorMessage">WebXR AR not supported on this device</p>
+                <button class="ar-btn" onclick="showHomepage()">Continue to Website</button>
             </div>
         </div>
     </div>
@@ -1548,146 +919,19 @@
                 Skip the supplier maze. Three sizes, quality materials, single source. Your brand deserves better than generic.
             </p>
             <div class="hero-actions slide-in-up">
-                <a href="#" class="hero-cta floating-element" onclick="scrollToSection(1)">Configure Your Desk</a>
+                <a href="/configurator" class="hero-cta floating-element">Configure Your Desk</a>
                 <button class="share-btn floating-element" onclick="shareExperience()">
                     🚀 Share the Hype
                 </button>
             </div>
         </div>
-        <div class="swipe-indicator">
-            <span class="swipe-text">Swipe Up</span>
-            <span class="swipe-arrow">↑</span>
-        </div>
     </section>
 
-    <!-- Size Selector -->
-    <section class="section size-selector" id="configure">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Choose Your Size</h2>
-            <div class="size-grid">
-                <div class="size-card slide-in-up floating-element" onclick="selectSize(1)">
-                    <div class="size-number">1</div>
-                    <h3 class="size-name">Focused</h3>
-                    <div class="size-dimension">120×70cm</div>
-                    <p class="size-description">Laptop + notebook + coffee. Nothing excess.</p>
-                </div>
-                <div class="size-card slide-in-up floating-element active" onclick="selectSize(2)">
-                    <div class="size-number">2</div>
-                    <h3 class="size-name">Balanced</h3>
-                    <div class="size-dimension">140×80cm</div>
-                    <p class="size-description">Monitor + materials. Room to think.</p>
-                </div>
-                <div class="size-card slide-in-up floating-element" onclick="selectSize(3)">
-                    <div class="size-number">3</div>
-                    <h3 class="size-name">Full Spread</h3>
-                    <div class="size-dimension">160×80cm</div>
-                    <p class="size-description">Dual monitors + collaboration space.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Import Three.js and WebXR Implementation -->
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
+        import { GLTFLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
 
-    <!-- Materials Section -->
-    <section class="section materials-section" id="materials">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Your Brand. Our Quality.</h2>
-            <div class="materials-grid">
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-icon">🎪</div>
-                    <div class="material-name">Playful</div>
-                    <div class="material-description">Fun & creative workspaces for teams who don't do boring</div>
-                </div>
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-icon">🎨</div>
-                    <div class="material-name">Brand Identity</div>
-                    <div class="material-description">Professional surfaces that represent your company values</div>
-                </div>
-                <div class="material-tile slide-in-up floating-element">
-                    <div class="material-icon">✨</div>
-                    <div class="material-name">Premium</div>
-                    <div class="material-description">Luxury craftsmanship for executive spaces</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="section contact-section" id="contact">
-        <div class="section-content">
-            <h2 class="section-title slide-in-up">Get Early Access</h2>
-            <form class="contact-form" onsubmit="submitContact(event)">
-                <div class="form-group slide-in-up">
-                    <label class="form-label">Your Name</label>
-                    <input type="text" class="form-input" placeholder="First Last" required>
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" placeholder="name@company.com" required>
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label">Company</label>
-                    <input type="text" class="form-input" placeholder="Optional">
-                </div>
-                <div class="form-group slide-in-up">
-                    <label class="form-label">Team Size</label>
-                    <input type="text" class="form-input" placeholder="5, 20, 100+">
-                </div>
-                <div class="form-group full-width slide-in-up">
-                    <label class="form-label">How did you find us?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="source" value="qr" required>
-                            <span class="radio-custom"></span>
-                            📱 QR Code
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="source" value="flyer" required>
-                            <span class="radio-custom"></span>
-                            📄 Flyer
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="source" value="friends" required>
-                            <span class="radio-custom"></span>
-                            👥 Friends
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="source" value="aliens" required>
-                            <span class="radio-custom"></span>
-                            👽 Aliens
-                        </label>
-                    </div>
-                </div>
-                <button type="submit" class="form-submit slide-in-up floating-element">Join Early Access</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Chat Section -->
-    <section class="section copenhagen-section" id="chat">
-        <div class="section-content">
-            <h2 class="copenhagen-title slide-in-up">Let's Chat!</h2>
-            <p class="copenhagen-subtitle slide-in-up">
-                Questions about your workspace?<br>
-                Start a conversation with our team
-            </p>
-            <div class="chat-options">
-                <a href="/faq" class="chat-btn faq slide-in-up floating-element">
-                    ❓ FAQ & Answers
-                </a>
-                <a href="mailto:hello@formdesk.dk?subject=Form Desk Inquiry&body=Hi! I'm interested in learning more about Form Desk..." class="chat-btn email slide-in-up floating-element">
-                    📧 Email Us
-                </a>
-                <button class="chat-btn schedule slide-in-up floating-element" onclick="scheduleCall()">
-                    📅 Schedule Call
-                </button>
-            </div>
-            <p class="chat-subtitle slide-in-up">
-                🇩🇰 Copenhagen team • Usually responds within 1 hour
-            </p>
-        </div>
-    </section>
-
-    <script>
         // ================================
         // AR PERSONALITY MODELS
         // ================================
@@ -1695,72 +939,320 @@
         const AR_PERSONALITIES = {
             playful: {
                 name: "Playful",
-                model: "#deskPlayful",
+                modelPath: "/assets/models/ar/ar_playful.glb",
                 color: "personality-playful",
                 description: "Fun & Creative Workspaces",
                 shareText: "🎪 Just placed my PLAYFUL workspace personality in AR! This Form Desk is perfect for creative teams who don't do boring. Copenhagen design at its finest!",
-                hashtags: "PlayfulWorkspace,FormDesk,Copenhagen,CreativeOffice,AR"
+                hashtags: "PlayfulWorkspace,FormDesk,Copenhagen,CreativeOffice,WebXR"
             },
             brand: {
                 name: "Brand Identity", 
-                model: "#deskBrand",
+                modelPath: "/assets/models/ar/ar_brand.glb",
                 color: "personality-brand",
                 description: "Professional Brand Identity",
                 shareText: "💼 Discovered my PROFESSIONAL workspace identity in AR! This Form Desk represents everything our brand stands for. Copenhagen design meets business excellence!",
-                hashtags: "BrandIdentity,FormDesk,Copenhagen,ProfessionalOffice,AR"
+                hashtags: "BrandIdentity,FormDesk,Copenhagen,ProfessionalOffice,WebXR"
             },
             premium: {
                 name: "Premium",
-                model: "#deskPremium", 
+                modelPath: "/assets/models/ar/ar_premium.glb", 
                 color: "personality-premium",
                 description: "Luxury & Craftsmanship",
                 shareText: "✨ Found my PREMIUM workspace experience in AR! This Form Desk showcases true craftsmanship and luxury. Copenhagen design at its absolute finest!",
-                hashtags: "PremiumWorkspace,FormDesk,Copenhagen,LuxuryOffice,AR"
+                hashtags: "PremiumWorkspace,FormDesk,Copenhagen,LuxuryOffice,WebXR"
             }
         };
+
+        // ================================
+        // WEBXR AR CLASS
+        // ================================
+
+        class FormDeskWebXRAR {
+            constructor() {
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.xrSession = null;
+                this.deskModel = null;
+                this.reticle = null;
+                this.hitTestSource = null;
+                this.selectedPersonality = this.getRandomPersonality();
+                this.deskPlaced = false;
+                this.screenshotBlob = null;
+            }
+
+            getRandomPersonality() {
+                const personalities = Object.keys(AR_PERSONALITIES);
+                const random = personalities[Math.floor(Math.random() * personalities.length)];
+                return AR_PERSONALITIES[random];
+            }
+
+            async init() {
+                try {
+                    // Check WebXR support
+                    if (!navigator.xr) {
+                        throw new Error('WebXR not supported in this browser');
+                    }
+
+                    const supported = await navigator.xr.isSessionSupported('immersive-ar');
+                    if (!supported) {
+                        throw new Error('AR not supported on this device');
+                    }
+
+                    this.setupScene();
+                    this.createReticle();
+                    await this.loadDeskModel();
+                    await this.startARSession();
+
+                    trackViralEvent('webxr_ar_initialized', { 
+                        personality: this.selectedPersonality.name.toLowerCase(),
+                        ar_library: 'webxr_native'
+                    });
+
+                } catch (error) {
+                    console.error('WebXR AR initialization failed:', error);
+                    this.showError(error.message);
+                    
+                    trackViralEvent('webxr_ar_initialization_failed', { 
+                        error: error.message,
+                        personality: this.selectedPersonality?.name,
+                        ar_library: 'webxr_native'
+                    });
+                }
+            }
+
+            setupScene() {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+                
+                this.renderer = new THREE.WebGLRenderer({ 
+                    canvas: document.getElementById('arCanvas'),
+                    antialias: true, 
+                    alpha: true 
+                });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.xr.enabled = true;
+
+                // Lighting setup
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(2, 4, 4);
+                directionalLight.castShadow = true;
+                
+                this.scene.add(ambientLight);
+                this.scene.add(directionalLight);
+
+                console.log('WebXR scene setup complete');
+            }
+
+            createReticle() {
+                const geometry = new THREE.RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2);
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0x0066ff,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                
+                this.reticle = new THREE.Mesh(geometry, material);
+                this.reticle.matrixAutoUpdate = false;
+                this.reticle.visible = false;
+                this.scene.add(this.reticle);
+
+                console.log('AR reticle created');
+            }
+
+            async loadDeskModel() {
+                const loader = new GLTFLoader();
+                
+                try {
+                    const gltf = await new Promise((resolve, reject) => {
+                        loader.load(
+                            this.selectedPersonality.modelPath,
+                            resolve,
+                            (progress) => {
+                                console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%');
+                            },
+                            reject
+                        );
+                    });
+                    
+                    this.deskModel = gltf.scene;
+                    this.deskModel.scale.setScalar(0.3);
+                    this.deskModel.visible = false;
+                    this.scene.add(this.deskModel);
+                    
+                    console.log(`Loaded ${this.selectedPersonality.name} personality model`);
+                } catch (error) {
+                    console.warn('Failed to load desk model, creating fallback:', error);
+                    // Create a fallback desk representation
+                    const geometry = new THREE.BoxGeometry(1.4, 0.05, 0.8);
+                    const material = new THREE.MeshStandardMaterial({ 
+                        color: this.selectedPersonality.name === 'playful' ? 0xffd700 : 
+                               this.selectedPersonality.name === 'premium' ? 0xd4a574 : 0x0066ff 
+                    });
+                    this.deskModel = new THREE.Mesh(geometry, material);
+                    this.deskModel.visible = false;
+                    this.scene.add(this.deskModel);
+                }
+            }
+
+            async startARSession() {
+                try {
+                    this.xrSession = await navigator.xr.requestSession('immersive-ar', {
+                        requiredFeatures: ['hit-test'],
+                        optionalFeatures: ['dom-overlay'],
+                        domOverlay: { root: document.getElementById('arContainer') }
+                    });
+
+                    await this.renderer.xr.setSession(this.xrSession);
+
+                    // Set up hit testing
+                    const referenceSpace = await this.xrSession.requestReferenceSpace('viewer');
+                    this.hitTestSource = await this.xrSession.requestHitTestSource({ space: referenceSpace });
+
+                    // Handle session events
+                    this.xrSession.addEventListener('end', () => {
+                        this.xrSession = null;
+                        this.hitTestSource = null;
+                        this.deskPlaced = false;
+                        console.log('AR session ended');
+                    });
+
+                    // Handle touch events for placement
+                    this.renderer.domElement.addEventListener('click', this.onSelect.bind(this));
+
+                    // Show personality reveal
+                    this.showPersonalityReveal();
+
+                    // Hide loading, show instructions and controls
+                    setTimeout(() => {
+                        document.getElementById('arLoading').style.display = 'none';
+                        document.getElementById('arInstructions').style.display = 'block';
+                        document.getElementById('arControls').style.display = 'flex';
+                    }, 2000);
+
+                    // Start render loop
+                    this.renderer.setAnimationLoop(this.render.bind(this));
+
+                    console.log('WebXR AR session started successfully');
+                } catch (error) {
+                    console.error('Failed to start AR session:', error);
+                    throw new Error('Failed to start AR. Please ensure you have a camera and try again.');
+                }
+            }
+
+            render(timestamp, frame) {
+                if (!frame) return;
+
+                if (this.hitTestSource) {
+                    const hitTestResults = frame.getHitTestResults(this.hitTestSource);
+                    
+                    if (hitTestResults.length > 0) {
+                        const hit = hitTestResults[0];
+                        this.reticle.visible = true;
+                        this.reticle.matrix.fromArray(hit.getPose(this.renderer.xr.getReferenceSpace()).transform.matrix);
+                    } else {
+                        this.reticle.visible = false;
+                    }
+                }
+
+                this.renderer.render(this.scene, this.camera);
+            }
+
+            onSelect() {
+                if (this.reticle.visible && this.deskModel && !this.deskPlaced) {
+                    // Place the desk at the reticle position
+                    this.deskModel.position.setFromMatrixPosition(this.reticle.matrix);
+                    this.deskModel.visible = true;
+                    this.deskPlaced = true;
+                    
+                    // Hide reticle after placement
+                    this.reticle.visible = false;
+                    
+                    // Update instructions
+                    document.getElementById('arInstructions').innerHTML = `
+                        <p>🎉 Perfect! Your ${this.selectedPersonality.name} desk is placed</p>
+                        <p>Walk around to see different angles</p>
+                        <p><small>Ready to capture and share?</small></p>
+                    `;
+                    
+                    console.log(`Placed ${this.selectedPersonality.name} desk in AR`);
+                    
+                    trackViralEvent('webxr_desk_placed', {
+                        personality: this.selectedPersonality.name.toLowerCase(),
+                        ar_library: 'webxr_native'
+                    });
+                }
+            }
+
+            showPersonalityReveal() {
+                const reveal = document.getElementById('personalityReveal');
+                const title = document.getElementById('personalityTitle');
+                const description = document.getElementById('personalityDescription');
+                
+                title.textContent = this.selectedPersonality.name;
+                title.className = `personality-title ${this.selectedPersonality.color}`;
+                description.textContent = this.selectedPersonality.description;
+                
+                reveal.style.display = 'block';
+                
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    reveal.style.display = 'none';
+                }, 3000);
+                
+                trackViralEvent('webxr_personality_revealed', {
+                    personality: this.selectedPersonality.name.toLowerCase()
+                });
+            }
+
+            showError(message) {
+                document.getElementById('arError').style.display = 'block';
+                document.getElementById('arErrorMessage').textContent = message;
+                document.getElementById('arLoading').style.display = 'none';
+            }
+
+            takeScreenshot() {
+                const canvas = this.renderer.domElement;
+                canvas.toBlob((blob) => {
+                    this.screenshotBlob = blob;
+                    
+                    // Show share modal
+                    window.showShareModal();
+                    
+                    trackViralEvent('webxr_screenshot_taken', {
+                        personality: this.selectedPersonality.name.toLowerCase(),
+                        desk_placed: this.deskPlaced,
+                        ar_library: 'webxr_native'
+                    });
+                }, 'image/jpeg', 0.9);
+            }
+
+            close() {
+                if (this.xrSession) {
+                    this.xrSession.end();
+                }
+                
+                trackViralEvent('webxr_ar_closed', { 
+                    personality: this.selectedPersonality?.name.toLowerCase(),
+                    desk_placed: this.deskPlaced,
+                    ar_library: 'webxr_native'
+                });
+            }
+        }
 
         // ================================
         // GLOBAL STATE
         // ================================
 
+        let webxrAR = null;
         let currentSection = 0;
-        const sections = document.querySelectorAll('.section');
-        const navDots = document.querySelectorAll('.nav-dot');
-        let selectedPersonality = null;
-        let arInitialized = false;
-        let deskPlaced = false;
-        let screenshotBlob = null;
 
         // ================================
-        // MYSTERY OVERLAY CONTROL
+        // GLOBAL FUNCTIONS
         // ================================
 
-        function launchAR() {
-            // Select random personality for mystery element
-            const personalities = Object.keys(AR_PERSONALITIES);
-            const randomPersonality = personalities[Math.floor(Math.random() * personalities.length)];
-            selectedPersonality = AR_PERSONALITIES[randomPersonality];
-
-            trackViralEvent('ar_launch_requested', { 
-                personality: randomPersonality,
-                source: 'mystery_overlay',
-                ar_library: 'ar.js_open_source'
-            });
-
-            initializeAR();
-        }
-
-        function showHomepage() {
-            trackViralEvent('homepage_selected', { source: 'mystery_overlay' });
-            document.getElementById('mysteryOverlay').classList.add('hidden');
-            setTimeout(triggerAnimations, 500);
-        }
-
-        // ================================
-        // AR FUNCTIONALITY (AR.js)
-        // ================================
-
-        async function initializeAR() {
+        window.launchWebXRAR = async function() {
             try {
                 // Hide mystery overlay
                 document.getElementById('mysteryOverlay').classList.add('hidden');
@@ -1769,239 +1261,82 @@
                 const arContainer = document.getElementById('arContainer');
                 arContainer.classList.add('active');
                 
+                // Initialize WebXR AR
+                webxrAR = new FormDeskWebXRAR();
+                
                 // Update loading with personality info
                 document.getElementById('loadingPersonality').textContent = 
-                    `Preparing ${selectedPersonality.name} Experience...`;
+                    `Preparing ${webxrAR.selectedPersonality.name} Experience...`;
                 
-                // Initialize AR.js if not already done
-                if (!arInitialized) {
-                    await initARjs();
-                    arInitialized = true;
-                }
+                await webxrAR.init();
                 
-                trackViralEvent('ar_initialized', { 
-                    personality: selectedPersonality.name.toLowerCase(),
-                    timestamp: Date.now(),
-                    ar_library: 'ar.js'
+                trackViralEvent('webxr_ar_launch_requested', { 
+                    personality: webxrAR.selectedPersonality.name.toLowerCase(),
+                    source: 'mystery_overlay',
+                    ar_library: 'webxr_native'
                 });
                 
             } catch (error) {
-                console.error('AR initialization failed:', error);
-                trackViralEvent('ar_initialization_failed', { 
+                console.error('WebXR AR launch failed:', error);
+                trackViralEvent('webxr_ar_launch_failed', { 
                     error: error.message,
-                    personality: selectedPersonality?.name,
-                    ar_library: 'ar.js'
+                    ar_library: 'webxr_native'
                 });
                 
                 // Fallback to homepage
                 alert('AR not supported on this device. Showing homepage instead.');
-                showHomepage();
+                window.showHomepage();
             }
-        }
+        };
 
-        async function initARjs() {
-            return new Promise((resolve, reject) => {
-                const scene = document.getElementById('arScene');
-                
-                // Set the selected personality model
-                const deskEntity = document.getElementById('deskEntity');
-                deskEntity.setAttribute('gltf-model', selectedPersonality.model);
-                
-                // Show personality reveal immediately
-                showPersonalityReveal();
-                
-                // Setup AR.js event listeners
-                scene.addEventListener('arjs-video-loaded', () => {
-                    console.log('AR.js camera loaded successfully');
-                });
-
-                const marker = document.getElementById('deskMarker');
-                
-                marker.addEventListener('markerFound', () => {
-                    console.log('AR marker found');
-                    deskPlaced = true;
-                    
-                    // Update instructions
-                    document.getElementById('arInstructions').innerHTML = `
-                        <p>🎉 Perfect! Your ${selectedPersonality.name} desk is placed</p>
-                        <p>Move your phone to see different angles</p>
-                    `;
-                    
-                    trackViralEvent('ar_marker_found', {
-                        personality: selectedPersonality.name.toLowerCase(),
-                        timestamp: Date.now()
-                    });
-                });
-
-                marker.addEventListener('markerLost', () => {
-                    console.log('AR marker lost');
-                    deskPlaced = false;
-                    
-                    trackViralEvent('ar_marker_lost', {
-                        personality: selectedPersonality.name.toLowerCase(),
-                        timestamp: Date.now()
-                    });
-                });
-                
-                // Hide loading and show UI after initialization
-                setTimeout(() => {
-                    document.getElementById('arLoading').style.display = 'none';
-                    document.getElementById('arInstructions').style.display = 'block';
-                    document.getElementById('arControls').style.display = 'flex';
-                    resolve();
-                }, 3000);
-
-                // Timeout fallback
-                setTimeout(() => {
-                    if (!arInitialized) {
-                        reject(new Error('AR initialization timeout'));
-                    }
-                }, 10000);
-            });
-        }
-
-        function showPersonalityReveal() {
-            const reveal = document.getElementById('personalityReveal');
-            const title = document.getElementById('personalityTitle');
-            const description = document.getElementById('personalityDescription');
-            
-            title.textContent = selectedPersonality.name;
-            title.className = `personality-title ${selectedPersonality.color}`;
-            description.textContent = selectedPersonality.description;
-            
-            reveal.style.display = 'block';
-            
-            // Hide after 3 seconds
-            setTimeout(() => {
-                reveal.style.display = 'none';
-            }, 3000);
-            
-            trackViralEvent('personality_revealed', {
-                personality: selectedPersonality.name.toLowerCase(),
-                timestamp: Date.now()
-            });
-        }
-
-        // ================================
-        // SCREENSHOT & SHARING
-        // ================================
-
-        function takeScreenshot() {
-            const scene = document.getElementById('arScene');
-            
-            // Get the AR.js canvas
-            const canvas = scene.querySelector('canvas') || scene.canvas;
-            
-            if (canvas) {
-                canvas.toBlob((blob) => {
-                    screenshotBlob = blob;
-                    const url = URL.createObjectURL(blob);
-                    
-                    // Show share modal immediately
-                    showShareModal();
-                    
-                    trackViralEvent('ar_screenshot_taken', {
-                        personality: selectedPersonality.name.toLowerCase(),
-                        timestamp: Date.now(),
-                        desk_placed: deskPlaced,
-                        ar_library: 'ar.js'
-                    });
-                }, 'image/jpeg', 0.9);
-            } else {
-                // Fallback - just show share modal without image
-                showShareModal();
+        window.takeARScreenshot = function() {
+            if (webxrAR) {
+                webxrAR.takeScreenshot();
             }
-        }
+        };
 
-        function closeAR() {
+        window.closeWebXRAR = function() {
+            if (webxrAR) {
+                webxrAR.close();
+            }
+            
             document.getElementById('arContainer').classList.remove('active');
-            
-            // Reset AR state
-            deskPlaced = false;
             
             // Show homepage
             setTimeout(() => {
-                showHomepage();
+                window.showHomepage();
             }, 500);
-            
-            trackViralEvent('ar_closed', { 
-                personality: selectedPersonality?.name.toLowerCase(),
-                desk_placed: deskPlaced,
-                timestamp: Date.now(),
-                ar_library: 'ar.js'
-            });
-        }
+        };
 
-        // ================================
-        // SECTION NAVIGATION
-        // ================================
-
-        function scrollToSection(index) {
-            const section = sections[index];
-            section.scrollIntoView({ behavior: 'smooth' });
-            updateNavigation(index);
-        }
-
-        function updateNavigation(index) {
-            navDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-            currentSection = index;
-        }
-
-        // Size Selection
-        function selectSize(sizeNumber) {
-            document.querySelectorAll('.size-card').forEach(card => {
-                card.classList.remove('active');
-            });
-            document.querySelectorAll('.size-card')[sizeNumber - 1].classList.add('active');
-        }
-
-        // Contact Form
-        function submitContact(event) {
-            event.preventDefault();
-            
-            // Get the selected source
-            const selectedSource = document.querySelector('input[name="source"]:checked');
-            const sourceValue = selectedSource ? selectedSource.value : 'not specified';
-            
-            alert(`Thank you for your interest! We'll be in touch about early access to Form desk configurator.\n\nSource: ${sourceValue.charAt(0).toUpperCase() + sourceValue.slice(1)}`);
-            
-            trackViralEvent('contact_form_submitted', {
-                source: sourceValue,
-                timestamp: Date.now()
-            });
-        }
-
-        // Schedule Call Function
-        function scheduleCall() {
-            alert('Scheduling feature coming soon!\n\nFor now, please send us an email at hello@formdesk.dk, and we\'ll set up a call within 24 hours.');
-            trackViralEvent('schedule_call_requested', { source: 'chat_section' });
-        }
+        window.showHomepage = function() {
+            trackViralEvent('homepage_selected', { source: 'mystery_overlay_or_ar_close' });
+            document.getElementById('mysteryOverlay').classList.add('hidden');
+            setTimeout(window.triggerAnimations, 500);
+        };
 
         // ================================
         // SHARE FUNCTIONALITY
         // ================================
 
-        function shareExperience() {
+        window.shareExperience = function() {
             document.getElementById('shareModal').classList.add('visible');
-            setupShareLinks();
-        }
+            window.setupShareLinks();
+        };
 
-        function closeShareModal() {
+        window.closeShareModal = function() {
             document.getElementById('shareModal').classList.remove('visible');
-        }
+        };
 
-        function setupShareLinks() {
-            const url = window.location.href + (selectedPersonality ? 
-                `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
+        window.setupShareLinks = function() {
+            const url = window.location.href + (webxrAR ? 
+                `?ref=webxr_share&personality=${webxrAR.selectedPersonality.name.toLowerCase()}` : 
                 '?ref=general_share');
-            const text = selectedPersonality ? 
-                selectedPersonality.shareText : 
-                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces. Check out their campaign!";
-            const hashtags = selectedPersonality ? 
-                selectedPersonality.hashtags : 
-                "FormDesk,Copenhagen,DesignFurniture,WorkspaceGoals";
+            const text = webxrAR ? 
+                webxrAR.selectedPersonality.shareText : 
+                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces with WebXR AR!";
+            const hashtags = webxrAR ? 
+                webxrAR.selectedPersonality.hashtags : 
+                "FormDesk,Copenhagen,DesignFurniture,WorkspaceGoals,WebXR";
             
             // Twitter
             const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${hashtags}`;
@@ -2010,58 +1345,58 @@
             // LinkedIn
             const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent('Form Desk - Office Furniture with Personality')}&summary=${encodeURIComponent(text)}`;
             document.getElementById('linkedinShare').href = linkedinUrl;
-        }
+        };
 
-        async function shareNative() {
+        window.shareNative = async function() {
             const shareData = {
-                title: selectedPersonality ? 
-                    `Form Desk - ${selectedPersonality.name} Personality` : 
+                title: webxrAR ? 
+                    `Form Desk - ${webxrAR.selectedPersonality.name} Personality` : 
                     'Form Desk - Finally, office furniture with personality',
-                text: selectedPersonality ? 
-                    selectedPersonality.shareText : 
-                    '🚀 Found something amazing! Check out this Copenhagen design company that\'s changing how we think about workspaces!',
-                url: window.location.href + (selectedPersonality ? 
-                    `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
+                text: webxrAR ? 
+                    webxrAR.selectedPersonality.shareText : 
+                    '🚀 Found something amazing! Check out this Copenhagen design company that\'s changing how we think about workspaces with WebXR AR!',
+                url: window.location.href + (webxrAR ? 
+                    `?ref=webxr_share&personality=${webxrAR.selectedPersonality.name.toLowerCase()}` : 
                     '?ref=general_share')
             };
 
             // Add image if supported and available
-            if (screenshotBlob && navigator.canShare && navigator.canShare({files: [screenshotBlob]})) {
-                const file = new File([screenshotBlob], 'form-desk-ar.jpg', { type: 'image/jpeg' });
+            if (webxrAR?.screenshotBlob && navigator.canShare && navigator.canShare({files: [webxrAR.screenshotBlob]})) {
+                const file = new File([webxrAR.screenshotBlob], 'form-desk-webxr-ar.jpg', { type: 'image/jpeg' });
                 shareData.files = [file];
             }
 
             if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
                 try {
                     await navigator.share(shareData);
-                    trackViralEvent('native_share', { 
-                        personality: selectedPersonality?.name.toLowerCase(),
+                    trackViralEvent('webxr_native_share', { 
+                        personality: webxrAR?.selectedPersonality.name.toLowerCase(),
                         success: true,
                         includes_image: !!shareData.files
                     });
-                    closeShareModal();
+                    window.closeShareModal();
                 } catch (err) {
                     if (err.name !== 'AbortError') {
-                        copyShareText();
+                        window.copyShareText();
                     }
                 }
             } else {
-                copyShareText();
+                window.copyShareText();
             }
-        }
+        };
 
-        async function copyLink() {
-            const url = window.location.href + (selectedPersonality ? 
-                `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
+        window.copyLink = async function() {
+            const url = window.location.href + (webxrAR ? 
+                `?ref=webxr_share&personality=${webxrAR.selectedPersonality.name.toLowerCase()}` : 
                 '?ref=general_share');
             try {
                 await navigator.clipboard.writeText(url);
                 alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!');
-                trackViralEvent('link_copied', { 
-                    personality: selectedPersonality?.name.toLowerCase(),
+                trackViralEvent('webxr_link_copied', { 
+                    personality: webxrAR?.selectedPersonality.name.toLowerCase(),
                     success: true 
                 });
-                closeShareModal();
+                window.closeShareModal();
             } catch (err) {
                 // Fallback for older browsers
                 const textArea = document.createElement('textarea');
@@ -2071,288 +1406,151 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 alert('🔗 Link copied to clipboard!');
-                closeShareModal();
+                window.closeShareModal();
             }
-        }
+        };
 
-        async function copyShareText() {
-            const text = selectedPersonality ? selectedPersonality.shareText : 
-                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces.";
-            const url = window.location.href + (selectedPersonality ? 
-                `?ref=ar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
+        window.copyShareText = async function() {
+            const text = webxrAR ? webxrAR.selectedPersonality.shareText : 
+                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces with WebXR AR.";
+            const url = window.location.href + (webxrAR ? 
+                `?ref=webxr_share&personality=${webxrAR.selectedPersonality.name.toLowerCase()}` : 
                 '?ref=general_share');
             const fullText = text + ' ' + url;
             
             try {
                 await navigator.clipboard.writeText(fullText);
-                alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your experience!');
-                trackViralEvent('text_copied', { 
-                    personality: selectedPersonality?.name.toLowerCase(),
+                alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your WebXR AR experience!');
+                trackViralEvent('webxr_text_copied', { 
+                    personality: webxrAR?.selectedPersonality.name.toLowerCase(),
                     success: true 
                 });
-                closeShareModal();
+                window.closeShareModal();
             } catch (err) {
                 console.error('Copy failed:', err);
             }
-        }
+        };
 
         // ================================
         // ANIMATION TRIGGERS
         // ================================
 
-        function triggerAnimations() {
+        window.triggerAnimations = function() {
             const animatedElements = document.querySelectorAll('.slide-in-up');
             animatedElements.forEach((element, index) => {
                 setTimeout(() => {
                     element.classList.add('active');
                 }, index * 100);
             });
-        }
-
-        // Intersection Observer for Section Detection
-        const observerOptions = {
-            threshold: 0.5,
-            rootMargin: '0px'
         };
-
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const sectionIndex = Array.from(sections).indexOf(entry.target);
-                    updateNavigation(sectionIndex);
-                    
-                    // Trigger animations for current section
-                    const sectionElements = entry.target.querySelectorAll('.slide-in-up');
-                    sectionElements.forEach((element, index) => {
-                        setTimeout(() => {
-                            element.classList.add('active');
-                        }, index * 100);
-                    });
-                }
-            });
-        }, observerOptions);
-
-        sections.forEach(section => {
-            sectionObserver.observe(section);
-        });
-
-        // ================================
-        // TOUCH/SWIPE DETECTION
-        // ================================
-
-        let startY = 0;
-        let endY = 0;
-
-        document.addEventListener('touchstart', (e) => {
-            startY = e.touches[0].clientY;
-        });
-
-        document.addEventListener('touchend', (e) => {
-            endY = e.changedTouches[0].clientY;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = startY - endY;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    // Swipe up
-                    if (currentSection < sections.length - 1) {
-                        scrollToSection(currentSection + 1);
-                    }
-                } else {
-                    // Swipe down
-                    if (currentSection > 0) {
-                        scrollToSection(currentSection - 1);
-                    }
-                }
-            }
-        }
-
-        // ================================
-        // KEYBOARD NAVIGATION
-        // ================================
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown' || e.key === ' ') {
-                e.preventDefault();
-                if (currentSection < sections.length - 1) {
-                    scrollToSection(currentSection + 1);
-                }
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (currentSection > 0) {
-                    scrollToSection(currentSection - 1);
-                }
-            } else if (e.key === 'Escape') {
-                // Close AR or modals
-                if (document.getElementById('shareModal').classList.contains('visible')) {
-                    closeShareModal();
-                } else if (document.getElementById('arContainer').classList.contains('active')) {
-                    closeAR();
-                }
-            }
-        });
 
         // ================================
         // VIRAL CAMPAIGN ANALYTICS
         // ================================
 
-        function trackViralEvent(eventName, properties = {}) {
-            // Enhanced analytics for viral campaign tracking
+        window.trackViralEvent = function(eventName, properties = {}) {
             const viralData = {
                 ...properties,
-                campaign: 'copenhagen_ar_2025',
+                campaign: 'copenhagen_webxr_2025',
                 event_type: 'viral_engagement',
                 timestamp: Date.now(),
                 user_agent: navigator.userAgent,
                 page_url: window.location.href,
-                session_id: getSessionId(),
-                qr_source: getQRSource(),
-                ar_solution: 'open_source_arjs'
+                session_id: window.getSessionId(),
+                qr_source: window.getQRSource(),
+                ar_solution: 'webxr_native'
             };
 
             console.log('🚀 Viral Event:', eventName, viralData);
             
             // TODO: Replace with your analytics service
             // analytics.track(eventName, viralData);
-        }
+        };
 
-        function getSessionId() {
-            // Generate or retrieve session ID for campaign tracking
+        window.getSessionId = function() {
             let sessionId = sessionStorage.getItem('form_desk_session');
             if (!sessionId) {
                 sessionId = 'fd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
                 sessionStorage.setItem('form_desk_session', sessionId);
             }
             return sessionId;
-        }
+        };
 
-        function getQRSource() {
-            // Check URL parameters for QR source tracking
+        window.getQRSource = function() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('qr') || urlParams.get('source') || 'direct';
-        }
+        };
 
         // ================================
-        // INITIALIZATION & EVENT LISTENERS
+        // INITIALIZATION
         // ================================
 
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, initializing Form Desk experience...');
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing Form Desk WebXR experience...');
             
-            // Initialize A-Frame components when A-Frame is ready
-            if (typeof AFRAME !== 'undefined') {
-                initializeAFrameComponents();
-            } else {
-                // Wait for A-Frame to load
-                document.addEventListener('aframe-loaded', initializeAFrameComponents);
+            // Close modal when clicking outside
+            const shareModal = document.getElementById('shareModal');
+            if (shareModal) {
+                shareModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        window.closeShareModal();
+                    }
+                });
             }
-            
-            // Set up event listeners
-            setupEventListeners();
-            
-            // Initialize analytics
-            initializeAnalytics();
+
+            // Track page load with campaign context
+            window.trackViralEvent('copenhagen_webxr_campaign_start', {
+                timestamp: Date.now(),
+                page_url: window.location.href,
+                referrer: document.referrer,
+                qr_source: window.getQRSource(),
+                ar_solution: 'webxr_native'
+            });
+
+            // Check WebXR support and track
+            if (navigator.xr) {
+                navigator.xr.isSessionSupported('immersive-ar').then(supported => {
+                    window.trackViralEvent('webxr_mystery_overlay_loaded', { 
+                        webxr_ar_supported: supported,
+                        user_agent: navigator.userAgent,
+                        qr_source: window.getQRSource()
+                    });
+
+                    if (!supported) {
+                        console.log('WebXR AR not supported, will emphasize homepage option');
+                    }
+                });
+            } else {
+                window.trackViralEvent('webxr_mystery_overlay_loaded', { 
+                    webxr_ar_supported: false,
+                    user_agent: navigator.userAgent,
+                    qr_source: window.getQRSource()
+                });
+            }
             
             // Auto-show homepage after 8 seconds if no interaction
             setTimeout(() => {
                 const mysteryOverlay = document.getElementById('mysteryOverlay');
                 if (mysteryOverlay && !mysteryOverlay.classList.contains('hidden')) {
-                    showHomepage();
+                    window.showHomepage();
                 }
             }, 8000);
 
             // Initial animation trigger
-            setTimeout(triggerAnimations, 1000);
+            setTimeout(window.triggerAnimations, 1000);
         });
 
-        function initializeAFrameComponents() {
-            try {
-                // Custom A-Frame component for desk interaction
-                AFRAME.registerComponent('ar-desk-controller', {
-                    init: function () {
-                        this.el.addEventListener('click', (evt) => {
-                            console.log('Desk clicked in AR');
-                            
-                            trackViralEvent('ar_desk_clicked', {
-                                personality: selectedPersonality?.name.toLowerCase(),
-                                timestamp: Date.now()
-                            });
-                        });
-                    }
-                });
-                console.log('A-Frame components registered successfully');
-            } catch (error) {
-                console.log('A-Frame not available or already registered:', error.message);
-            }
-        }
-
-        function setupEventListeners() {
-            try {
-                // Close modal when clicking outside
-                const shareModal = document.getElementById('shareModal');
-                if (shareModal) {
-                    shareModal.addEventListener('click', function(e) {
-                        if (e.target === this) {
-                            closeShareModal();
-                        }
-                    });
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                // Close AR or modals
+                if (document.getElementById('shareModal').classList.contains('visible')) {
+                    window.closeShareModal();
+                } else if (document.getElementById('arContainer').classList.contains('active')) {
+                    window.closeWebXRAR();
                 }
-                
-                console.log('Event listeners set up successfully');
-            } catch (error) {
-                console.error('Error setting up event listeners:', error);
             }
-        }
-
-        function initializeAnalytics() {
-            try {
-                // Check AR support and track page load
-                checkARSupport().then(supported => {
-                    trackViralEvent('mystery_overlay_loaded', { 
-                        ar_supported: supported,
-                        user_agent: navigator.userAgent,
-                        qr_source: getQRSource(),
-                        ar_library: 'ar.js'
-                    });
-
-                    if (!supported) {
-                        console.log('AR not supported, will emphasize homepage option');
-                    }
-                });
-
-                // Track page load with campaign context
-                trackViralEvent('copenhagen_campaign_start', {
-                    timestamp: Date.now(),
-                    page_url: window.location.href,
-                    referrer: document.referrer,
-                    qr_source: getQRSource(),
-                    ar_solution: 'open_source_arjs'
-                });
-                
-                console.log('Analytics initialized successfully');
-            } catch (error) {
-                console.error('Error initializing analytics:', error);
-            }
-        }
-
-        // Check AR support function
-        function checkARSupport() {
-            try {
-                // AR.js works on most mobile browsers with camera
-                const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                const hasCamera = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
-                
-                return Promise.resolve(isMobile && hasCamera);
-            } catch (error) {
-                console.error('Error checking AR support:', error);
-                return Promise.resolve(false);
-            }
-        }
+        });
     </script>
 </body>
 </html>
