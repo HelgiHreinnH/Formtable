@@ -3,39 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Desk - Have you seen me?</title>
+    <title>Form Desk - Finally, office furniture with personality</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <style>
+        /* Design System Variables */
         :root {
-            /* Brand Colors */
-            --color-charcoal: #1a1a1a;
-            --color-white: #ffffff;
-            --color-cream: #f8f6f0;
-            --color-oak: #d4a574;
-            --color-forest: #2d5016;
-            --color-electric: #0066ff;
-            --color-yellow: #ffd700;
+            --charcoal: #1a1a1a;
+            --electric: #0066ff;
+            --oak: #d4a574;
+            --forest: #2d5016;
+            --yellow: #ffd700;
+            --cream: #f8f6f0;
+            --white: #ffffff;
             
-            /* Typography */
-            --font-primary: 'Menlo', 'Monaco', 'Consolas', monospace;
-            --font-secondary: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-primary: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-secondary: 'Menlo', 'Monaco', 'Courier New', monospace;
             
-            /* Spacing */
-            --space-xs: 8px;
-            --space-sm: 12px;
-            --space-md: 16px;
-            --space-lg: 24px;
-            --space-xl: 32px;
-            --space-2xl: 48px;
-            --space-3xl: 64px;
-            
-            /* Corner System */
+            --shadow-offset: 4px;
+            --border-thick: 3px;
+            --corner-radius: 18px;
             --corner-small: 6px;
-            --corner-large: 18px;
-            
-            /* Shadows */
-            --shadow-offset: 6px;
         }
 
         * {
@@ -44,1108 +33,628 @@
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
-            overscroll-behavior: none;
-        }
-
         body {
-            font-family: var(--font-secondary);
-            background: var(--color-cream);
-            color: var(--color-charcoal);
-            line-height: 1.6;
+            font-family: var(--font-primary);
+            background: var(--cream);
+            color: var(--charcoal);
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -webkit-overflow-scrolling: touch;
         }
 
-        /* ================================
-           FULL SCREEN SECTIONS
-           ================================ */
-
-        .section {
-            height: 100vh;
-            height: 100dvh;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
+        /* AR Overlay - Fixed Position */
+        .ar-overlay {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
             display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            gap: 10px;
         }
 
-        .section-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: var(--space-xl) var(--space-md);
-            position: relative;
-            z-index: 2;
+        .ar-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: var(--border-thick) solid var(--charcoal);
+            border-radius: var(--corner-small);
+            padding: 12px 20px;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            animation: pulse 3s infinite;
         }
 
-        /* ================================
-           FLOATING ANIMATIONS
-           ================================ */
-
-        .floating-element {
-            animation: float 6s ease-in-out infinite;
+        .ar-btn.ar-primary {
+            background: var(--electric);
+            color: var(--white);
         }
 
-        .floating-element:nth-child(2n) {
-            animation-delay: -2s;
+        .ar-btn.ar-secondary {
+            background: var(--yellow);
+            color: var(--charcoal);
         }
 
-        .floating-element:nth-child(3n) {
-            animation-delay: -4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(1deg); }
-            50% { transform: translateY(-5px) rotate(-1deg); }
-            75% { transform: translateY(-15px) rotate(0.5deg); }
-        }
-
-        .slide-in-up {
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .slide-in-up.active {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .slide-in-up:nth-child(1) { transition-delay: 0.1s; }
-        .slide-in-up:nth-child(2) { transition-delay: 0.2s; }
-        .slide-in-up:nth-child(3) { transition-delay: 0.3s; }
-        .slide-in-up:nth-child(4) { transition-delay: 0.4s; }
-
-        .pulse {
-            animation: pulse 2s infinite;
+        .ar-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--charcoal);
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
-        /* ================================
-           NAVIGATION DOTS
-           ================================ */
-
-        .nav-dots {
-            position: fixed;
-            right: var(--space-md);
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
+        /* Existing Hero Section - Preserved */
+        .hero {
+            padding: 100px 0 80px;
+            background: var(--cream);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            gap: var(--space-sm);
-        }
-
-        .nav-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(26, 26, 26, 0.3);
-            border: 2px solid var(--color-charcoal);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-dot.active {
-            background: var(--color-electric);
-            transform: scale(1.2);
-            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.2);
-        }
-
-        /* ================================
-           MYSTERY OVERLAY
-           ================================ */
-
-        .mystery-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--color-charcoal) 0%, var(--color-forest) 100%);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--color-white);
-            padding: var(--space-xl) var(--space-md);
-            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
-        .mystery-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .mystery-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(2.5rem, 8vw, 4rem);
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 55% 45%;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-family: var(--font-primary);
             font-weight: 900;
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 0.85;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: var(--space-lg);
-            line-height: 0.9;
         }
 
-        .mystery-subtitle {
-            font-family: var(--font-primary);
-            font-size: 1.1rem;
-            margin-bottom: var(--space-2xl);
-            opacity: 0.9;
-            max-width: 300px;
-        }
-
-        .choice-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-            width: 100%;
-            max-width: 320px;
-        }
-
-        .choice-btn {
-            background: var(--color-electric);
-            color: var(--color-white);
-            border: 3px solid var(--color-electric);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .choice-btn.secondary {
-            background: transparent;
-            color: var(--color-white);
-            border-color: var(--color-white);
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-        }
-
-        .choice-btn:hover, .choice-btn:active {
-            transform: translate(-2px, -2px);
-            box-shadow: 4px 4px 0 var(--color-yellow);
-        }
-
-        .choice-btn.secondary:hover, .choice-btn.secondary:active {
-            background: var(--color-white);
-            color: var(--color-charcoal);
-        }
-
-        .choice-description {
-            font-family: var(--font-primary);
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-top: var(--space-xs);
-        }
-
-        /* ================================
-           AR QUICK LOOK STYLES
-           ================================ */
-
-        .ar-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(26, 26, 26, 0.9);
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--color-white);
-            padding: var(--space-xl);
-        }
-
-        .ar-loading.active {
-            display: flex;
-        }
-
-        .personality-reveal {
-            background: rgba(26, 26, 26, 0.9);
-            color: var(--color-white);
-            padding: var(--space-2xl);
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            text-align: center;
-            backdrop-filter: blur(10px);
-            margin-bottom: var(--space-2xl);
-        }
-
-        .personality-title {
-            font-family: var(--font-secondary);
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: var(--space-xs);
-        }
-
-        .personality-playful { color: var(--color-yellow); }
-        .personality-brand { color: var(--color-electric); }
-        .personality-premium { color: var(--color-oak); }
-
-        .personality-description {
-            font-family: var(--font-primary);
-            font-size: 1rem;
-            opacity: 0.8;
-            margin-bottom: var(--space-lg);
-        }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid var(--color-electric);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: var(--space-lg);
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .ar-instructions {
-            font-family: var(--font-secondary);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: var(--space-lg);
-            text-align: center;
-        }
-
-        .ar-fallback {
-            background: var(--color-white);
-            color: var(--color-charcoal);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: var(--space-lg);
-        }
-
-        .ar-fallback:hover, .ar-fallback:active {
-            transform: translate(-2px, -2px);
-            box-shadow: 4px 4px 0 var(--color-electric);
-        }
-
-        /* ================================
-           HERO SECTION
-           ================================ */
-
-        .hero {
-            background: var(--color-cream);
-            text-align: center;
-        }
-
-        .hero-title {
-            font-family: var(--font-secondary);
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 0.9;
-            margin-bottom: var(--space-lg);
-        }
-
-        .highlight {
-            background: var(--color-electric);
-            color: var(--color-white);
-            padding: 0 var(--space-sm);
+        .hero .highlight {
+            background: var(--electric);
+            color: var(--white);
+            padding: 0 15px;
             transform: rotate(-1deg);
             display: inline-block;
+        }
+
+        .hero .subline {
+            font-family: var(--font-secondary);
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 50px;
+            max-width: 500px;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        .cta-primary {
+            background: var(--charcoal);
+            color: var(--white);
+            padding: 20px 40px;
+            text-decoration: none;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s ease;
+            display: inline-block;
+            border: var(--border-thick) solid var(--charcoal);
+        }
+
+        .cta-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--charcoal);
+        }
+
+        .hero-visual {
+            height: 500px;
+            background: var(--white);
+            border: var(--border-thick) solid var(--charcoal);
+            border-radius: var(--corner-radius);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-secondary);
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--charcoal);
+        }
+
+        /* Horizontal Scroll Sections */
+        .scroll-section {
+            height: 100vh;
+            overflow-x: auto;
+            overflow-y: hidden;
+            position: relative;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .scroll-container {
+            display: flex;
+            height: 100%;
+            width: 400%; /* 4 containers */
+        }
+
+        .scroll-page {
+            width: 25%;
+            height: 100%;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            scroll-snap-align: start;
+            position: relative;
+        }
+
+        .scroll-page h2 {
+            font-family: var(--font-primary);
+            font-weight: 900;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            line-height: 0.9;
+        }
+
+        .scroll-page h3 {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            color: var(--electric);
+        }
+
+        .scroll-page p {
+            font-family: var(--font-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        /* Section 1: Form is Smart */
+        .smart-section {
+            background: var(--cream);
+        }
+
+        .smart-section .scroll-page:nth-child(1) {
+            background: linear-gradient(135deg, var(--cream) 0%, var(--white) 100%);
+        }
+
+        .smart-section .scroll-page:nth-child(2) {
+            background: var(--oak);
+            color: var(--white);
+        }
+
+        .smart-section .scroll-page:nth-child(3) {
+            background: var(--charcoal);
+            color: var(--white);
+        }
+
+        .smart-section .scroll-page:nth-child(4) {
+            background: var(--forest);
+            color: var(--white);
+        }
+
+        /* Supplier Logos Grid */
+        .suppliers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .supplier-logo {
+            background: var(--white);
+            color: var(--charcoal);
+            padding: 20px;
+            text-align: center;
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: var(--border-thick) solid var(--white);
             border-radius: var(--corner-small);
         }
 
-        .hero-subtitle {
+        /* Section 2: Your Design */
+        .design-section {
+            background: var(--electric);
+        }
+
+        .design-section .scroll-page {
+            color: var(--white);
+        }
+
+        .design-section .scroll-page:nth-child(1) {
+            background: var(--electric);
+        }
+
+        .design-section .scroll-page:nth-child(2) {
+            background: linear-gradient(135deg, var(--electric) 0%, var(--charcoal) 100%);
+        }
+
+        .design-section .scroll-page:nth-child(3) {
+            background: var(--charcoal);
+        }
+
+        .design-section .scroll-page:nth-child(4) {
+            background: var(--forest);
+        }
+
+        /* Size Options */
+        .size-options {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .size-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: var(--border-thick) solid var(--white);
+            border-radius: var(--corner-small);
+            padding: 30px 20px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .size-card .dimension {
+            font-family: var(--font-secondary);
+            font-size: 1.8rem;
+            font-weight: 600;
+            display: block;
+            margin: 15px 0;
+        }
+
+        /* Material Options */
+        .material-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .material-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: var(--border-thick) solid var(--white);
+            border-radius: var(--corner-small);
+            padding: 20px;
+            text-align: center;
             font-family: var(--font-primary);
-            font-size: 1rem;
-            margin-bottom: var(--space-2xl);
-            opacity: 0.8;
-            max-width: 350px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation Hints */
+        .scroll-hint {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-secondary);
+            font-size: 0.9rem;
+            opacity: 0.7;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        /* Transition to Signup */
+        .signup-transition {
+            padding: 80px 0;
+            background: var(--yellow);
+            text-align: center;
+        }
+
+        .signup-transition h2 {
+            font-family: var(--font-primary);
+            font-weight: 900;
+            font-size: clamp(2rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .signup-transition p {
+            font-family: var(--font-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .hero-actions {
+        .signup-form {
+            max-width: 500px;
+            margin: 0 auto;
             display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-            align-items: center;
+            gap: 10px;
         }
 
-        .hero-cta {
-            background: var(--color-charcoal);
-            color: var(--color-white);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-lg) var(--space-xl);
+        .signup-input {
+            flex: 1;
+            padding: 15px 20px;
             font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-        }
-
-        .hero-cta:hover, .hero-cta:active {
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
-        }
-
-        .share-btn {
-            background: var(--color-yellow);
-            color: var(--color-charcoal);
-            border: 3px solid var(--color-yellow);
-            padding: var(--space-md) var(--space-xl);
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-forest);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .share-btn:hover, .share-btn:active {
-            background: var(--color-forest);
-            color: var(--color-white);
-            border-color: var(--color-forest);
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-yellow);
-        }
-
-        /* Floating background elements */
-        .hero::before,
-        .hero::after {
-            content: '';
-            position: absolute;
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            opacity: 0.1;
-        }
-
-        .hero::before {
-            top: 10%;
-            left: -5%;
-            width: 80px;
-            height: 80px;
-            background: var(--color-electric);
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .hero::after {
-            bottom: 15%;
-            right: -3%;
-            width: 60px;
-            height: 60px;
-            background: var(--color-oak);
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            animation: float 6s ease-in-out infinite reverse;
-        }
-
-        /* ================================
-           FLOATING SHARE BUTTON
-           ================================ */
-
-        .floating-share {
-            position: fixed;
-            bottom: var(--space-xl);
-            left: var(--space-md);
-            background: var(--color-yellow);
-            color: var(--color-charcoal);
-            border: 3px solid var(--color-charcoal);
-            padding: var(--space-md);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 50;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-            animation: pulse 3s infinite;
-        }
-
-        .floating-share:hover, .floating-share:active {
-            transform: translate(-2px, -2px) scale(1.1);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
-            background: var(--color-forest);
-            color: var(--color-white);
-        }
-
-        /* ================================
-           SHARE MODAL
-           ================================ */
-
-        .share-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(26, 26, 26, 0.9);
-            z-index: 3000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: var(--space-xl);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .share-modal.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .share-content {
-            background: var(--color-white);
-            border: 3px solid var(--color-charcoal);
-            border-radius: var(--corner-large) var(--corner-small) var(--corner-small) var(--corner-small);
-            padding: var(--space-2xl);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            position: relative;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-        }
-
-        .share-title {
-            font-family: var(--font-secondary);
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: var(--space-lg);
-            color: var(--color-charcoal);
-        }
-
-        .share-subtitle {
-            font-family: var(--font-primary);
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-bottom: var(--space-xl);
-        }
-
-        .share-options {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-lg);
-            margin-bottom: var(--space-xl);
-        }
-
-        .share-option {
-            background: var(--color-cream);
-            border: 2px solid var(--color-charcoal);
-            padding: var(--space-lg);
+            font-size: 1rem;
+            border: var(--border-thick) solid var(--charcoal);
             border-radius: var(--corner-small);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            color: var(--color-charcoal);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-xs);
+            background: var(--white);
         }
 
-        .share-option:hover, .share-option:active {
-            background: var(--color-electric);
-            color: var(--color-white);
-            transform: translate(-2px, -2px);
-            box-shadow: 4px 4px 0 var(--color-charcoal);
-        }
-
-        .share-option-icon {
-            font-size: 1.5rem;
-        }
-
-        .share-option-text {
-            font-family: var(--font-secondary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: var(--space-md);
-            right: var(--space-md);
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--color-charcoal);
-            opacity: 0.6;
-            transition: opacity 0.2s ease;
-        }
-
-        .close-modal:hover {
-            opacity: 1;
-        }
-
-        .configurator-cta {
-            background: var(--color-forest);
-            color: var(--color-white);
-            border: 3px solid var(--color-forest);
-            padding: var(--space-lg) var(--space-xl);
-            font-family: var(--font-secondary);
+        .signup-btn {
+            background: var(--charcoal);
+            color: var(--white);
+            padding: 15px 30px;
+            border: var(--border-thick) solid var(--charcoal);
+            border-radius: var(--corner-small);
+            font-family: var(--font-primary);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-radius: var(--corner-small) var(--corner-small) var(--corner-small) var(--corner-large);
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
-            margin-top: var(--space-lg);
+            cursor: pointer;
+            transition: transform 0.2s ease;
         }
 
-        .configurator-cta:hover, .configurator-cta:active {
-            background: var(--color-charcoal);
-            border-color: var(--color-charcoal);
+        .signup-btn:hover {
             transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-forest);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--charcoal);
         }
 
-        /* ================================
-           RESPONSIVE ADJUSTMENTS
-           ================================ */
-
-        @media (min-width: 768px) {
-            .section-content {
-                padding: var(--space-3xl) var(--space-2xl);
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .ar-overlay {
+                top: 10px;
+                right: 10px;
+                flex-direction: column;
+                gap: 5px;
             }
 
-            .hero-actions {
-                flex-direction: row;
-                gap: var(--space-xl);
+            .ar-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
             }
 
-            .choice-buttons {
-                flex-direction: row;
-                max-width: 600px;
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
             }
 
-            .floating-share {
-                left: var(--space-xl);
-                bottom: var(--space-2xl);
+            .scroll-page {
+                padding: 40px 30px;
             }
 
-            .share-options {
-                grid-template-columns: repeat(4, 1fr);
+            .suppliers-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
             }
 
-            .nav-dots {
-                right: var(--space-xl);
+            .size-options {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .material-options {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .signup-form {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Dots -->
-    <div class="nav-dots">
-        <div class="nav-dot active" onclick="scrollToSection(0)"></div>
+    <!-- AR Overlay - Fixed Position -->
+    <div class="ar-overlay">
+        <button class="ar-btn ar-primary" onclick="launchAR()">🔍 Find Me in AR</button>
+        <button class="ar-btn ar-secondary" onclick="showSignup()">🔔 Get Notified</button>
     </div>
 
-    <!-- Floating Share Button -->
-    <button class="floating-share" onclick="shareExperience()" title="Share Form Desk">
-        🚀
-    </button>
-
-    <!-- Mystery Overlay -->
-    <div class="mystery-overlay" id="mysteryOverlay">
-        <h1 class="mystery-title floating-element">Have you seen me?</h1>
-        <p class="mystery-subtitle">I'm the desk your workspace has been missing. How would you like to find me?</p>
-        
-        <div class="choice-buttons">
-            <button class="choice-btn ar-btn floating-element pulse" onclick="launchQuickAR()">
-                🔍 Find Me in AR
-                <div class="choice-description">iPhone native AR experience</div>
-            </button>
-            <button class="choice-btn secondary floating-element" onclick="showHomepage()">
-                📱 Show Me Homepage
-                <div class="choice-description">Learn about Form Desk</div>
-            </button>
-        </div>
-    </div>
-
-    <!-- Quick AR Loading Screen -->
-    <div class="ar-loading" id="arLoading">
-        <div class="personality-reveal">
-            <div class="personality-title" id="personalityTitle"></div>
-            <div class="personality-description" id="personalityDescription"></div>
-        </div>
-        
-        <div class="loading-spinner"></div>
-        
-        <div class="ar-instructions">
-            <p>🍎 Launching iPhone AR...</p>
-            <p><small>Your desk will open in Apple's AR viewer</small></p>
-        </div>
-        
-        <a href="#" class="ar-fallback" onclick="showHomepage()">
-            Continue to Website
-        </a>
-    </div>
-
-    <!-- Share Modal -->
-    <div class="share-modal" id="shareModal">
-        <div class="share-content">
-            <button class="close-modal" onclick="closeShareModal()">×</button>
-            <h3 class="share-title">Spread the Hype!</h3>
-            <p class="share-subtitle">Help your friends discover furniture with personality</p>
-            <div class="share-options">
-                <button class="share-option" onclick="shareNative()">
-                    <span class="share-option-icon">📱</span>
-                    <span class="share-option-text">Native Share</span>
-                </button>
-                <a href="#" class="share-option" id="twitterShare" target="_blank">
-                    <span class="share-option-icon">🐦</span>
-                    <span class="share-option-text">Twitter</span>
-                </a>
-                <a href="#" class="share-option" id="linkedinShare" target="_blank">
-                    <span class="share-option-icon">💼</span>
-                    <span class="share-option-text">LinkedIn</span>
-                </a>
-                <button class="share-option" onclick="copyLink()">
-                    <span class="share-option-icon">🔗</span>
-                    <span class="share-option-text">Copy Link</span>
-                </button>
-            </div>
-            <a href="/configurator" class="configurator-cta">
-                🛠️ Want this exact style? Build Your Own!
-            </a>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="section hero" id="hero">
-        <div class="section-content">
-            <h1 class="hero-title slide-in-up">
-                Finally, office furniture with <span class="highlight floating-element">personality</span>
-            </h1>
-            <p class="hero-subtitle slide-in-up">
-                Skip the supplier maze. Three sizes, quality materials, single source. Your brand deserves better than generic.
-            </p>
-            <div class="hero-actions slide-in-up">
-                <a href="/configurator" class="hero-cta floating-element">Configure Your Desk</a>
-                <button class="share-btn floating-element" onclick="shareExperience()">
-                    🚀 Share the Hype
-                </button>
+    <!-- Existing Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div>
+                    <h1>Finally, <span class="highlight">office furniture</span> with personality</h1>
+                    <p class="subline">Three sizes. Premium quality. Sustainable suppliers. Configure your perfect workspace with Form Desk.</p>
+                    <a href="#smart" class="cta-primary">Configure Soon - Join the List</a>
+                </div>
+                <div class="hero-visual">
+                    Form Desk 3D Preview<br>
+                    <small>Interactive configurator coming soon</small>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Section 1: Form is Smart -->
+    <section class="scroll-section smart-section" id="smart">
+        <div class="scroll-container">
+            <!-- Page 1: Why Form is Smart -->
+            <div class="scroll-page">
+                <h2>Your Office Deserves Better</h2>
+                <p>Skip the supplier maze. Three sizes, fixed quality, single relationship.</p>
+                <p>Your brand standards, consistently delivered across every desk in your organization.</p>
+                <p>No more procurement headaches. No more quality surprises. Just beautiful, functional desks that work as hard as your team.</p>
+                <div class="scroll-hint">Swipe to explore →</div>
+            </div>
+
+            <!-- Page 2: One Point Entry -->
+            <div class="scroll-page">
+                <h2>One Call. One Invoice. One Standard.</h2>
+                <p>Curated supplier network means no endless vendor research.</p>
+                <p>Best-in-class products pre-selected for quality and sustainability.</p>
+                <p>Your procurement team's dream: simple, reliable, premium office furniture that arrives on time, every time.</p>
+            </div>
+
+            <!-- Page 3: Supplier Showcase -->
+            <div class="scroll-page">
+                <h2>The Dream Team</h2>
+                <p>We partner with the industry's most trusted names to deliver exceptional quality:</p>
+                <div class="suppliers-grid">
+                    <div class="supplier-logo">Form</div>
+                    <div class="supplier-logo">Linak</div>
+                    <div class="supplier-logo">Greengridz</div>
+                    <div class="supplier-logo">Tarkett</div>
+                    <div class="supplier-logo">FSC Wood</div>
+                    <div class="supplier-logo">Unilin</div>
+                    <div class="supplier-logo">Forming Function</div>
+                </div>
+            </div>
+
+            <!-- Page 4: Sustainability -->
+            <div class="scroll-page">
+                <h2>Documented Sustainability</h2>
+                <p>LCA (Life Cycle Assessment) for every desk, documented by Målbar.</p>
+                <p>Transparent supply chain with FSC certified materials and sustainable production methods.</p>
+                <p>Help your company hit ESG targets with furniture choices that support your sustainability messaging to clients and talent.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Your Design -->
+    <section class="scroll-section design-section" id="design">
+        <div class="scroll-container">
+            <!-- Page 1: Simplicity Overview -->
+            <div class="scroll-page">
+                <h2>One Product, Multiple Personalities</h2>
+                <p>Three sizes: Focused (120cm), Balanced (140cm), Full Spread (160cm)</p>
+                <p>Consistent quality, variable aesthetics. Great overview without complexity.</p>
+                <div class="size-options">
+                    <div class="size-card">
+                        <h3>Focused</h3>
+                        <span class="dimension">120×70cm</span>
+                        <p>Perfect for individual work</p>
+                    </div>
+                    <div class="size-card">
+                        <h3>Balanced</h3>
+                        <span class="dimension">140×80cm</span>
+                        <p>Ideal for most professionals</p>
+                    </div>
+                    <div class="size-card">
+                        <h3>Full Spread</h3>
+                        <span class="dimension">160×80cm</span>
+                        <p>Maximum workspace</p>
+                    </div>
+                </div>
+                <div class="scroll-hint">Swipe to explore →</div>
+            </div>
+
+            <!-- Page 2: Size Selection (Existing Design) -->
+            <div class="scroll-page">
+                <h2>Choose Your Workspace</h2>
+                <p>Reusing your current size selection page design - clean visual comparison of three options with detailed specifications.</p>
+                <p>Each size optimized for different work styles and office configurations.</p>
+            </div>
+
+            <!-- Page 3: Design Language -->
+            <div class="scroll-page">
+                <h2>Express Your Brand</h2>
+                <p>Select materials that reflect your company's personality:</p>
+                <div class="material-options">
+                    <div class="material-card">Oak Veneer</div>
+                    <div class="material-card">Ash Veneer</div>
+                    <div class="material-card">Linoleum</div>
+                    <div class="material-card">Charcoal Edge</div>
+                    <div class="material-card">White Edge</div>
+                    <div class="material-card">Natural Edge</div>
+                </div>
+                <p>Plus our signature 18mm "smooth corner" in the direction you prefer.</p>
+            </div>
+
+            <!-- Page 4: Functionality -->
+            <div class="scroll-page">
+                <h2>Performance You Can Trust</h2>
+                <p>Linak motorized legs: whisper quiet operation, 10-year warranty</p>
+                <p>Forming Function power accessories for seamless connectivity</p>
+                <p>Integrated cable management that actually works</p>
+                <p>Built for daily professional use by teams who demand reliability.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signup Transition -->
+    <section class="signup-transition">
+        <div class="container">
+            <h2>Ready to Transform Your Workspace?</h2>
+            <p>Join 500+ companies waiting for early access to our configurator and special Copenhagen pricing.</p>
+            <form class="signup-form" onsubmit="handleSignup(event)">
+                <input type="email" class="signup-input" placeholder="your@company.com" required>
+                <button type="submit" class="signup-btn">Get Notified</button>
+            </form>
+        </div>
+    </section>
+
     <script>
-        // ================================
-        // AR PERSONALITY MODELS
-        // ================================
+        // AR Experience Launch
+        function launchAR() {
+            alert('AR Experience launching soon! Get notified when it\'s ready.');
+            showSignup();
+        }
 
-        const AR_PERSONALITIES = {
-            playful: {
-                name: "Playful",
-                usdz: "/assets/models/ar/ar_playful.usdz",
-                color: "personality-playful",
-                description: "Fun & Creative Workspaces",
-                shareText: "🎪 Just placed my PLAYFUL workspace personality in AR! This Form Desk is perfect for creative teams who don't do boring. Copenhagen design at its finest!",
-                hashtags: "PlayfulWorkspace,FormDesk,Copenhagen,CreativeOffice,QuickAR"
-            },
-            brand: {
-                name: "Brand Identity", 
-                usdz: "/assets/models/ar/ar_brand.usdz",
-                color: "personality-brand",
-                description: "Professional Brand Identity",
-                shareText: "💼 Discovered my PROFESSIONAL workspace identity in AR! This Form Desk represents everything our brand stands for. Copenhagen design meets business excellence!",
-                hashtags: "BrandIdentity,FormDesk,Copenhagen,ProfessionalOffice,QuickAR"
-            },
-            premium: {
-                name: "Premium",
-                usdz: "/assets/models/ar/ar_premium.usdz", 
-                color: "personality-premium",
-                description: "Luxury & Craftsmanship",
-                shareText: "✨ Found my PREMIUM workspace experience in AR! This Form Desk showcases true craftsmanship and luxury. Copenhagen design at its absolute finest!",
-                hashtags: "PremiumWorkspace,FormDesk,Copenhagen,LuxuryOffice,QuickAR"
-            }
-        };
-
-        // ================================
-        // GLOBAL STATE
-        // ================================
-
-        let selectedPersonality = null;
-        let currentSection = 0;
-
-        // ================================
-        // QUICK AR FUNCTIONALITY
-        // ================================
-
-        function launchQuickAR() {
-            // Select random personality for mystery element
-            const personalities = Object.keys(AR_PERSONALITIES);
-            const randomPersonality = personalities[Math.floor(Math.random() * personalities.length)];
-            selectedPersonality = AR_PERSONALITIES[randomPersonality];
-
-            trackViralEvent('quickar_launch_requested', { 
-                personality: randomPersonality,
-                source: 'mystery_overlay',
-                ar_library: 'apple_quickar'
-            });
-
-            // Hide mystery overlay
-            document.getElementById('mysteryOverlay').classList.add('hidden');
-            
-            // Show loading screen with personality reveal
-            document.getElementById('arLoading').classList.add('active');
-            
-            // Update personality display
-            document.getElementById('personalityTitle').textContent = selectedPersonality.name;
-            document.getElementById('personalityTitle').className = `personality-title ${selectedPersonality.color}`;
-            document.getElementById('personalityDescription').textContent = selectedPersonality.description;
-
-            // Check device and launch AR
-            if (isIOSDevice()) {
-                // Launch Quick AR after short delay
-                setTimeout(() => {
-                    launchIOSQuickAR();
-                }, 2000);
-            } else {
-                // Show fallback for non-iOS devices
-                setTimeout(() => {
-                    showARFallback();
-                }, 2000);
+        // Show signup modal
+        function showSignup() {
+            const email = prompt('Enter your email to get notified when the configurator launches:');
+            if (email) {
+                handleSignupSubmission(email, 'ar_overlay');
             }
         }
 
-        function isIOSDevice() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        // Handle signup form
+        function handleSignup(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('.signup-input').value;
+            handleSignupSubmission(email, 'signup_form');
         }
 
-        function launchIOSQuickAR() {
-            // Create AR Quick Look link
-            const arLink = document.createElement('a');
-            arLink.href = selectedPersonality.usdz;
-            arLink.rel = 'ar';
-            arLink.style.display = 'none';
+        // Handle signup submission
+        function handleSignupSubmission(email, source) {
+            // In production, this would connect to Supabase
+            console.log('Signup:', { email, source, timestamp: new Date().toISOString() });
             
-            // Add to page and trigger
-            document.body.appendChild(arLink);
-            arLink.click();
+            // Show success message
+            alert('Thanks! You\'ll be first to know when the configurator is ready. Check your email for confirmation.');
             
-            // Clean up
-            setTimeout(() => {
-                document.body.removeChild(arLink);
-                handleARReturn();
-            }, 1000);
-
-            trackViralEvent('quickar_launched', {
-                personality: selectedPersonality.name.toLowerCase(),
-                ar_library: 'apple_quickar'
-            });
-        }
-
-        function showARFallback() {
-            document.getElementById('arLoading').querySelector('.ar-instructions').innerHTML = `
-                <p>❌ iPhone Required</p>
-                <p><small>AR experience works best on iPhone devices</small></p>
-            `;
-            
-            trackViralEvent('quickar_fallback_shown', {
-                user_agent: navigator.userAgent,
-                ar_library: 'apple_quickar'
-            });
-        }
-
-        function handleARReturn() {
-            // Hide loading after user returns from AR
-            setTimeout(() => {
-                document.getElementById('arLoading').classList.remove('active');
-                
-                // Show share modal automatically
-                shareExperience();
-                
-                trackViralEvent('quickar_returned', {
-                    personality: selectedPersonality.name.toLowerCase(),
-                    ar_library: 'apple_quickar'
-                });
-            }, 500);
-        }
-
-        // ================================
-        // HOMEPAGE FUNCTIONALITY
-        // ================================
-
-        function showHomepage() {
-            trackViralEvent('homepage_selected', { source: 'mystery_overlay_or_ar_fallback' });
-            document.getElementById('mysteryOverlay').classList.add('hidden');
-            document.getElementById('arLoading').classList.remove('active');
-            setTimeout(triggerAnimations, 500);
-        }
-
-        // ================================
-        // SHARE FUNCTIONALITY
-        // ================================
-
-        function shareExperience() {
-            document.getElementById('shareModal').classList.add('visible');
-            setupShareLinks();
-        }
-
-        function closeShareModal() {
-            document.getElementById('shareModal').classList.remove('visible');
-        }
-
-        function setupShareLinks() {
-            const url = window.location.href + (selectedPersonality ? 
-                `?ref=quickar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
-                '?ref=general_share');
-            const text = selectedPersonality ? 
-                selectedPersonality.shareText : 
-                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces with iPhone AR!";
-            const hashtags = selectedPersonality ? 
-                selectedPersonality.hashtags : 
-                "FormDesk,Copenhagen,DesignFurniture,WorkspaceGoals,iPhoneAR";
-            
-            // Twitter
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${hashtags}`;
-            document.getElementById('twitterShare').href = twitterUrl;
-            
-            // LinkedIn
-            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent('Form Desk - Office Furniture with Personality')}&summary=${encodeURIComponent(text)}`;
-            document.getElementById('linkedinShare').href = linkedinUrl;
-        }
-
-        async function shareNative() {
-            const shareData = {
-                title: selectedPersonality ? 
-                    `Form Desk - ${selectedPersonality.name} Personality` : 
-                    'Form Desk - Finally, office furniture with personality',
-                text: selectedPersonality ? 
-                    selectedPersonality.shareText : 
-                    '🚀 Found something amazing! Check out this Copenhagen design company that\'s changing how we think about workspaces with iPhone AR!',
-                url: window.location.href + (selectedPersonality ? 
-                    `?ref=quickar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
-                    '?ref=general_share')
-            };
-
-            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-                try {
-                    await navigator.share(shareData);
-                    trackViralEvent('quickar_native_share', { 
-                        personality: selectedPersonality?.name.toLowerCase(),
-                        success: true
-                    });
-                    closeShareModal();
-                } catch (err) {
-                    if (err.name !== 'AbortError') {
-                        copyShareText();
-                    }
-                }
-            } else {
-                copyShareText();
-            }
-        }
-
-        async function copyLink() {
-            const url = window.location.href + (selectedPersonality ? 
-                `?ref=quickar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
-                '?ref=general_share');
-            try {
-                await navigator.clipboard.writeText(url);
-                alert('🔗 Link copied to clipboard!\n\nShare it with your friends to spread the hype!');
-                trackViralEvent('quickar_link_copied', { 
-                    personality: selectedPersonality?.name.toLowerCase(),
-                    success: true 
-                });
-                closeShareModal();
-            } catch (err) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = url;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('🔗 Link copied to clipboard!');
-                closeShareModal();
-            }
-        }
-
-        async function copyShareText() {
-            const text = selectedPersonality ? selectedPersonality.shareText : 
-                "🚀 Found something amazing! Finally, office furniture with PERSONALITY. This Copenhagen design company is changing how we think about workspaces with iPhone AR.";
-            const url = window.location.href + (selectedPersonality ? 
-                `?ref=quickar_share&personality=${selectedPersonality.name.toLowerCase()}` : 
-                '?ref=general_share');
-            const fullText = text + ' ' + url;
-            
-            try {
-                await navigator.clipboard.writeText(fullText);
-                alert('📋 Share text copied to clipboard!\n\nPaste it on your social media to share your iPhone AR experience!');
-                trackViralEvent('quickar_text_copied', { 
-                    personality: selectedPersonality?.name.toLowerCase(),
-                    success: true 
-                });
-                closeShareModal();
-            } catch (err) {
-                console.error('Copy failed:', err);
-            }
-        }
-
-        // ================================
-        // ANIMATION TRIGGERS
-        // ================================
-
-        function triggerAnimations() {
-            const animatedElements = document.querySelectorAll('.slide-in-up');
-            animatedElements.forEach((element, index) => {
-                setTimeout(() => {
-                    element.classList.add('active');
-                }, index * 100);
-            });
-        }
-
-        // ================================
-        // VIRAL CAMPAIGN ANALYTICS
-        // ================================
-
-        function trackViralEvent(eventName, properties = {}) {
-            const viralData = {
-                ...properties,
-                campaign: 'copenhagen_quickar_2025',
-                event_type: 'viral_engagement',
-                timestamp: Date.now(),
-                user_agent: navigator.userAgent,
-                page_url: window.location.href,
-                session_id: getSessionId(),
-                qr_source: getQRSource(),
-                ar_solution: 'apple_quickar',
-                device_type: isIOSDevice() ? 'ios' : 'other'
-            };
-
-            console.log('🚀 Viral Event:', eventName, viralData);
-            
-            // TODO: Replace with your analytics service
-            // analytics.track(eventName, viralData);
-        }
-
-        function getSessionId() {
-            let sessionId = sessionStorage.getItem('form_desk_session');
-            if (!sessionId) {
-                sessionId = 'fd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                sessionStorage.setItem('form_desk_session', sessionId);
-            }
-            return sessionId;
-        }
-
-        function getQRSource() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('qr') || urlParams.get('source') || 'direct';
-        }
-
-        // ================================
-        // INITIALIZATION
-        // ================================
-
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, initializing Form Desk Quick AR experience...');
-            
-            // Close modal when clicking outside
-            const shareModal = document.getElementById('shareModal');
-            if (shareModal) {
-                shareModal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeShareModal();
-                    }
+            // Track the conversion
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'signup', {
+                    'event_category': 'conversion',
+                    'event_label': source
                 });
             }
+        }
 
-            // Track page load with campaign context
-            trackViralEvent('copenhagen_quickar_campaign_start', {
-                timestamp: Date.now(),
-                page_url: window.location.href,
-                referrer: document.referrer,
-                qr_source: getQRSource(),
-                ar_solution: 'apple_quickar',
-                ios_device: isIOSDevice()
+        // Smooth scroll enhancement
+        document.querySelectorAll('.scroll-section').forEach(section => {
+            section.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                section.scrollLeft += e.deltaY;
             });
-            
-            // Auto-show homepage after 8 seconds if no interaction
-            setTimeout(() => {
-                const mysteryOverlay = document.getElementById('mysteryOverlay');
-                if (mysteryOverlay && !mysteryOverlay.classList.contains('hidden')) {
-                    showHomepage();
-                }
-            }, 8000);
-
-            // Initial animation trigger
-            setTimeout(triggerAnimations, 1000);
         });
 
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                // Close modals
-                if (document.getElementById('shareModal').classList.contains('visible')) {
-                    closeShareModal();
-                } else if (document.getElementById('arLoading').classList.contains('active')) {
-                    showHomepage();
-                }
-            }
-        });
-
-        // Handle page visibility change (when user returns from AR)
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden && selectedPersonality && document.getElementById('arLoading').classList.contains('active')) {
-                // User returned from AR
-                handleARReturn();
-            }
+        // Track scroll engagement
+        document.querySelectorAll('.scroll-section').forEach(section => {
+            section.addEventListener('scroll', () => {
+                const scrollProgress = section.scrollLeft / (section.scrollWidth - section.clientWidth);
+                console.log('Section scroll progress:', scrollProgress);
+            });
         });
     </script>
 </body>
