@@ -164,11 +164,87 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-secondary);
-            font-size: 1rem;
-            text-align: center;
-            letter-spacing: 0.5px;
             box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--charcoal);
+            overflow: hidden;
+        }
+
+        .hero-animation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--electric);
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            top: 20%;
+            left: 15%;
+            animation-delay: 0s;
+            color: var(--oak);
+        }
+
+        .shape-2 {
+            top: 15%;
+            right: 20%;
+            animation-delay: 1.5s;
+            color: var(--electric);
+        }
+
+        .shape-3 {
+            bottom: 25%;
+            left: 20%;
+            animation-delay: 3s;
+            color: var(--forest);
+        }
+
+        .shape-4 {
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 4.5s;
+            color: var(--yellow);
+        }
+
+        .hero-text {
+            font-family: var(--font-primary);
+            font-weight: 900;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            line-height: 0.8;
+            color: var(--charcoal);
+        }
+
+        .highlight-word {
+            color: var(--electric);
+            position: relative;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.3;
+            }
+            50% { 
+                transform: translateY(-20px) rotate(10deg); 
+                opacity: 0.7;
+            }
         }
 
         /* Horizontal Scroll Sections */
@@ -190,40 +266,44 @@
         .scroll-page {
             width: 25%;
             height: 100%;
-            padding: 80px 60px;
+            padding: 60px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             scroll-snap-align: start;
             position: relative;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
         .scroll-page h2 {
             font-family: var(--font-primary);
             font-weight: 900;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2rem, 4vw, 3.5rem);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             line-height: 0.9;
+            word-wrap: break-word;
         }
 
         .scroll-page h3 {
             font-family: var(--font-primary);
             font-weight: 700;
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: var(--electric);
         }
 
         .scroll-page p {
             font-family: var(--font-secondary);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            max-width: 600px;
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            line-height: 1.5;
+            margin-bottom: 15px;
+            max-width: 100%;
+            word-wrap: break-word;
         }
 
         /* Section 1: Form is Smart */
@@ -233,43 +313,348 @@
 
         .smart-section .scroll-page:nth-child(1) {
             background: linear-gradient(135deg, var(--cream) 0%, var(--white) 100%);
+            position: relative;
+        }
+
+        .smart-section .scroll-page:nth-child(1)::before {
+            content: '🏢';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.3;
+            animation: bounce 3s ease-in-out infinite;
         }
 
         .smart-section .scroll-page:nth-child(2) {
             background: var(--oak);
             color: var(--white);
+            position: relative;
+        }
+
+        .smart-section .scroll-page:nth-child(2)::before {
+            content: '📞';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.4;
+            animation: pulse 2s ease-in-out infinite;
         }
 
         .smart-section .scroll-page:nth-child(3) {
             background: var(--charcoal);
             color: var(--white);
+            position: relative;
+        }
+
+        .smart-section .scroll-page:nth-child(3)::before {
+            content: '🤝';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.4;
+            animation: wiggle 4s ease-in-out infinite;
         }
 
         .smart-section .scroll-page:nth-child(4) {
             background: var(--forest);
             color: var(--white);
+            position: relative;
+        }
+
+        .smart-section .scroll-page:nth-child(4)::before {
+            content: '🌱';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.4;
+            animation: grow 3s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
+        @keyframes grow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         /* Supplier Logos Grid */
         .suppliers-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 40px;
+            gap: 20px;
+            margin-top: 30px;
         }
 
         .supplier-logo {
             background: var(--white);
             color: var(--charcoal);
-            padding: 20px;
+            padding: 25px 15px;
             text-align: center;
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: var(--border-thick) solid var(--white);
+            border-radius: var(--corner-small);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .supplier-logo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .supplier-logo::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .supplier-logo.form-logo::before {
+            content: '🎨';
+            font-size: 1.5rem;
+            width: auto;
+            height: auto;
+            background: none;
+        }
+
+        .supplier-logo.linak-logo::before {
+            content: '⚡';
+            font-size: 1.5rem;
+            width: auto;
+            height: auto;
+            background: none;
+        }
+
+        .supplier-logo.greengridz-logo::before {
+            content: '🌿';
+            font-size: 1.5rem;
+            width: auto;
+            height: auto;
+            background: none;
+        }
+
+        .supplier-logo.tarkett-logo::before {
+            content: '🏗️';
+            font-size: 1.5rem;
+            width: auto;
+            height: auto;
+            background: none;
+        }
+
+        .supplier-logo.fsc-logo::before {
+            content: '🌳';
+            font-size: 1.5rem;
+            width: auto;
+            height: auto;
+            background: none;
+        }
+
+        .supplier-logo.unilin-logo::before {
+            content: '📐';
+            font-size: 1.5rem;
+            width: auto;
+            height: auto;
+            background: none;
+        }
+
+        .supplier-logo.forming-logo::before {
+            content: '🔌';
+            font-size: 1.5rem;
+            width: auto;
+            height: auto;
+            background: none;
+        }
+
+        .supplier-logo .logo-text {
+            margin-top: 20px;
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+        }
+
+        /* Product Showcase Section */
+        .product-showcase {
+            padding: 100px 0;
+            background: var(--white);
+            position: relative;
+        }
+
+        .product-showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--cream) 25%, transparent 25%), 
+                        linear-gradient(-45deg, var(--cream) 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, var(--cream) 75%), 
+                        linear-gradient(-45deg, transparent 75%, var(--cream) 75%);
+            background-size: 60px 60px;
+            background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .showcase-title {
+            font-family: var(--font-primary);
+            font-weight: 900;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 0.9;
+            color: var(--charcoal);
+        }
+
+        .showcase-subtitle {
+            font-family: var(--font-secondary);
+            font-size: clamp(1rem, 1.5vw, 1.3rem);
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--charcoal);
+            opacity: 0.8;
+        }
+
+        .product-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-hero {
+            position: relative;
+            transition: transform 0.4s ease;
+        }
+
+        .product-hero:hover {
+            transform: translate(-5px, -5px);
+        }
+
+        .product-frame {
+            width: 100%;
+            height: 300px;
+            border: var(--border-thick) solid var(--charcoal);
+            border-radius: var(--corner-radius);
+            overflow: hidden;
+            position: relative;
+            background: var(--cream);
+            margin-bottom: 25px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .product-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--cream);
+        }
+
+        .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .placeholder-text {
             font-family: var(--font-primary);
             font-weight: 700;
             font-size: 1.2rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border: var(--border-thick) solid var(--white);
-            border-radius: var(--corner-small);
+            color: var(--charcoal);
+        }
+
+        .product-info {
+            text-align: center;
+        }
+
+        .product-info h3 {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            color: var(--charcoal);
+        }
+
+        .product-info p {
+            font-family: var(--font-secondary);
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+            line-height: 1.5;
+            color: var(--charcoal);
+            opacity: 0.8;
+        }
+
+        /* Heavy shadows for each product frame */
+        .playful-frame {
+            box-shadow: 12px 12px 0 var(--yellow);
+        }
+
+        .playful-hero:hover .playful-frame {
+            box-shadow: 18px 18px 0 var(--yellow);
+        }
+
+        .brand-frame {
+            box-shadow: 12px 12px 0 var(--oak);
+        }
+
+        .brand-hero:hover .brand-frame {
+            box-shadow: 18px 18px 0 var(--oak);
+        }
+
+        .premium-frame {
+            box-shadow: 12px 12px 0 var(--electric);
+        }
+
+        .premium-hero:hover .premium-frame {
+            box-shadow: 18px 18px 0 var(--electric);
         }
 
         /* Section 2: Your Design */
@@ -283,62 +668,243 @@
 
         .design-section .scroll-page:nth-child(1) {
             background: var(--electric);
+            position: relative;
+        }
+
+        .design-section .scroll-page:nth-child(1)::before {
+            content: '🎨';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.4;
+            animation: spin 6s linear infinite;
         }
 
         .design-section .scroll-page:nth-child(2) {
             background: linear-gradient(135deg, var(--electric) 0%, var(--charcoal) 100%);
+            position: relative;
+        }
+
+        .design-section .scroll-page:nth-child(2)::before {
+            content: '📏';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.4;
+            animation: swing 3s ease-in-out infinite;
         }
 
         .design-section .scroll-page:nth-child(3) {
             background: var(--charcoal);
+            position: relative;
+        }
+
+        .design-section .scroll-page:nth-child(3)::before {
+            content: '🎭';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.4;
+            animation: dance 4s ease-in-out infinite;
         }
 
         .design-section .scroll-page:nth-child(4) {
             background: var(--forest);
+            position: relative;
+        }
+
+        .design-section .scroll-page:nth-child(4)::before {
+            content: '⚙️';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.4;
+            animation: rotate 5s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        @keyframes dance {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         /* Size Options */
         .size-options {
             display: flex;
-            gap: 30px;
-            margin-top: 40px;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
         }
 
         .size-card {
             background: rgba(255, 255, 255, 0.1);
             border: var(--border-thick) solid var(--white);
             border-radius: var(--corner-small);
-            padding: 30px 20px;
+            padding: 20px 15px;
             text-align: center;
             flex: 1;
+            min-width: 120px;
+            transition: transform 0.3s ease;
+        }
+
+        .size-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .size-card h3 {
+            font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+            margin-bottom: 10px;
         }
 
         .size-card .dimension {
             font-family: var(--font-secondary);
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 1.5vw, 1.5rem);
             font-weight: 600;
             display: block;
-            margin: 15px 0;
+            margin: 10px 0;
+            color: var(--yellow);
+        }
+
+        .size-card p {
+            font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        /* Product Personalities Showcase */
+        .personalities-showcase {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .personality-card {
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .personality-card:hover {
+            transform: translate(-3px, -3px);
+        }
+
+        .personality-frame {
+            width: 100%;
+            height: 150px;
+            border: var(--border-thick) solid var(--charcoal);
+            border-radius: var(--corner-radius);
+            overflow: hidden;
+            position: relative;
+            background: var(--white);
+        }
+
+        .personality-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .personality-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--charcoal);
+            background: var(--cream);
+        }
+
+        .personality-label {
+            text-align: center;
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            color: var(--white);
+        }
+
+        /* Heavy shadows for each personality */
+        .playful-card .personality-frame {
+            box-shadow: 8px 8px 0 var(--yellow);
+        }
+
+        .playful-card:hover .personality-frame {
+            box-shadow: 12px 12px 0 var(--yellow);
+        }
+
+        .brand-card .personality-frame {
+            box-shadow: 8px 8px 0 var(--oak);
+        }
+
+        .brand-card:hover .personality-frame {
+            box-shadow: 12px 12px 0 var(--oak);
+        }
+
+        .premium-card .personality-frame {
+            box-shadow: 8px 8px 0 var(--electric);
+        }
+
+        .premium-card:hover .personality-frame {
+            box-shadow: 12px 12px 0 var(--electric);
         }
 
         /* Material Options */
         .material-options {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
         }
 
         .material-card {
             background: rgba(255, 255, 255, 0.1);
             border: var(--border-thick) solid var(--white);
             border-radius: var(--corner-small);
-            padding: 20px;
+            padding: 15px 10px;
             text-align: center;
             font-family: var(--font-primary);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+            transition: transform 0.3s ease;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .material-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* Navigation Hints */
@@ -435,13 +1001,56 @@
                 text-align: center;
             }
 
+            .hero-visual {
+                height: 300px;
+            }
+
+            .hero-text {
+                font-size: 1.8rem;
+            }
+
+            .shape {
+                font-size: 1.5rem;
+            }
+
             .scroll-page {
-                padding: 40px 30px;
+                padding: 40px 20px;
+            }
+
+            .scroll-page h2 {
+                font-size: clamp(1.5rem, 5vw, 2.5rem);
+                margin-bottom: 20px;
+            }
+
+            .scroll-page h3 {
+                font-size: clamp(1rem, 3vw, 1.5rem);
+                margin-bottom: 15px;
+            }
+
+            .scroll-page p {
+                font-size: clamp(0.85rem, 2vw, 1rem);
+                margin-bottom: 12px;
             }
 
             .suppliers-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
+                margin-top: 20px;
+            }
+
+            .supplier-logo {
+                padding: 20px 10px;
+                min-height: 70px;
+            }
+
+            .supplier-logo::before {
+                font-size: 1.2rem;
+                top: 5px;
+            }
+
+            .supplier-logo .logo-text {
+                margin-top: 15px;
+                font-size: 0.7rem;
             }
 
             .size-options {
@@ -449,13 +1058,90 @@
                 gap: 15px;
             }
 
-            .material-options {
+            .personalities-showcase {
                 grid-template-columns: 1fr;
-                gap: 15px;
+                gap: 20px;
+            }
+
+            .personality-frame {
+                height: 200px;
+            }
+
+            .product-gallery {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .product-frame {
+                height: 250px;
+            }
+
+            .material-options {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .material-card {
+                padding: 12px 8px;
+                min-height: 50px;
+                font-size: 0.7rem;
             }
 
             .signup-form {
                 flex-direction: column;
+            }
+
+            /* Hide scroll hints on mobile */
+            .scroll-hint {
+                display: none;
+            }
+
+            /* Adjust playful elements for mobile */
+            .smart-section .scroll-page::before,
+            .design-section .scroll-page::before {
+                font-size: 2rem;
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scroll-page {
+                padding: 30px 15px;
+            }
+            
+            .suppliers-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .personalities-showcase {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .personality-frame {
+                height: 180px;
+            }
+
+            .product-gallery {
+                gap: 30px;
+            }
+
+            .product-frame {
+                height: 200px;
+            }
+
+            .placeholder-icon {
+                font-size: 2rem;
+            }
+
+            .placeholder-text {
+                font-size: 1rem;
+            }
+            
+            .material-options {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -477,8 +1163,17 @@
                     <a href="#smart" class="cta-primary">Configure Soon - Join the List</a>
                 </div>
                 <div class="hero-visual">
-                    Form Desk 3D Preview<br>
-                    <small>Interactive configurator coming soon</small>
+                    <div class="hero-animation">
+                        <div class="floating-shapes">
+                            <div class="shape shape-1">◆</div>
+                            <div class="shape shape-2">●</div>
+                            <div class="shape shape-3">■</div>
+                            <div class="shape shape-4">▲</div>
+                        </div>
+                        <div class="hero-text">
+                            Finally,<br>furniture<br>with<br><span class="highlight-word">personality</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -509,13 +1204,27 @@
                 <h2>The Dream Team</h2>
                 <p>We partner with the industry's most trusted names to deliver exceptional quality:</p>
                 <div class="suppliers-grid">
-                    <div class="supplier-logo">Form</div>
-                    <div class="supplier-logo">Linak</div>
-                    <div class="supplier-logo">Greengridz</div>
-                    <div class="supplier-logo">Tarkett</div>
-                    <div class="supplier-logo">FSC Wood</div>
-                    <div class="supplier-logo">Unilin</div>
-                    <div class="supplier-logo">Forming Function</div>
+                    <div class="supplier-logo form-logo">
+                        <div class="logo-text">Form</div>
+                    </div>
+                    <div class="supplier-logo linak-logo">
+                        <div class="logo-text">Linak</div>
+                    </div>
+                    <div class="supplier-logo greengridz-logo">
+                        <div class="logo-text">Greengridz</div>
+                    </div>
+                    <div class="supplier-logo tarkett-logo">
+                        <div class="logo-text">Tarkett</div>
+                    </div>
+                    <div class="supplier-logo fsc-logo">
+                        <div class="logo-text">FSC Wood</div>
+                    </div>
+                    <div class="supplier-logo unilin-logo">
+                        <div class="logo-text">Unilin</div>
+                    </div>
+                    <div class="supplier-logo forming-logo">
+                        <div class="logo-text">Forming Function</div>
+                    </div>
                 </div>
             </div>
 
@@ -529,6 +1238,58 @@
         </div>
     </section>
 
+    <!-- Product Showcase Section -->
+    <section class="product-showcase">
+        <div class="container">
+            <h2 class="showcase-title">Meet Your New Workspace Personality</h2>
+            <p class="showcase-subtitle">Same quality. Same functionality. Three distinct personalities to match your brand.</p>
+            
+            <div class="product-gallery">
+                <div class="product-hero playful-hero">
+                    <div class="product-frame playful-frame">
+                        <img src="assets/dump_playful.jpg" alt="Playful Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="product-placeholder">
+                            <div class="placeholder-icon">🎪</div>
+                            <div class="placeholder-text">Playful Design</div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Creative Playful</h3>
+                        <p>For teams who think outside the box. Vibrant, energetic, impossible to ignore.</p>
+                    </div>
+                </div>
+
+                <div class="product-hero brand-hero">
+                    <div class="product-frame brand-frame">
+                        <img src="assets/dump_brand.jpg" alt="Brand Identity Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="product-placeholder">
+                            <div class="placeholder-icon">💼</div>
+                            <div class="placeholder-text">Brand Identity</div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Professional Brand</h3>
+                        <p>Clean, sophisticated, trustworthy. Perfect for client-facing offices.</p>
+                    </div>
+                </div>
+
+                <div class="product-hero premium-hero">
+                    <div class="product-frame premium-frame">
+                        <img src="assets/dump_premium.jpg" alt="Premium Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="product-placeholder">
+                            <div class="placeholder-icon">✨</div>
+                            <div class="placeholder-text">Premium Luxury</div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Executive Premium</h3>
+                        <p>Luxury materials, artisanal details. When only the finest will do.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Section 2: Your Design -->
     <section class="scroll-section design-section" id="design">
         <div class="scroll-container">
@@ -537,6 +1298,44 @@
                 <h2>One Product, Multiple Personalities</h2>
                 <p>Three sizes: Focused (120cm), Balanced (140cm), Full Spread (160cm)</p>
                 <p>Consistent quality, variable aesthetics. Great overview without complexity.</p>
+                
+                <!-- Product Personalities Showcase -->
+                <div class="personalities-showcase">
+                    <div class="personality-card playful-card">
+                        <div class="personality-frame">
+                            <img src="assets/dump_playful.jpg" alt="Playful Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="personality-placeholder">
+                                🎪 Playful
+                            </div>
+                        </div>
+                        <div class="personality-label">Creative</div>
+                    </div>
+                    <div class="personality-card brand-card">
+                        <div class="personality-frame">
+                            <img src="assets/dump_brand.jpg" alt="Brand Identity Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="personality-placeholder">
+                                💼 Professional
+                            </div>
+                        </div>
+                        <div class="personality-label">Professional</div>
+                    </div>
+                    <div class="personality-card premium-card">
+                        <div class="personality-frame">
+                            <img src="assets/dump_premium.jpg" alt="Premium Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="personality-placeholder">
+                                ✨ Premium
+                            </div>
+                        </div>
+                        <div class="personality-label">Luxury</div>
+                    </div>
+                </div>
+                <div class="scroll-hint">Swipe to explore →</div>
+            </div>
+
+            <!-- Page 2: Size Selection (Existing Design) -->
+            <div class="scroll-page">
+                <h2>Choose Your Workspace</h2>
+                <p>Three sizes optimized for different work styles and office configurations.</p>
                 <div class="size-options">
                     <div class="size-card">
                         <h3>Focused</h3>
@@ -554,14 +1353,6 @@
                         <p>Maximum workspace</p>
                     </div>
                 </div>
-                <div class="scroll-hint">Swipe to explore →</div>
-            </div>
-
-            <!-- Page 2: Size Selection (Existing Design) -->
-            <div class="scroll-page">
-                <h2>Choose Your Workspace</h2>
-                <p>Reusing your current size selection page design - clean visual comparison of three options with detailed specifications.</p>
-                <p>Each size optimized for different work styles and office configurations.</p>
             </div>
 
             <!-- Page 3: Design Language -->
@@ -654,6 +1445,40 @@
             section.addEventListener('scroll', () => {
                 const scrollProgress = section.scrollLeft / (section.scrollWidth - section.clientWidth);
                 console.log('Section scroll progress:', scrollProgress);
+            });
+        });
+
+        // Product image interaction tracking
+        document.querySelectorAll('.product-hero').forEach((hero, index) => {
+            hero.addEventListener('click', () => {
+                const personalities = ['playful', 'brand', 'premium'];
+                const personality = personalities[index];
+                
+                console.log('Product personality selected:', personality);
+                
+                // Track interaction
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'personality_interest', {
+                        'event_category': 'engagement',
+                        'event_label': personality
+                    });
+                }
+                
+                // Could trigger AR experience or configurator with this personality
+                alert(`Interested in the ${personality} style? Get notified when the configurator launches!`);
+                showSignup();
+            });
+        });
+
+        // Enhanced image loading for product showcase
+        document.querySelectorAll('.product-image').forEach(img => {
+            img.addEventListener('load', () => {
+                console.log('Product image loaded:', img.src);
+            });
+            
+            img.addEventListener('error', (e) => {
+                console.log('Product image failed to load:', e.target.src);
+                // Fallback is already handled by onerror attribute
             });
         });
     </script>
