@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Desk - AR Experience</title>
+    
+    <!-- Model Viewer for AR support -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    
+    <style>
+        /* ================================
+           CSS CUSTOM PROPERTIES
+           ================================ */
+        :root {
+            /* Colors */
+            --color-cream: #F8F6F0;
+            --color-charcoal: #2C2C2C;
+            --color-white: #FFFFFF;
+            --color-electric: #3B82F6;
+            --color-yellow: #FDE047;
+            --color-oak: #D2B48C;
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            
+            /* Typography */
+            --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Borders and Shadows */
+            --corner-small: 8px;
+            --corner-large: 24px;
+            --shadow-offset: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--color-cream);
+            overflow-x: hidden;
+        }
+
+        /* ================================
+           AR OVERLAY INTERFACE
+           ================================ */
+        .ar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--color-charcoal);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .ar-overlay.active {
+            display: flex;
+        }
+
+        .ar-header {
+            position: absolute;
+            top: var(--space-lg);
+            left: var(--space-md);
+            right: var(--space-md);
+            z-index: 1001;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ar-title {
+            color: var(--color-white);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ar-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--color-white);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        .ar-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ================================
+           MODEL VIEWER STYLES
+           ================================ */
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+        }
+
+        model-viewer::part(default-progress-mask) {
+            display: none;
+        }
+
+        model-viewer::part(default-progress-bar) {
+            display: none;
+        }
+
+        /* Custom loading indicator */
+        .custom-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--color-white);
+            text-align: center;
+            pointer-events: none;
+            z-index: 1002;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid var(--color-electric);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--space-md);
+        }
+
+        .loader-text {
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ================================
+           AR CONTROLS
+           ================================ */
+        .ar-controls {
+            position: absolute;
+            bottom: var(--space-xl);
+            left: var(--space-md);
+            right: var(--space-md);
+            z-index: 1001;
+        }
+
+        .model-selector {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+            background: rgba(0, 0, 0, 0.3);
+            padding: var(--space-sm);
+            border-radius: var(--corner-small);
+            backdrop-filter: blur(10px);
+        }
+
+        .model-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--color-white);
+            padding: var(--space-md) var(--space-sm);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: var(--corner-small);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .model-btn.active {
+            background: var(--color-electric);
+            border-color: var(--color-electric);
+            color: var(--color-white);
+        }
+
+        .model-btn:not(.active):hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .model-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .ar-actions {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .ar-btn {
+            background: var(--color-electric);
+            color: var(--color-white);
+            border: 3px solid var(--color-electric);
+            padding: var(--space-lg) var(--space-lg);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0, 0, 0, 0.3);
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ar-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .ar-btn.secondary {
+            background: var(--color-yellow);
+            color: var(--color-charcoal);
+            border-color: var(--color-yellow);
+        }
+
+        /* ================================
+           MAIN PAGE STYLES
+           ================================ */
+        .page-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: var(--space-xl) var(--space-md);
+            text-align: center;
+        }
+
+        .ar-trigger-btn {
+            background: var(--color-electric);
+            color: var(--color-white);
+            border: 3px solid var(--color-electric);
+            padding: var(--space-xl) var(--space-2xl);
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--corner-small);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-charcoal);
+            z-index: 100;
+            font-size: 1.2rem;
+            margin-top: var(--space-2xl);
+        }
+
+        .ar-trigger-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-charcoal);
+        }
+
+        .main-title {
+            font-family: var(--font-secondary);
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 0.9;
+            margin-bottom: var(--space-lg);
+            color: var(--color-charcoal);
+        }
+
+        .main-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: var(--space-2xl);
+            opacity: 0.8;
+            max-width: 600px;
+            color: var(--color-charcoal);
+        }
+
+        .highlight {
+            background: var(--color-electric);
+            color: var(--color-white);
+            padding: 0 var(--space-sm);
+            transform: rotate(-1deg);
+            display: inline-block;
+            border-radius: var(--corner-small);
+        }
+
+        /* ================================
+           RESPONSIVE DESIGN
+           ================================ */
+        @media (max-width: 768px) {
+            .ar-header {
+                top: env(safe-area-inset-top, var(--space-lg));
+            }
+            
+            .ar-controls {
+                bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-lg));
+            }
+            
+            .model-btn {
+                font-size: 0.75rem;
+                padding: var(--space-sm);
+            }
+            
+            .ar-actions {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+        }
+
+        /* ================================
+           UTILITIES
+           ================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Page Content -->
+    <div class="page-container">
+        <h1 class="main-title">
+            See Your Perfect <span class="highlight">Form Desk</span>
+        </h1>
+        <p class="main-subtitle">
+            Experience our innovative sustainable office furniture in your space before you buy. 
+            Position, scale, and explore three unique desk personalities in augmented reality.
+        </p>
+        
+        <button class="ar-trigger-btn" onclick="openARExperience()">
+            📱 Try in AR
+        </button>
+    </div>
+
+    <!-- AR Overlay -->
+    <div class="ar-overlay" id="arOverlay">
+        <!-- AR Header -->
+        <div class="ar-header">
+            <div class="ar-title">Form Desk AR</div>
+            <button class="ar-close" onclick="closeARExperience()">✕</button>
+        </div>
+
+        <!-- Custom Loading Indicator -->
+        <div class="custom-loader" id="customLoader">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Loading 3D Model...</div>
+        </div>
+
+        <!-- Model Viewer -->
+        <model-viewer
+            id="modelViewer"
+            src="./assets/models/ar/ar_playful.glb"
+            ios-src="./assets/models/ar/ar_playful.usdz"
+            alt="Form Desk 3D Model"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="3000"
+            rotation-per-second="30deg"
+            environment-image="neutral"
+            shadow-intensity="1"
+            camera-orbit="45deg 75deg 2.5m"
+            min-camera-orbit="auto auto 1m"
+            max-camera-orbit="auto auto 5m"
+            interaction-prompt="none"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-scale="auto"
+            ar-placement="floor"
+            loading="eager">
+            
+            <!-- AR Button (shown when AR is available) -->
+            <button 
+                slot="ar-button" 
+                class="ar-btn"
+                style="position: absolute; bottom: 16px; right: 16px; z-index: 1003;">
+                View in AR
+            </button>
+            
+            <!-- Loading Progress Bar (hidden with CSS) -->
+            <div class="progress-bar" slot="progress-bar"></div>
+        </model-viewer>
+
+        <!-- AR Controls -->
+        <div class="ar-controls">
+            <!-- Model Type Selector -->
+            <div class="model-selector">
+                <button 
+                    class="model-btn active" 
+                    data-model="playful"
+                    onclick="switchModel('playful')">
+                    Playful
+                </button>
+                <button 
+                    class="model-btn disabled" 
+                    data-model="brand"
+                    onclick="switchModel('brand')">
+                    Brand<br><small>(Soon)</small>
+                </button>
+                <button 
+                    class="model-btn disabled" 
+                    data-model="premium"
+                    onclick="switchModel('premium')">
+                    Premium<br><small>(Soon)</small>
+                </button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="ar-actions">
+                <button class="ar-btn secondary" onclick="takeScreenshot()">
+                    📸 Screenshot
+                </button>
+                <button class="ar-btn" onclick="activateAR()">
+                    🚀 Place in Room
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================================
+        // AR Experience Management
+        // ================================
+        
+        const arOverlay = document.getElementById('arOverlay');
+        const modelViewer = document.getElementById('modelViewer');
+        const customLoader = document.getElementById('customLoader');
+        
+        // Model configurations
+        const models = {
+            playful: {
+                glb: './assets/models/ar/ar_playful.glb',
+                usdz: './assets/models/ar/ar_playful.usdz',
+                available: true
+            },
+            brand: {
+                glb: './assets/models/ar/ar_brand.glb',
+                usdz: './assets/models/ar/ar_brand.usdz',
+                available: false
+            },
+            premium: {
+                glb: './assets/models/ar/ar_premium.glb',
+                usdz: './assets/models/ar/ar_premium.usdz',
+                available: false
+            }
+        };
+        
+        let currentModel = 'playful';
+        
+        // ================================
+        // Core Functions
+        // ================================
+        
+        function openARExperience() {
+            arOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Track analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'ar_experience_opened', {
+                    'event_category': 'AR',
+                    'event_label': 'main_button'
+                });
+            }
+        }
+        
+        function closeARExperience() {
+            arOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Reset model viewer
+            if (modelViewer.ar) {
+                modelViewer.ar = false;
+            }
+        }
+        
+        function switchModel(modelType) {
+            if (!models[modelType].available) {
+                showToast('This model will be available soon!');
+                return;
+            }
+            
+            // Update active button
+            document.querySelectorAll('.model-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-model="${modelType}"]`).classList.add('active');
+            
+            // Show loader
+            customLoader.style.display = 'block';
+            
+            // Update model
+            currentModel = modelType;
+            modelViewer.src = models[modelType].glb;
+            modelViewer.setAttribute('ios-src', models[modelType].usdz);
+            
+            // Track analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'model_switched', {
+                    'event_category': 'AR',
+                    'event_label': modelType
+                });
+            }
+        }
+        
+        function activateAR() {
+            if (!modelViewer.canActivateAR) {
+                showToast('AR not available on this device');
+                return;
+            }
+            
+            modelViewer.activateAR();
+            
+            // Track analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'ar_activated', {
+                    'event_category': 'AR',
+                    'event_label': currentModel
+                });
+            }
+        }
+        
+        function takeScreenshot() {
+            try {
+                const screenshot = modelViewer.toDataURL('image/png');
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.href = screenshot;
+                link.download = `form-desk-${currentModel}-${Date.now()}.png`;
+                link.click();
+                
+                showToast('Screenshot saved!');
+                
+                // Track analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'screenshot_taken', {
+                        'event_category': 'AR',
+                        'event_label': currentModel
+                    });
+                }
+            } catch (error) {
+                showToast('Screenshot not available in AR mode');
+            }
+        }
+        
+        function showToast(message) {
+            // Simple toast notification
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                font-family: var(--font-secondary);
+                font-weight: 600;
+                z-index: 10000;
+                backdrop-filter: blur(10px);
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+        
+        // ================================
+        // Model Viewer Event Listeners
+        // ================================
+        
+        modelViewer.addEventListener('load', () => {
+            customLoader.style.display = 'none';
+        });
+        
+        modelViewer.addEventListener('error', (event) => {
+            customLoader.style.display = 'none';
+            showToast('Failed to load 3D model');
+            console.error('Model loading error:', event);
+        });
+        
+        modelViewer.addEventListener('ar-status', (event) => {
+            if (event.detail.status === 'session-started') {
+                // Hide UI when AR session starts
+                document.querySelector('.ar-controls').style.display = 'none';
+                document.querySelector('.ar-header').style.display = 'none';
+            } else if (event.detail.status === 'not-presenting') {
+                // Show UI when AR session ends
+                document.querySelector('.ar-controls').style.display = 'block';
+                document.querySelector('.ar-header').style.display = 'flex';
+            }
+        });
+        
+        // ================================
+        // Keyboard Support
+        // ================================
+        
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && arOverlay.classList.contains('active')) {
+                closeARExperience();
+            }
+        });
+        
+        // ================================
+        // Device Detection & AR Support
+        // ================================
+        
+        function checkARSupport() {
+            // Check for iOS devices (better AR support with USDZ)
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            
+            // Check for WebXR support
+            if ('xr' in navigator) {
+                navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+                    if (supported) {
+                        console.log('WebXR AR supported');
+                    }
+                });
+            }
+            
+            if (isIOS) {
+                console.log('iOS device detected - AR Quick Look available');
+            }
+        }
+        
+        // Initialize AR support check
+        checkARSupport();
+        
+        // ================================
+        // Performance Optimizations
+        // ================================
+        
+        // Preload first model for faster experience
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'preload';
+        preloadLink.href = models.playful.glb;
+        preloadLink.as = 'fetch';
+        preloadLink.crossOrigin = 'anonymous';
+        document.head.appendChild(preloadLink);
+        
+        // Lazy load additional models when needed
+        function preloadModel(modelType) {
+            if (models[modelType].available && !models[modelType].preloaded) {
+                const link = document.createElement('link');
+                link.rel = 'preload';
+                link.href = models[modelType].glb;
+                link.as = 'fetch';
+                link.crossOrigin = 'anonymous';
+                document.head.appendChild(link);
+                models[modelType].preloaded = true;
+            }
+        }
+        
+        // Progressive enhancement for better performance
+        setTimeout(() => {
+            preloadModel('brand');
+            preloadModel('premium');
+        }, 2000);
+    </script>
+</body>
+</html>

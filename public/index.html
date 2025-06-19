@@ -50,6 +50,7 @@
             gap: 10px;
         }
 
+        /* AR-specific enhancements */
         .ar-btn {
             background: rgba(255, 255, 255, 0.15);
             border: var(--border-thick) solid var(--charcoal);
@@ -64,6 +65,31 @@
             transition: all 0.2s ease;
             backdrop-filter: blur(10px);
             animation: pulse 3s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ar-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .ar-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ar-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--charcoal);
         }
 
         .ar-btn.ar-primary {
@@ -802,10 +828,34 @@
         .personality-card {
             position: relative;
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
         .personality-card:hover {
             transform: translate(-3px, -3px);
+        }
+
+        .personality-card::after {
+            content: '👆 AR';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--electric);
+            color: var(--white);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 8px;
+            border-radius: var(--corner-small);
+            border: 2px solid var(--charcoal);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-family: var(--font-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .personality-card:hover::after {
+            opacity: 1;
         }
 
         .personality-frame {
@@ -1149,8 +1199,8 @@
 <body>
     <!-- AR Overlay - Fixed Position -->
     <div class="ar-overlay">
-        <button class="ar-btn ar-primary" onclick="launchAR()">🔍 Find Me in AR</button>
-        <button class="ar-btn ar-secondary" onclick="showSignup()">🔔 Get Notified</button>
+        <button class="ar-btn ar-primary" onclick="launchAR()" title="Launch AR Experience">🔍 Find Me in AR</button>
+        <button class="ar-btn ar-secondary" onclick="showSignup()" title="Get notified when configurator launches">🔔 Get Notified</button>
     </div>
 
     <!-- Existing Hero Section -->
@@ -1159,7 +1209,7 @@
             <div class="hero-grid">
                 <div>
                     <h1>Finally, <span class="highlight">office furniture</span> with personality</h1>
-                    <p class="subline">Three sizes. Premium quality. Sustainable suppliers. Configure your perfect workspace with Form Desk.</p>
+                    <p class="subline">Three sizes. Premium quality. Sustainable suppliers. See your perfect workspace in AR or configure online.</p>
                     <a href="#smart" class="cta-primary">Configure Soon - Join the List</a>
                 </div>
                 <div class="hero-visual">
@@ -1247,7 +1297,7 @@
             <div class="product-gallery">
                 <div class="product-hero playful-hero">
                     <div class="product-frame playful-frame">
-                        <img src="assets/dump_playful.jpg" alt="Playful Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <img src="assets/images/dump_playful.png" alt="Playful Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="product-placeholder">
                             <div class="placeholder-icon">🎪</div>
                             <div class="placeholder-text">Playful Design</div>
@@ -1261,7 +1311,7 @@
 
                 <div class="product-hero brand-hero">
                     <div class="product-frame brand-frame">
-                        <img src="assets/dump_brand.jpg" alt="Brand Identity Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <img src="assets/images/dump_brand.png" alt="Brand Identity Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="product-placeholder">
                             <div class="placeholder-icon">💼</div>
                             <div class="placeholder-text">Brand Identity</div>
@@ -1275,7 +1325,7 @@
 
                 <div class="product-hero premium-hero">
                     <div class="product-frame premium-frame">
-                        <img src="assets/dump_premium.jpg" alt="Premium Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <img src="assets/images/dump_premium.png" alt="Premium Form Desk Design" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="product-placeholder">
                             <div class="placeholder-icon">✨</div>
                             <div class="placeholder-text">Premium Luxury</div>
@@ -1303,7 +1353,7 @@
                 <div class="personalities-showcase">
                     <div class="personality-card playful-card">
                         <div class="personality-frame">
-                            <img src="assets/dump_playful.jpg" alt="Playful Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <img src="assets/images/dump_playful.png" alt="Playful Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="personality-placeholder">
                                 🎪 Playful
                             </div>
@@ -1312,7 +1362,7 @@
                     </div>
                     <div class="personality-card brand-card">
                         <div class="personality-frame">
-                            <img src="assets/dump_brand.jpg" alt="Brand Identity Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <img src="assets/images/dump_brand.png" alt="Brand Identity Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="personality-placeholder">
                                 💼 Professional
                             </div>
@@ -1321,7 +1371,7 @@
                     </div>
                     <div class="personality-card premium-card">
                         <div class="personality-frame">
-                            <img src="assets/dump_premium.jpg" alt="Premium Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <img src="assets/images/dump_premium.png" alt="Premium Desk Design" class="personality-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="personality-placeholder">
                                 ✨ Premium
                             </div>
@@ -1382,7 +1432,7 @@
     </section>
 
     <!-- Signup Transition -->
-    <section class="signup-transition">
+    <section class="signup-transition" id="signup">
         <div class="container">
             <h2>Ready to Transform Your Workspace?</h2>
             <p>Join 500+ companies waiting for early access to our configurator and special Copenhagen pricing.</p>
@@ -1396,8 +1446,18 @@
     <script>
         // AR Experience Launch
         function launchAR() {
-            alert('AR Experience launching soon! Get notified when it\'s ready.');
-            showSignup();
+            // Open AR experience in new tab/window
+            window.open('ar.html', '_blank');
+            
+            // Track AR launch
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'ar_launch', {
+                    'event_category': 'engagement',
+                    'event_label': 'ar_overlay_button'
+                });
+            }
+            
+            console.log('AR Experience launched');
         }
 
         // Show signup modal
@@ -1408,17 +1468,23 @@
             }
         }
 
-        // Handle signup form
+        // Enhanced signup form with AR tracking
         function handleSignup(event) {
             event.preventDefault();
             const email = event.target.querySelector('.signup-input').value;
             handleSignupSubmission(email, 'signup_form');
         }
 
-        // Handle signup submission
+        // Enhanced signup submission with source tracking
         function handleSignupSubmission(email, source) {
             // In production, this would connect to Supabase
-            console.log('Signup:', { email, source, timestamp: new Date().toISOString() });
+            console.log('Signup:', { 
+                email, 
+                source, 
+                timestamp: new Date().toISOString(),
+                referrer: document.referrer,
+                userAgent: navigator.userAgent.substring(0, 100)
+            });
             
             // Show success message
             alert('Thanks! You\'ll be first to know when the configurator is ready. Check your email for confirmation.');
@@ -1427,9 +1493,55 @@
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'signup', {
                     'event_category': 'conversion',
-                    'event_label': source
+                    'event_label': source,
+                    'custom_map': {
+                        'email_domain': email.split('@')[1] || 'unknown'
+                    }
                 });
             }
+        }
+
+        // AR Return Handler (for users returning from AR experience)
+        function handleARReturn() {
+            // Check if user is returning from AR
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromAR = urlParams.get('from_ar');
+            const arModel = urlParams.get('ar_model');
+            
+            if (fromAR === 'true') {
+                console.log('User returned from AR experience with model:', arModel);
+                
+                // Show special message for AR users
+                setTimeout(() => {
+                    if (confirm('Love what you saw in AR? Get notified when the configurator launches with your preferred style!')) {
+                        showSignup();
+                    }
+                }, 1000);
+                
+                // Track AR return
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'ar_return', {
+                        'event_category': 'engagement',
+                        'event_label': arModel || 'unknown'
+                    });
+                }
+            }
+        }
+
+        // Enhanced AR launch with personality selection
+        function launchARWithPersonality(personality) {
+            const arURL = `ar.html?personality=${personality}&return_url=${encodeURIComponent(window.location.href)}`;
+            window.open(arURL, '_blank');
+            
+            // Track specific personality selection
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'ar_personality_launch', {
+                    'event_category': 'engagement',
+                    'event_label': personality
+                });
+            }
+            
+            console.log('AR Experience launched with personality:', personality);
         }
 
         // Smooth scroll enhancement
@@ -1448,7 +1560,7 @@
             });
         });
 
-        // Product image interaction tracking
+        // Product image interaction with AR integration
         document.querySelectorAll('.product-hero').forEach((hero, index) => {
             hero.addEventListener('click', () => {
                 const personalities = ['playful', 'brand', 'premium'];
@@ -1464,10 +1576,53 @@
                     });
                 }
                 
-                // Could trigger AR experience or configurator with this personality
-                alert(`Interested in the ${personality} style? Get notified when the configurator launches!`);
-                showSignup();
+                // Give user choice: AR or signup
+                const userChoice = confirm(`Interested in the ${personality} style? Click OK to see it in AR, or Cancel to get notified when the configurator launches!`);
+                
+                if (userChoice) {
+                    launchARWithPersonality(personality);
+                } else {
+                    showSignup();
+                }
             });
+        });
+
+        // Enhanced personality card interactions in scroll section
+        document.querySelectorAll('.personality-card').forEach((card, index) => {
+            card.addEventListener('click', () => {
+                const personalities = ['playful', 'brand', 'premium'];
+                const personality = personalities[index];
+                
+                // Direct AR launch from personality cards
+                launchARWithPersonality(personality);
+            });
+            
+            // Add visual feedback
+            card.style.cursor = 'pointer';
+            card.title = `Click to see ${card.querySelector('.personality-label').textContent} style in AR`;
+        });
+
+        // Initialize page functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle AR returns
+            handleARReturn();
+            
+            // Add AR hints to personality showcase
+            const personalityCards = document.querySelectorAll('.personality-card');
+            personalityCards.forEach(card => {
+                const existingLabel = card.querySelector('.personality-label');
+                if (existingLabel) {
+                    existingLabel.innerHTML += '<br><small style="opacity: 0.7;">👆 Tap to see in AR</small>';
+                }
+            });
+            
+            // Enhanced AR overlay pulse for mobile users
+            if (window.innerWidth <= 768) {
+                const arButtons = document.querySelectorAll('.ar-btn');
+                arButtons.forEach(btn => {
+                    btn.style.animationDuration = '2s'; // Faster pulse on mobile
+                });
+            }
         });
 
         // Enhanced image loading for product showcase
